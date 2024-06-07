@@ -1,0 +1,1903 @@
+{'$schema': 'http: //json-schema.org/draft-03/schema#',
+ 'additionalProperties': False,
+ 'dependencies': {'image_extents': ['projection'
+        ]
+    },
+ 'max_items': 5000,
+ 'oneormoreobjects': ['tm4_collection_2_l1',
+                      'tm5_collection_2_l1',
+                      'etm7_collection_2_l1',
+                      'olitirs8_collection_2_l1',
+                      'oli8_collection_2_l1',
+                      'olitirs9_collection_2_l1',
+                      'oli9_collection_2_l1',
+                      'tm4_collection_2_l2',
+                      'tm5_collection_2_l2',
+                      'etm7_collection_2_l2',
+                      'olitirs8_collection_2_l2',
+                      'olitirs9_collection_2_l2',
+                      'mod09a1',
+                      'mod09ga',
+                      'mod09gq',
+                      'mod09q1',
+                      'mod13a1',
+                      'mod13a2',
+                      'mod13a3',
+                      'mod13q1',
+                      'mod11a1',
+                      'myd09a1',
+                      'myd09ga',
+                      'myd09gq',
+                      'myd09q1',
+                      'myd13a1',
+                      'myd13a2',
+                      'myd13a3',
+                      'myd13q1',
+                      'myd11a1',
+                      'vnp09ga'
+    ],
+ 'pixel_count': 200000000,
+ 'properties': {'etm7_collection_2_l1': {'properties': {'inputs': {'items': {'pattern': '^le07_l1{
+                            1
+                        }\\w{
+                            2
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                             'type': 'string'
+                    },
+                                                                   'maxItems': 5000,
+                                                                   'minItems': 1,
+                                                                   'required': True,
+                                                                   'type': 'array',
+                                                                   'uniqueItems': True
+                },
+                                                        'products': {'items': {'enum': {'bt': {'role': True,
+                                                                                               'stats': True
+                            },
+                                                                                        'l1': {},
+                                                                                        'reanalsrc_fpit': {'role': True
+                            },
+                                                                                        'reanalsrc_geosit': {'role': True
+                            },
+                                                                                        'reanalsrc_merra2': {'role': True
+                            },
+                                                                                        'rs_refl': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                        'rtmodel_modtran': {'role': True
+                            },
+                                                                                        'rtmodel_rttov': {'role': True
+                            },
+                                                                                        'sr': {'role': True,
+                                                                                               'stats': True
+                            },
+                                                                                        'sr_evi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                        'sr_msavi': {'role': True,
+                                                                                                     'stats': True
+                            },
+                                                                                        'sr_nbr': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                        'sr_nbr2': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                        'sr_ndmi': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                        'sr_ndsi': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                        'sr_ndvi': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                        'sr_savi': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                        'st': {'role': True
+                            },
+                                                                                        'stalg_single_channel': {'role': True
+                            },
+                                                                                        'swe': {'role': True
+                            },
+                                                                                        'toa': {'role': True,
+                                                                                                'stats': True
+                            }
+                        },
+                                                                               'type': 'string'
+                    },
+                                                                     'minItems': 1,
+                                                                     'required': True,
+                                                                     'restricted': True,
+                                                                     'type': 'array',
+                                                                     'uniqueItems': True
+                }
+            },
+                                         'type': 'object'
+        },
+                'etm7_collection_2_l2': {'properties': {'inputs': {'items': {'pattern': '^le07_l2s{
+                            1
+                        }[p,r
+                        ]{
+                            1
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                             'type': 'string'
+                    },
+                                                                   'maxItems': 5000,
+                                                                   'minItems': 1,
+                                                                   'required': True,
+                                                                   'type': 'array',
+                                                                   'uniqueItems': True
+                },
+                                                        'products': {'items': {'enum': {'et': {'stats': True
+                            },
+                                                                                        'l1': {},
+                                                                                        'sr_evi': {'stats': True
+                            },
+                                                                                        'sr_msavi': {'stats': True
+                            },
+                                                                                        'sr_nbr': {'stats': True
+                            },
+                                                                                        'sr_nbr2': {'stats': True
+                            },
+                                                                                        'sr_ndmi': {'stats': True
+                            },
+                                                                                        'sr_ndsi': {'stats': True
+                            },
+                                                                                        'sr_ndvi': {'stats': True
+                            },
+                                                                                        'sr_savi': {'stats': True
+                            }
+                        },
+                                                                               'type': 'string'
+                    },
+                                                                     'minItems': 1,
+                                                                     'required': True,
+                                                                     'restricted': True,
+                                                                     'type': 'array',
+                                                                     'uniqueItems': True
+                }
+            },
+                                         'type': 'object'
+        },
+                'format': {'display_rank': 0,
+                           'enum': ['gtiff',
+                                    'envi',
+                                    'hdf-eos2',
+                                    'netcdf',
+                                    'cog'
+            ],
+                           'required': True,
+                           'title': 'Output Format',
+                           'type': 'string'
+        },
+                'image_extents': {'additionalProperties': False,
+                                  'display_rank': 2,
+                                  'properties': {'east': {'display_rank': 3,
+                                                          'required': True,
+                                                          'title': 'Lower '
+                                                                   'right X '
+                                                                   'coordinate',
+                                                          'type': 'number'
+                },
+                                                 'north': {'display_rank': 2,
+                                                           'required': True,
+                                                           'title': 'Upper '
+                                                                    'left Y '
+                                                                    'coordinate',
+                                                           'type': 'number'
+                },
+                                                 'south': {'display_rank': 4,
+                                                           'required': True,
+                                                           'title': 'Lower '
+                                                                    'right Y '
+                                                                    'coordinate',
+                                                           'type': 'number'
+                },
+                                                 'units': {'display_rank': 0,
+                                                           'enum': ['dd',
+                                                                    'meters'
+                    ],
+                                                           'required': True,
+                                                           'title': 'Coordinate '
+                                                                    'system '
+                                                                    'units',
+                                                           'type': 'string'
+                },
+                                                 'west': {'display_rank': 1,
+                                                          'required': True,
+                                                          'title': 'Upper left '
+                                                                   'X '
+                                                                   'coordinate',
+                                                          'type': 'number'
+                }
+            },
+                                  'title': 'Modify Image Extents',
+                                  'type': 'object'
+        },
+                'mod09a1': {'properties': {'inputs': {'items': {'pattern': '^mod09a1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'mod09ga': {'properties': {'inputs': {'items': {'pattern': '^mod09ga\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {},
+                                                                           'modis_ndvi': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'mod09gq': {'properties': {'inputs': {'items': {'pattern': '^mod09gq\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'mod09q1': {'properties': {'inputs': {'items': {'pattern': '^mod09q1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'mod11a1': {'properties': {'inputs': {'items': {'pattern': '^mod11a1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'mod13a1': {'properties': {'inputs': {'items': {'pattern': '^mod13a1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'mod13a2': {'properties': {'inputs': {'items': {'pattern': '^mod13a2\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'mod13a3': {'properties': {'inputs': {'items': {'pattern': '^mod13a3\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'mod13q1': {'properties': {'inputs': {'items': {'pattern': '^mod13q1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd09a1': {'properties': {'inputs': {'items': {'pattern': '^myd09a1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd09ga': {'properties': {'inputs': {'items': {'pattern': '^myd09ga\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {},
+                                                                           'modis_ndvi': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd09gq': {'properties': {'inputs': {'items': {'pattern': '^myd09gq\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd09q1': {'properties': {'inputs': {'items': {'pattern': '^myd09q1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd11a1': {'properties': {'inputs': {'items': {'pattern': '^myd11a1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd13a1': {'properties': {'inputs': {'items': {'pattern': '^myd13a1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd13a2': {'properties': {'inputs': {'items': {'pattern': '^myd13a2\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd13a3': {'properties': {'inputs': {'items': {'pattern': '^myd13a3\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'myd13q1': {'properties': {'inputs': {'items': {'pattern': '^myd13q1\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.061\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        },
+                'note': {'blank': True,
+                         'required': False,
+                         'title': 'Order Description (optional)',
+                         'type': 'string'
+        },
+                'oli8_collection_2_l1': {'properties': {'inputs': {'items': {'pattern': '^lo08_l1{
+                            1
+                        }\\w{
+                            2
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                             'type': 'string'
+                    },
+                                                                   'maxItems': 5000,
+                                                                   'minItems': 1,
+                                                                   'required': True,
+                                                                   'type': 'array',
+                                                                   'uniqueItems': True
+                },
+                                                        'products': {'items': {'enum': {'aq_refl': {'stats': True
+                            },
+                                                                                        'l1': {},
+                                                                                        'nbar': {'role': True
+                            },
+                                                                                        'poly_refl': {'role': True
+                            },
+                                                                                        'rs_refl': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                        'stalg_split_window': {'role': True
+                            },
+                                                                                        'toa': {'role': True
+                            }
+                        },
+                                                                               'type': 'string'
+                    },
+                                                                     'minItems': 1,
+                                                                     'required': True,
+                                                                     'restricted': True,
+                                                                     'type': 'array',
+                                                                     'uniqueItems': True
+                }
+            },
+                                         'type': 'object'
+        },
+                'oli9_collection_2_l1': {'properties': {'inputs': {'items': {'pattern': '^lo09_l1{
+                            1
+                        }\\w{
+                            2
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                             'type': 'string'
+                    },
+                                                                   'maxItems': 5000,
+                                                                   'minItems': 1,
+                                                                   'required': True,
+                                                                   'type': 'array',
+                                                                   'uniqueItems': True
+                },
+                                                        'products': {'items': {'enum': {'aq_refl': {'stats': True
+                            },
+                                                                                        'l1': {},
+                                                                                        'nbar': {'role': True
+                            },
+                                                                                        'poly_refl': {'role': True
+                            },
+                                                                                        'rs_refl': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                        'stalg_split_window': {'role': True
+                            },
+                                                                                        'toa': {'role': True
+                            }
+                        },
+                                                                               'type': 'string'
+                    },
+                                                                     'minItems': 1,
+                                                                     'required': True,
+                                                                     'restricted': True,
+                                                                     'type': 'array',
+                                                                     'uniqueItems': True
+                }
+            },
+                                         'type': 'object'
+        },
+                'olitirs8_collection_2_l1': {'properties': {'inputs': {'items': {'pattern': '^lc08_l1{
+                            1
+                        }\\w{
+                            2
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                                 'type': 'string'
+                    },
+                                                                       'maxItems': 5000,
+                                                                       'minItems': 1,
+                                                                       'required': True,
+                                                                       'type': 'array',
+                                                                       'uniqueItems': True
+                },
+                                                            'products': {'items': {'enum': {'aq_refl': {'stats': True
+                            },
+                                                                                            'bt': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                            'l1': {},
+                                                                                            'nbar': {'role': True
+                            },
+                                                                                            'poly_refl': {'role': True
+                            },
+                                                                                            'reanalsrc_fpit': {'role': True
+                            },
+                                                                                            'reanalsrc_geosit': {'role': True
+                            },
+                                                                                            'reanalsrc_merra2': {'role': True
+                            },
+                                                                                            'rs_refl': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'rtmodel_modtran': {'role': True
+                            },
+                                                                                            'rtmodel_rttov': {'role': True
+                            },
+                                                                                            'sr': {'date_restricted': ['< '
+                                                                                                                       '2021266 '
+                                                                                                                       '| '
+                                                                                                                       '> '
+                                                                                                                       '2021267'
+                                ],
+                                                                                                   'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                            'sr_evi': {'role': True,
+                                                                                                       'stats': True
+                            },
+                                                                                            'sr_msavi': {'role': True,
+                                                                                                         'stats': True
+                            },
+                                                                                            'sr_nbr': {'role': True,
+                                                                                                       'stats': True
+                            },
+                                                                                            'sr_nbr2': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'sr_ndmi': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'sr_ndsi': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'sr_ndvi': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'sr_savi': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'st': {'role': True
+                            },
+                                                                                            'stalg_single_channel': {'role': True
+                            },
+                                                                                            'stalg_split_window': {'role': True
+                            },
+                                                                                            'swe': {'role': True
+                            },
+                                                                                            'toa': {'role': True,
+                                                                                                    'stats': True
+                            }
+                        },
+                                                                                   'type': 'string'
+                    },
+                                                                         'minItems': 1,
+                                                                         'required': True,
+                                                                         'restricted': True,
+                                                                         'type': 'array',
+                                                                         'uniqueItems': True
+                }
+            },
+                                             'type': 'object'
+        },
+                'olitirs8_collection_2_l2': {'properties': {'inputs': {'items': {'pattern': '^lc08_l2s{
+                            1
+                        }[p,r
+                        ]{
+                            1
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                                 'type': 'string'
+                    },
+                                                                       'maxItems': 5000,
+                                                                       'minItems': 1,
+                                                                       'required': True,
+                                                                       'type': 'array',
+                                                                       'uniqueItems': True
+                },
+                                                            'products': {'items': {'enum': {'et': {'stats': True
+                            },
+                                                                                            'l1': {},
+                                                                                            'sr_evi': {'stats': True
+                            },
+                                                                                            'sr_msavi': {'stats': True
+                            },
+                                                                                            'sr_nbr': {'stats': True
+                            },
+                                                                                            'sr_nbr2': {'stats': True
+                            },
+                                                                                            'sr_ndmi': {'stats': True
+                            },
+                                                                                            'sr_ndsi': {'stats': True
+                            },
+                                                                                            'sr_ndvi': {'stats': True
+                            },
+                                                                                            'sr_savi': {'stats': True
+                            }
+                        },
+                                                                                   'type': 'string'
+                    },
+                                                                         'minItems': 1,
+                                                                         'required': True,
+                                                                         'restricted': True,
+                                                                         'type': 'array',
+                                                                         'uniqueItems': True
+                }
+            },
+                                             'type': 'object'
+        },
+                'olitirs9_collection_2_l1': {'properties': {'inputs': {'items': {'pattern': '^lc09_l1{
+                            1
+                        }\\w{
+                            2
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                                 'type': 'string'
+                    },
+                                                                       'maxItems': 5000,
+                                                                       'minItems': 1,
+                                                                       'required': True,
+                                                                       'type': 'array',
+                                                                       'uniqueItems': True
+                },
+                                                            'products': {'items': {'enum': {'aq_refl': {'stats': True
+                            },
+                                                                                            'bt': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                            'l1': {},
+                                                                                            'nbar': {'role': True
+                            },
+                                                                                            'poly_refl': {'role': True
+                            },
+                                                                                            'reanalsrc_fpit': {'role': True
+                            },
+                                                                                            'reanalsrc_geosit': {'role': True
+                            },
+                                                                                            'reanalsrc_merra2': {'role': True
+                            },
+                                                                                            'rs_refl': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'rtmodel_modtran': {'role': True
+                            },
+                                                                                            'rtmodel_rttov': {'role': True
+                            },
+                                                                                            'sr': {'date_restricted': ['< '
+                                                                                                                       '2021266 '
+                                                                                                                       '| '
+                                                                                                                       '> '
+                                                                                                                       '2021267'
+                                ],
+                                                                                                   'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                            'sr_evi': {'role': True,
+                                                                                                       'stats': True
+                            },
+                                                                                            'sr_msavi': {'role': True,
+                                                                                                         'stats': True
+                            },
+                                                                                            'sr_nbr': {'role': True,
+                                                                                                       'stats': True
+                            },
+                                                                                            'sr_nbr2': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'sr_ndmi': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'sr_ndsi': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'sr_ndvi': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'sr_savi': {'role': True,
+                                                                                                        'stats': True
+                            },
+                                                                                            'st': {'role': True
+                            },
+                                                                                            'stalg_single_channel': {'role': True
+                            },
+                                                                                            'stalg_split_window': {'role': True
+                            },
+                                                                                            'swe': {'role': True
+                            },
+                                                                                            'toa': {'role': True,
+                                                                                                    'stats': True
+                            }
+                        },
+                                                                                   'type': 'string'
+                    },
+                                                                         'minItems': 1,
+                                                                         'required': True,
+                                                                         'restricted': True,
+                                                                         'type': 'array',
+                                                                         'uniqueItems': True
+                }
+            },
+                                             'type': 'object'
+        },
+                'olitirs9_collection_2_l2': {'properties': {'inputs': {'items': {'pattern': '^lc09_l2s{
+                            1
+                        }[p,r
+                        ]{
+                            1
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                                 'type': 'string'
+                    },
+                                                                       'maxItems': 5000,
+                                                                       'minItems': 1,
+                                                                       'required': True,
+                                                                       'type': 'array',
+                                                                       'uniqueItems': True
+                },
+                                                            'products': {'items': {'enum': {'et': {'stats': True
+                            },
+                                                                                            'l1': {},
+                                                                                            'sr_evi': {'stats': True
+                            },
+                                                                                            'sr_msavi': {'stats': True
+                            },
+                                                                                            'sr_nbr': {'stats': True
+                            },
+                                                                                            'sr_nbr2': {'stats': True
+                            },
+                                                                                            'sr_ndmi': {'stats': True
+                            },
+                                                                                            'sr_ndsi': {'stats': True
+                            },
+                                                                                            'sr_ndvi': {'stats': True
+                            },
+                                                                                            'sr_savi': {'stats': True
+                            }
+                        },
+                                                                                   'type': 'string'
+                    },
+                                                                         'minItems': 1,
+                                                                         'required': True,
+                                                                         'restricted': True,
+                                                                         'type': 'array',
+                                                                         'uniqueItems': True
+                }
+            },
+                                             'type': 'object'
+        },
+                'projection': {'additionalProperties': False,
+                               'display_rank': 1,
+                               'properties': {'aea': {'additionalProperties': False,
+                                                      'display_rank': 0,
+                                                      'pixel_units': ['meters',
+                                                                      'dd'
+                    ],
+                                                      'properties': {'central_meridian': {'display_rank': 1,
+                                                                                          'maximum': 180,
+                                                                                          'minimum': -180,
+                                                                                          'required': True,
+                                                                                          'title': 'Central '
+                                                                                                   'Meridian',
+                                                                                          'type': 'number'
+                        },
+                                                                     'datum': {'display_rank': 6,
+                                                                               'enum': ['wgs84',
+                                                                                        'nad27',
+                                                                                        'nad83'
+                            ],
+                                                                               'required': True,
+                                                                               'title': 'Datum',
+                                                                               'type': 'string'
+                        },
+                                                                     'false_easting': {'display_rank': 4,
+                                                                                       'required': True,
+                                                                                       'title': 'False '
+                                                                                                'Easting '
+                                                                                                '(meters)',
+                                                                                       'type': 'number'
+                        },
+                                                                     'false_northing': {'display_rank': 5,
+                                                                                        'required': True,
+                                                                                        'title': 'False '
+                                                                                                 'Northing '
+                                                                                                 '(meters)',
+                                                                                        'type': 'number'
+                        },
+                                                                     'latitude_of_origin': {'display_rank': 0,
+                                                                                            'maximum': 90,
+                                                                                            'minimum': -90,
+                                                                                            'required': True,
+                                                                                            'title': 'Latitude '
+                                                                                                     'of '
+                                                                                                     'Origin',
+                                                                                            'type': 'number'
+                        },
+                                                                     'standard_parallel_1': {'display_rank': 2,
+                                                                                             'maximum': 90,
+                                                                                             'minimum': -90,
+                                                                                             'required': True,
+                                                                                             'title': '1st '
+                                                                                                      'Standard '
+                                                                                                      'Parallel',
+                                                                                             'type': 'number'
+                        },
+                                                                     'standard_parallel_2': {'display_rank': 3,
+                                                                                             'maximum': 90,
+                                                                                             'minimum': -90,
+                                                                                             'required': True,
+                                                                                             'title': '2nd '
+                                                                                                      'Standard '
+                                                                                                      'Parallel',
+                                                                                             'type': 'number'
+                        }
+                    },
+                                                      'title': 'Albers Equal '
+                                                               'Area',
+                                                      'type': 'object'
+                },
+                                              'lonlat': {'display_rank': 2,
+                                                         'pixel_units': 'dd',
+                                                         'title': 'Geographic',
+                                                         'type': 'null'
+                },
+                                              'ps': {'additionalProperties': False,
+                                                     'display_rank': 4,
+                                                     'pixel_units': ['meters',
+                                                                     'dd'
+                    ],
+                                                     'properties': {'false_easting': {'display_rank': 2,
+                                                                                      'required': True,
+                                                                                      'title': 'False '
+                                                                                               'Easting '
+                                                                                               '(meters)',
+                                                                                      'type': 'number'
+                        },
+                                                                    'false_northing': {'display_rank': 3,
+                                                                                       'required': True,
+                                                                                       'title': 'False '
+                                                                                                'Northing '
+                                                                                                '(meters)',
+                                                                                       'type': 'number'
+                        },
+                                                                    'latitude_true_scale': {'abs_rng': [
+                                60,
+                                90
+                            ],
+                                                                                            'display_rank': 1,
+                                                                                            'required': True,
+                                                                                            'title': 'Latitude '
+                                                                                                     'True '
+                                                                                                     'Scale',
+                                                                                            'type': 'number'
+                        },
+                                                                    'longitudinal_pole': {'display_rank': 0,
+                                                                                          'maximum': 180,
+                                                                                          'minimum': -180,
+                                                                                          'required': True,
+                                                                                          'title': 'Longitudinal '
+                                                                                                   'Pole',
+                                                                                          'type': 'number'
+                        }
+                    },
+                                                     'title': 'Polar '
+                                                              'Stereographic',
+                                                     'type': 'object'
+                },
+                                              'sinu': {'additionalProperties': False,
+                                                       'display_rank': 3,
+                                                       'pixel_units': ['meters',
+                                                                       'dd'
+                    ],
+                                                       'properties': {'central_meridian': {'display_rank': 0,
+                                                                                           'maximum': 180,
+                                                                                           'minimum': -180,
+                                                                                           'required': True,
+                                                                                           'title': 'Central '
+                                                                                                    'Meridian',
+                                                                                           'type': 'number'
+                        },
+                                                                      'false_easting': {'display_rank': 1,
+                                                                                        'required': True,
+                                                                                        'title': 'False '
+                                                                                                 'Easting '
+                                                                                                 '(meters)',
+                                                                                        'type': 'number'
+                        },
+                                                                      'false_northing': {'display_rank': 2,
+                                                                                         'required': True,
+                                                                                         'title': 'False '
+                                                                                                  'Northing '
+                                                                                                  '(meters)',
+                                                                                         'type': 'number'
+                        }
+                    },
+                                                       'title': 'Sinusoidal',
+                                                       'type': 'object'
+                },
+                                              'utm': {'additionalProperties': False,
+                                                      'display_rank': 1,
+                                                      'pixel_units': ['meters',
+                                                                      'dd'
+                    ],
+                                                      'properties': {'zone': {'display_rank': 0,
+                                                                              'maximum': 60,
+                                                                              'minimum': 1,
+                                                                              'required': True,
+                                                                              'title': 'UTM '
+                                                                                       'Grid '
+                                                                                       'Zone '
+                                                                                       'Number',
+                                                                              'type': 'integer'
+                        },
+                                                                     'zone_ns': {'display_rank': 1,
+                                                                                 'enum': ['north',
+                                                                                          'south'
+                            ],
+                                                                                 'required': True,
+                                                                                 'title': 'UTM '
+                                                                                          'Hemisphere',
+                                                                                 'type': 'string'
+                        }
+                    },
+                                                      'title': 'Universal '
+                                                               'Transverse '
+                                                               'Mercator',
+                                                      'type': 'object'
+                }
+            },
+                               'single_obj': True,
+                               'title': 'Reproject Products',
+                               'type': 'object'
+        },
+                'resampling_method': {'display_rank': 4,
+                                      'enum': ['nn', 'bil', 'cc'
+            ],
+                                      'title': 'Resample Method',
+                                      'type': 'string'
+        },
+                'resize': {'additionalProperties': False,
+                           'display_rank': 3,
+                           'properties': {'pixel_size': {'display_rank': 0,
+                                                         'ps_dd_rng': [
+                        0.0002695,
+                        0.0449155
+                    ],
+                                                         'ps_meters_rng': [
+                        30,
+                        5000
+                    ],
+                                                         'required': True,
+                                                         'title': 'Pixel Size',
+                                                         'type': 'number'
+                },
+                                          'pixel_size_units': {'display_rank': 1,
+                                                               'enum': ['dd',
+                                                                        'meters'
+                    ],
+                                                               'required': True,
+                                                               'title': 'Pixel '
+                                                                        'Size '
+                                                                        'Units',
+                                                               'type': 'string'
+                }
+            },
+                           'title': 'Pixel Resizing',
+                           'type': 'object'
+        },
+                'tm4_collection_2_l1': {'properties': {'inputs': {'items': {'pattern': '^lt04_l1{
+                            1
+                        }\\w{
+                            2
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                            'type': 'string'
+                    },
+                                                                  'maxItems': 5000,
+                                                                  'minItems': 1,
+                                                                  'required': True,
+                                                                  'type': 'array',
+                                                                  'uniqueItems': True
+                },
+                                                       'products': {'items': {'enum': {'bt': {'role': True,
+                                                                                              'stats': True
+                            },
+                                                                                       'l1': {},
+                                                                                       'reanalsrc_fpit': {'role': True
+                            },
+                                                                                       'reanalsrc_geosit': {'role': True
+                            },
+                                                                                       'reanalsrc_merra2': {'role': True
+                            },
+                                                                                       'rs_refl': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'rtmodel_modtran': {'role': True
+                            },
+                                                                                       'rtmodel_rttov': {'role': True
+                            },
+                                                                                       'sr': {'role': True,
+                                                                                              'stats': True
+                            },
+                                                                                       'sr_evi': {'role': True,
+                                                                                                  'stats': True
+                            },
+                                                                                       'sr_msavi': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                       'sr_nbr': {'role': True,
+                                                                                                  'stats': True
+                            },
+                                                                                       'sr_nbr2': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'sr_ndmi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'sr_ndsi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'sr_ndvi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'sr_savi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'st': {'role': True
+                            },
+                                                                                       'stalg_single_channel': {'role': True
+                            },
+                                                                                       'swe': {'role': True
+                            },
+                                                                                       'toa': {'role': True,
+                                                                                               'stats': True
+                            }
+                        },
+                                                                              'type': 'string'
+                    },
+                                                                    'minItems': 1,
+                                                                    'required': True,
+                                                                    'restricted': True,
+                                                                    'type': 'array',
+                                                                    'uniqueItems': True
+                }
+            },
+                                        'type': 'object'
+        },
+                'tm4_collection_2_l2': {'properties': {'inputs': {'items': {'pattern': '^lt04_l2s{
+                            1
+                        }[p,r
+                        ]{
+                            1
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                            'type': 'string'
+                    },
+                                                                  'maxItems': 5000,
+                                                                  'minItems': 1,
+                                                                  'required': True,
+                                                                  'type': 'array',
+                                                                  'uniqueItems': True
+                },
+                                                       'products': {'items': {'enum': {'et': {'stats': True
+                            },
+                                                                                       'l1': {},
+                                                                                       'sr_evi': {'stats': True
+                            },
+                                                                                       'sr_msavi': {'stats': True
+                            },
+                                                                                       'sr_nbr': {'stats': True
+                            },
+                                                                                       'sr_nbr2': {'stats': True
+                            },
+                                                                                       'sr_ndmi': {'stats': True
+                            },
+                                                                                       'sr_ndsi': {'stats': True
+                            },
+                                                                                       'sr_ndvi': {'stats': True
+                            },
+                                                                                       'sr_savi': {'stats': True
+                            }
+                        },
+                                                                              'type': 'string'
+                    },
+                                                                    'minItems': 1,
+                                                                    'required': True,
+                                                                    'restricted': True,
+                                                                    'type': 'array',
+                                                                    'uniqueItems': True
+                }
+            },
+                                        'type': 'object'
+        },
+                'tm5_collection_2_l1': {'properties': {'inputs': {'items': {'pattern': '^lt05_l1{
+                            1
+                        }\\w{
+                            2
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                            'type': 'string'
+                    },
+                                                                  'maxItems': 5000,
+                                                                  'minItems': 1,
+                                                                  'required': True,
+                                                                  'type': 'array',
+                                                                  'uniqueItems': True
+                },
+                                                       'products': {'items': {'enum': {'bt': {'role': True,
+                                                                                              'stats': True
+                            },
+                                                                                       'l1': {},
+                                                                                       'reanalsrc_fpit': {'role': True
+                            },
+                                                                                       'reanalsrc_geosit': {'role': True
+                            },
+                                                                                       'reanalsrc_merra2': {'role': True
+                            },
+                                                                                       'rs_refl': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'rtmodel_modtran': {'role': True
+                            },
+                                                                                       'rtmodel_rttov': {'role': True
+                            },
+                                                                                       'sr': {'role': True,
+                                                                                              'stats': True
+                            },
+                                                                                       'sr_evi': {'role': True,
+                                                                                                  'stats': True
+                            },
+                                                                                       'sr_msavi': {'role': True,
+                                                                                                    'stats': True
+                            },
+                                                                                       'sr_nbr': {'role': True,
+                                                                                                  'stats': True
+                            },
+                                                                                       'sr_nbr2': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'sr_ndmi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'sr_ndsi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'sr_ndvi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'sr_savi': {'role': True,
+                                                                                                   'stats': True
+                            },
+                                                                                       'st': {'role': True
+                            },
+                                                                                       'stalg_single_channel': {'role': True
+                            },
+                                                                                       'swe': {'role': True
+                            },
+                                                                                       'toa': {'role': True,
+                                                                                               'stats': True
+                            }
+                        },
+                                                                              'type': 'string'
+                    },
+                                                                    'minItems': 1,
+                                                                    'required': True,
+                                                                    'restricted': True,
+                                                                    'type': 'array',
+                                                                    'uniqueItems': True
+                }
+            },
+                                        'type': 'object'
+        },
+                'tm5_collection_2_l2': {'properties': {'inputs': {'items': {'pattern': '^lt05_l2s{
+                            1
+                        }[p,r
+                        ]{
+                            1
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            6
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }[
+                            0-9
+                        ]{
+                            8
+                        }_{
+                            1
+                        }02_{
+                            1
+                        }\\w{
+                            2
+                        }$',
+                                                                            'type': 'string'
+                    },
+                                                                  'maxItems': 5000,
+                                                                  'minItems': 1,
+                                                                  'required': True,
+                                                                  'type': 'array',
+                                                                  'uniqueItems': True
+                },
+                                                       'products': {'items': {'enum': {'et': {'stats': True
+                            },
+                                                                                       'l1': {},
+                                                                                       'sr_evi': {'stats': True
+                            },
+                                                                                       'sr_msavi': {'stats': True
+                            },
+                                                                                       'sr_nbr': {'stats': True
+                            },
+                                                                                       'sr_nbr2': {'stats': True
+                            },
+                                                                                       'sr_ndmi': {'stats': True
+                            },
+                                                                                       'sr_ndsi': {'stats': True
+                            },
+                                                                                       'sr_ndvi': {'stats': True
+                            },
+                                                                                       'sr_savi': {'stats': True
+                            }
+                        },
+                                                                              'type': 'string'
+                    },
+                                                                    'minItems': 1,
+                                                                    'required': True,
+                                                                    'restricted': True,
+                                                                    'type': 'array',
+                                                                    'uniqueItems': True
+                }
+            },
+                                        'type': 'object'
+        },
+                'vnp09ga': {'properties': {'inputs': {'items': {'pattern': '^vnp09ga\\.a\\d{
+                            7
+                        }\\.h\\d{
+                            2
+                        }v\\d{
+                            2
+                        }\\.001\\.\\d{
+                            13
+                        }$',
+                                                                'type': 'string'
+                    },
+                                                      'maxItems': 5000,
+                                                      'minItems': 1,
+                                                      'required': True,
+                                                      'type': 'array',
+                                                      'uniqueItems': True
+                },
+                                           'products': {'items': {'enum': {'l1': {},
+                                                                           'viirs_ndvi': {}
+                        },
+                                                                  'type': 'string'
+                    },
+                                                        'minItems': 1,
+                                                        'required': True,
+                                                        'restricted': True,
+                                                        'type': 'array',
+                                                        'uniqueItems': True
+                }
+            },
+                            'type': 'object'
+        }
+    },
+ 'type': 'object'
+}
