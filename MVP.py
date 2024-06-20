@@ -1,13 +1,13 @@
 import streamlit as st
 import folium
-from streamlit_folium import st_folium, folium_static
-from folium.plugins import Draw, MiniMap, MarkerCluster
+from streamlit_folium import folium_static
+from folium.plugins import Draw, MiniMap
 import time
 
-# Initialize the Streamlit app
+# Initial setup
 st.set_page_config(layout="wide")
 
-# Initialize session state 
+# Initialize session state
 if "period" not in st.session_state:
     st.session_state["period"] = None
 if "field_defined" not in st.session_state:
@@ -22,108 +22,37 @@ if 'expander_state' not in st.session_state:
         'other_views': False
     }
 
-# CSS for icon styling
+# CSS and JavaScript
 st.markdown(
     """
     <style>
-    .icon {
-        font-size: 18px;
-        margin-right: 10px;
-        vertical-align: middle;
-    }
-    .dropdown-label {
-        display: flex;
-        align-items: center;
-    }
+    .icon { font-size: 18px; margin-right: 10px; vertical-align: middle; }
+    .dropdown-label { display: flex; align-items: center; }
+    .st-emotion-cache-13na8ym { background-color: inherit !important; }
+    .st-emotion-cache-p5msec:hover { background-color: #024b30 !important; color: white !important; }
+    .st-emotion-cache-p5msec:hover svg { fill: white !important; }
+    .tooltip { display: inline-flex; align-items: center; margin-left: 10px; position: relative; }
+    .tooltip .tooltiptext { visibility: hidden; width: 200px; background-color: #024b30; color: white; text-align: left; border-radius: 6px; padding: 10px; position: absolute; z-index: 1; top: 0; left: 110%; opacity: 0; transition: opacity 0.3s; }
+    .tooltip span { font-size: 18px; cursor: pointer; }
+    .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+    .banner { display: flex; justify-content: space-between; align-items: center; background-color: #024b30; height: 100px; padding: 15px; color: white; width: 100%; box-sizing: border-box; }
+    .left-side { display: flex; align-items: center; }
+    .banner img { width: 100px; margin-right: 20px; }
+    .title { font-size: 2em; margin: 0; }
+    .right-side { display: flex; align-items: center; }
+    .dropdown { display: flex; align-items: center; margin-right: 10px; }
+    .dropdown label { margin-right: 10px; }
+    .dropdown select { background-color: #444444 !important; color: white !important; border: none; padding: 10px; border-radius: 4px; }
+    .dropdown select:hover { background-color: #555555 !important; }
+    .map-container { position: relative; width: 90%; height: 600px; margin: auto; }
+    .coordinates { position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 5px; border-radius: 3px; font-size: 12px; }
+    .color-legend { position: absolute; bottom: 50px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 3px; }
+    .color-legend div:hover { background-color: #dddddd; }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# CSS for the expander hover effect and down caret
-st.markdown(
-    """
-    <style>
-    .st-emotion-cache-13na8ym {
-        background-color: inherit !important; /* Keep default background color */
-    }
-    .st-emotion-cache-p5msec:hover {
-        background-color: #024b30 !important; /* Dark green hover background color */
-        color: white !important; /* Optional: change text color on hover */
-    }
-    .st-emotion-cache-p5msec:hover svg {
-        fill: white !important; /* Change caret color on hover */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# CSS for icons in options dropdown
-st.markdown(
-    """
-    <style>
-    .icon {
-        font-size: 18px;
-        margin-right: 10px;
-        vertical-align: middle;
-    }
-    .dropdown-label {
-        display: flex;
-        align-items: center;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# CSS for the veg indices definitions tooltip
-st.markdown(
-    """
-    <style>
-    .tooltip {
-        display: inline-flex;
-        align-items: center;
-        margin-left: 10px;
-        position: relative;
-    }
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 200px;
-        background-color: #024b30;
-        color: white;
-        text-align: left;
-        border-radius: 6px;
-        padding: 10px;
-        position: absolute;
-        z-index: 1;
-        top: 0;
-        left: 110%;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-    .tooltip span {
-        font-size: 18px;
-        cursor: pointer;
-    }
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# Tooltip content for NDVI and EVI definitions
-tooltip_ndvi = "Normalized Difference Vegetation Index (NDVI) is a measure of vegetation greenness."
-tooltip_evi = "Enhanced Vegetation Index (EVI) is a measure of vegetation greenness that corrects for some atmospheric conditions and canopy background."
-
-# Function to create the tooltip HTML
-def create_tooltip(content):
-    return f'<div class="tooltip">{content}<span>&#9432;</span><span class="tooltiptext">{content}</span></div>'
-
-# JavaScript to handle tooltips
 script = """
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -147,8 +76,14 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 """
 
-# Display the JavaScript
 st.markdown(script, unsafe_allow_html=True)
+
+# Tooltip content for NDVI and EVI definitions - may not use
+tooltip_ndvi = "Normalized Difference Vegetation Index (NDVI) is a measure of vegetation greenness."
+tooltip_evi = "Enhanced Vegetation Index (EVI) is a measure of vegetation greenness that corrects for some atmospheric conditions and canopy background."
+
+def create_tooltip(content):
+    return f'<div class="tooltip">{content}<span>&#9432;</span><span class="tooltiptext">{content}</span></div>'
 
 # Function to encode logo in base64
 def get_base64_image(image_path):
@@ -165,53 +100,6 @@ base64_image = get_base64_image(logo_path)
 # Display the banner with logo, title, and dropdown
 st.markdown(
     f"""
-    <style>
-    .banner {{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #024b30; /* Dark green */
-        height: 100px;
-        padding: 15px;
-        color: white;
-        width: 100%;
-        box-sizing: border-box;
-    }}
-    .left-side {{
-        display: flex;
-        align-items: center;
-    }}
-    .banner img {{
-        width: 100px; /* Adjust the width of the icon */
-        margin-right: 20px; /* Add space between icon and text */
-    }}    
-    .title {{
-        font-size: 2em; /* Adjust title size */
-        margin: 0;
-    }}
-    .right-side {{
-        display: flex;
-        align-items: center;
-    }}
-    .dropdown {{
-        display: flex;
-        align-items: center;
-        margin-right: 10px;
-    }}
-    .dropdown label {{
-        margin-right: 10px;
-    }}
-    .dropdown select {{
-        background-color: #444444 !important; /* Dark gray background */
-        color: white !important; /* White text color */
-        border: none;
-        padding: 10px;
-        border-radius: 4px;
-    }}
-    .dropdown select:hover {{
-        background-color: #555555 !important; /* Slightly lighter dark gray on hover */
-    }}
-    </style>
     <div class="banner">
         <div class="left-side">
             <img src="data:image/png;base64,{base64_image}" alt="AgriSense Logo">
@@ -237,7 +125,7 @@ st.markdown("""
 
 .block-container
 {
-    padding-top: 0rem;
+    padding-top: 2rem;
     padding-bottom: 0rem;
     margin-top: 0rem;
 }
@@ -247,11 +135,10 @@ st.markdown("""
 
 # Function to create the map
 def create_map():
-    # Center the map on CA
-    m = folium.Map(location=[36.7783, -119.4179], zoom_start=5)  # Coordinates for California; zoom in 0.5 increments
+    m = folium.Map(location=[36.7783, -119.4179], zoom_start=5) #CA Coordinates
 
     # Add draw tool
-    draw = Draw(export=False)  # Disable export to prevent "ExportExportExport" issue
+    draw = Draw(export=False)
     draw.add_to(m)
 
     # Add a Google Satellite layer
@@ -271,7 +158,7 @@ def create_map():
     # Add mouseover event to update coordinates
     folium.LatLngPopup().add_to(m)
 
-    # Add state lines (optional, you may need to adjust the GeoJSON path)
+    # Add state lines
     state_geojson_url = 'https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/us-states.json'
     folium.GeoJson(
         state_geojson_url,
@@ -283,7 +170,7 @@ def create_map():
         }
     ).add_to(m)
 
-    # Add major cities 
+    # Add major cities
     cities_data = [
         {"name": "Los Angeles", "location": [34.0522, -118.2437]},
         {"name": "San Francisco", "location": [37.7749, -122.4194]},
@@ -301,42 +188,35 @@ def create_map():
 
     return m
 
-# Create the map
+# Create and display the map
 map_ = create_map()
-
-# Display the map in Streamlit
 folium_static(map_, width=1025, height=475)
 
-# Collapsible panel
+# Sidebar options
 st.sidebar.title("Options")
 
-# Expander for Define Field of Interest w icon
+# Expander for Define Field of Interest with icon
 with st.sidebar.expander("🌍 Define Field of Interest"):
     st.write("Draw a polygon to define the field.")
     field_defined = False
     if st.button("Confirm Field"):
         field_defined = True
 
-# Expander for Period of Interest w/ icon
+# Expander for Period of Interest with icon
 with st.sidebar.expander("📅 Period of Interest"):
-    # Radio buttons for period selection
     period = st.radio("Select Period", options=["Single Day", "Multi-Day"], index=0 if st.session_state["period"] is None else None)
 
     if period == "Single Day":
         selected_date = st.date_input("Select Date", st.session_state.get("selected_date", None))
         st.session_state["period"] = "Single Day"
         st.session_state["selected_date"] = selected_date
-
     elif period == "Multi-Day":
         start_date = st.date_input("Start Date", st.session_state.get("start_date", None))
         end_date = st.date_input("End Date", st.session_state.get("end_date", None))
         st.session_state["period"] = "Multi-Day"
         st.session_state["start_date"] = start_date
         st.session_state["end_date"] = end_date
-
-    # Display the JavaScript
-    st.markdown(script, unsafe_allow_html=True)
-
+        
 # Expander for Vegetation Indices
 with st.sidebar.expander("🌱 Vegetation Indices"):
     st.write("Select an index to view:")
@@ -370,75 +250,7 @@ if st.sidebar.button("🔄 Refresh"):
     message.write("Refreshing data...")
 
     # Simulate refresh delay 
-    time.sleep(5)
+    time.sleep(3)
 
     # Clear the message after delay
     message.empty()
-
-# Main content area styling
-map_container_style = """
-    <style>
-    .map-container {
-        position: relative;
-        width: 90%; /* Adjusted width */
-        height: 600px;
-        margin: auto; /* Center the map container */
-    }
-    .coordinates {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background: rgba(255, 255, 255, 0.8);
-        padding: 5px;
-        border-radius: 3px;
-        font-size: 12px; /* Adjusted font size */
-    }
-    .color-legend {
-        position: absolute;
-        bottom: 50px;
-        left: 10px;
-        background: rgba(255, 255, 255, 0.8);
-        padding: 10px;
-        border-radius: 3px;
-    }
-    .color-legend div:hover {
-        background-color: #dddddd; /* Adjust hover color as needed */
-    }
-    </style>
-"""
-
-st.markdown(map_container_style, unsafe_allow_html=True)
-
-# Display the map and UI elements
-st.markdown('<div class="map-container">', unsafe_allow_html=True)
-
-# Display color legend on the map - need to get scale
-if veg_index == "NDVI":
-    st.markdown(
-        """
-        <div class="color-legend">
-            <b>NDVI Legend</b><br>
-            <div style='background-color: #024b30; width: 20px; height: 20px; display: inline-block;'></div> Low<br>
-            <div style='background-color: #00ff00; width: 20px; height: 20px; display: inline-block;'></div> Medium<br>
-            <div style='background-color: #0000ff; width: 20px; height: 20px; display: inline-block;'></div> High<br>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-elif veg_index == "EVI":
-    st.markdown(
-        """
-        <div class="color-legend">
-            <b>EVI Legend</b><br>
-            <div style='background-color: #024b30; width: 20px; height: 20px; display: inline-block;'></div> Low<br>
-            <div style='background-color: #00ff00; width: 20px; height: 20px; display: inline-block;'></div> Medium<br>
-            <div style='background-color: #0000ff; width: 20px; height: 20px; display: inline-block;'></div> High<br>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-# End the map container div
-st.markdown('</div>', unsafe_allow_html=True)
-st.markdown(script, unsafe_allow_html=True)
-
