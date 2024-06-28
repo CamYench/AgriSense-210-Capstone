@@ -3,11 +3,17 @@ import folium
 from streamlit_folium import folium_static
 from folium.plugins import Draw, MiniMap
 import time
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import base64
 
 # Initial setup
 st.set_page_config(layout="wide")
 
 # Initialize session state
+if "view" not in st.session_state:
+    st.session_state["view"] = "crop_health"
 if "period" not in st.session_state:
     st.session_state["period"] = None
 if "field_defined" not in st.session_state:
@@ -133,124 +139,153 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# View selection
+view = st.selectbox("Select View:", ["Crop Health", "Yield Prediction"], key="view")
+
+# Render content based on the selected view
+if view == "Crop Health":
+
 # Function to create the map
-def create_map():
-    m = folium.Map(location=[36.7783, -119.4179], zoom_start=5) #CA Coordinates
+    def create_map():
+        m = folium.Map(location=[36.7783, -119.4179], zoom_start=5) #CA Coordinates
 
-    # Add draw tool
-    draw = Draw(export=False)
-    draw.add_to(m)
+        # Add draw tool
+        draw = Draw(export=False)
+        draw.add_to(m)
 
-    # Add a Google Satellite layer
-    tiles_url = "http://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
-    folium.TileLayer(
-        tiles=tiles_url,
-        attr='Google',
-        name='Google Satellite',
-        overlay=True,
-        control=True
-    ).add_to(m)
-
-    # Add a mini map with the normal Google Maps layer
-    mini_map = MiniMap(tile_layer="OpenStreetMap", position="bottomright", width=150, height=150, zoom_level_offset=-4)
-    m.add_child(mini_map)
-
-    # Add mouseover event to update coordinates
-    folium.LatLngPopup().add_to(m)
-
-    # Add state lines
-    state_geojson_url = 'https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/us-states.json'
-    folium.GeoJson(
-        state_geojson_url,
-        name='State Lines',
-        style_function=lambda feature: {
-            'color': 'black',
-            'weight': 2,
-            'fillOpacity': 0.1,
-        }
-    ).add_to(m)
-
-    # Add major cities
-    cities_data = [
-        {"name": "Los Angeles", "location": [34.0522, -118.2437]},
-        {"name": "San Francisco", "location": [37.7749, -122.4194]},
-        {"name": "San Diego", "location": [32.7157, -117.1611]},
-        {"name": "Sacramento", "location": [38.5816, -121.4944]},
-        {"name": "Fresno", "location": [36.7372, -119.7871]},
-    ]
-
-    for city in cities_data:
-        folium.Marker(
-            location=city['location'],
-            tooltip=city['name'],
-            icon=folium.Icon(color='black', icon='map-marker')
+        # Add a Google Satellite layer
+        tiles_url = "http://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+        folium.TileLayer(
+            tiles=tiles_url,
+            attr='Google',
+            name='Google Satellite',
+            overlay=True,
+            control=True
         ).add_to(m)
 
-    return m
+        # Add a mini map with the normal Google Maps layer
+        mini_map = MiniMap(tile_layer="OpenStreetMap", position="bottomright", width=150, height=150, zoom_level_offset=-4)
+        m.add_child(mini_map)
 
-# Create and display the map
-map_ = create_map()
-folium_static(map_, width=1025, height=475)
+        # Add mouseover event to update coordinates
+        folium.LatLngPopup().add_to(m)
 
-# Sidebar options
-st.sidebar.title("Options")
+        # Add state lines
+        state_geojson_url = 'https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/us-states.json'
+        folium.GeoJson(
+            state_geojson_url,
+            name='State Lines',
+            style_function=lambda feature: {
+                'color': 'black',
+                'weight': 2,
+                'fillOpacity': 0.1,
+            }
+        ).add_to(m)
 
-# Expander for Define Field of Interest with icon
-with st.sidebar.expander("🌍 Define Field of Interest"):
-    st.write("Draw a polygon to define the field.")
-    field_defined = False
-    if st.button("Confirm Field"):
-        field_defined = True
+        # Add major cities
+        cities_data = [
+            {"name": "Los Angeles", "location": [34.0522, -118.2437]},
+            {"name": "San Francisco", "location": [37.7749, -122.4194]},
+            {"name": "San Diego", "location": [32.7157, -117.1611]},
+            {"name": "Sacramento", "location": [38.5816, -121.4944]},
+            {"name": "Fresno", "location": [36.7372, -119.7871]},
+        ]
 
-# Expander for Period of Interest with icon
-with st.sidebar.expander("📅 Period of Interest"):
-    period = st.radio("Select Period", options=["Single Day", "Multi-Day"], index=0 if st.session_state["period"] is None else None)
+        for city in cities_data:
+            folium.Marker(
+                location=city['location'],
+                tooltip=city['name'],
+                icon=folium.Icon(color='black', icon='map-marker')
+            ).add_to(m)
 
-    if period == "Single Day":
-        selected_date = st.date_input("Select Date", st.session_state.get("selected_date", None))
-        st.session_state["period"] = "Single Day"
-        st.session_state["selected_date"] = selected_date
-    elif period == "Multi-Day":
-        start_date = st.date_input("Start Date", st.session_state.get("start_date", None))
-        end_date = st.date_input("End Date", st.session_state.get("end_date", None))
-        st.session_state["period"] = "Multi-Day"
-        st.session_state["start_date"] = start_date
-        st.session_state["end_date"] = end_date
-        
-# Expander for Vegetation Indices
-with st.sidebar.expander("🌱 Vegetation Indices"):
-    st.write("Select an index to view:")
+        return m
 
-    # NDVI button with hover functionality
-    if st.button("NDVI"):
-        st.write(tooltip_ndvi)
+    # Sidebar options
+    st.sidebar.title("Options")
 
-    # EVI button with hover functionality
-    if st.button("EVI"):
-        st.write(tooltip_evi)
+    with st.sidebar.expander("🌍 Define Field of Interest"):
+            st.write("Draw a polygon to define the field.")
+            if st.button("Confirm Field"):
+                st.session_state["field_defined"] = True
 
-# Expander for Other Views
-with st.sidebar.expander("🔍 Other Views"):
-    # Button for Soil Moisture with icon
-    if st.button("🌧️ Soil Moisture"):
-        st.write("Displaying soil moisture...")
+    with st.sidebar.expander("📅 Period of Interest"):
+            period = st.radio("Select Period", options=["Single Day", "Multi-Day"], index=0 if st.session_state.get("period") is None else None)
 
-    # Button for Chlorophyll Content with icon
-    if st.button("🌿 Chlorophyll Content"):
-        st.write("Displaying chlorophyll content...")
+            if period == "Single Day":
+                selected_date = st.date_input("Select Date", st.session_state.get("selected_date", None))
+                st.session_state["period"] = "Single Day"
+                st.session_state["selected_date"] = selected_date
+            elif period == "Multi-Day":
+                start_date = st.date_input("Start Date", st.session_state.get("start_date", None))
+                end_date = st.date_input("End Date", st.session_state.get("end_date", None))
+                st.session_state["period"] = "Multi-Day"
+                st.session_state["start_date"] = start_date
+                st.session_state["end_date"] = end_date
 
-    # Button for Surface Temperature with icon
-    if st.button("☀️ Surface Temperature"):
-        st.write("Displaying surface temperature...")
+    with st.sidebar.expander("🌱 Vegetation Indices"):
+            st.write("Select an index to view:")
 
-# Refresh button in the sidebar
-if st.sidebar.button("🔄 Refresh"):
-    # Show refreshing message
-    message = st.sidebar.empty()  # Use st.sidebar.empty() to place the message in the sidebar
-    message.write("Refreshing data...")
+            if st.button("NDVI"):
+                st.write(create_tooltip(tooltip_ndvi))
 
-    # Simulate refresh delay 
-    time.sleep(3)
+            if st.button("EVI"):
+                st.write(create_tooltip(tooltip_evi))
 
-    # Clear the message after delay
-    message.empty()
+    with st.sidebar.expander("🔍 Other Views"):
+            if st.button("🌧️ Soil Moisture"):
+                st.write("Displaying soil moisture...")
+
+            if st.button("🌿 Chlorophyll Content"):
+                st.write("Displaying chlorophyll content...")
+
+            if st.button("☀️ Surface Temperature"):
+                st.write("Displaying surface temperature...")
+
+    if st.sidebar.button("🔄 Refresh"):
+            message = st.sidebar.empty()
+            message.write("Refreshing data...")
+            time.sleep(3)
+            message.empty()
+
+    map_ = create_map()
+    folium_static(map_, width=1025, height=475)
+
+else:
+    
+    # Yield Prediction Plots
+    def plot_yield_prediction():
+    # Mock data for demonstration
+        time_periods = pd.date_range(start='2020-01-01', periods=24, freq='M')
+        actual_yield = np.random.randint(50, 150, size=len(time_periods))
+        predicted_yield = actual_yield + np.random.randint(-20, 20, size=len(time_periods))
+        compare_yield = actual_yield + np.random.randint(-30, 30, size=len(time_periods))
+
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(time_periods, actual_yield, label='Actual Yield', color='orange', linewidth=2)
+        ax.plot(time_periods, predicted_yield, label='Predicted Yield', color='blue', linestyle='--', linewidth=2)
+        ax.plot(time_periods, compare_yield, label='Compare Yield', color='green', linestyle='-.', linewidth=2)
+
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Yield")
+        ax.set_title("Yield Prediction Comparison")
+        ax.legend()
+
+        st.pyplot(fig)
+
+    st.sidebar.title("Options")
+
+    crop = st.sidebar.selectbox("Crop", ["Strawberries", "Blueberries", "Blackberries"])
+    time_horizon = st.sidebar.selectbox("Time Horizon", ["Month", "Season", "Year"])
+    time_units = st.sidebar.selectbox("Time Units", ["Days", "Months", "Years"])
+    yield_units = st.sidebar.selectbox("Yield Units", ["Lbs", "Bushels"])
+    period_to_predict = st.sidebar.selectbox("Period to Predict", [f"{y} {time_horizon}" for y in range(2019, 2025)])
+    period_to_compare = st.sidebar.selectbox("Period to Compare", [f"{y} {time_horizon}" for y in range(2019, 2025)])
+
+    if st.sidebar.button("Generate Graph"):
+        message = st.sidebar.empty()
+        message.write("Generating Graph...")
+        time.sleep(3)
+        message.empty()
+
+    plot_yield_prediction()
+
