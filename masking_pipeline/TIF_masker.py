@@ -1,4 +1,4 @@
-#requires existing cropscape strawberry data to exist in ./data/ directory
+#requires existing cropscape strawberry data to exist in ./data/cropscape directory
 
 #import statements
 import rasterio
