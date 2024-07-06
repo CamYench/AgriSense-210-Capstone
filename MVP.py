@@ -13,20 +13,14 @@ st.set_page_config(layout="wide")
 
 # Initialize session state
 if "view" not in st.session_state:
-    st.session_state["view"] = "crop_health"
+    st.session_state["view"] = "Crop Health"  
 if "period" not in st.session_state:
     st.session_state["period"] = None
 if "field_defined" not in st.session_state:
     st.session_state["field_defined"] = False
 if "polygon_coordinates" not in st.session_state:
     st.session_state["polygon_coordinates"] = None
-if 'expander_state' not in st.session_state:
-    st.session_state['expander_state'] = {
-        'field_of_interest': False,
-        'period_of_interest': False,
-        'vegetation_indices': False,
-        'other_views': False
-    }
+
 
 # CSS and JavaScript
 st.markdown(
@@ -84,10 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 st.markdown(script, unsafe_allow_html=True)
 
-# Tooltip content for NDVI and EVI definitions - may not use
-tooltip_ndvi = "Normalized Difference Vegetation Index (NDVI) is a measure of vegetation greenness."
-tooltip_evi = "Enhanced Vegetation Index (EVI) is a measure of vegetation greenness that corrects for some atmospheric conditions and canopy background."
-
 def create_tooltip(content):
     return f'<div class="tooltip">{content}<span>&#9432;</span><span class="tooltiptext">{content}</span></div>'
 
@@ -103,7 +93,7 @@ logo_path = "AgriSense_logo.png"
 # Get the base64-encoded image
 base64_image = get_base64_image(logo_path)
 
-# Display the banner with logo, title, and dropdown
+# Display the banner with logo, title, and selectbox
 st.markdown(
     f"""
     <div class="banner">
@@ -113,11 +103,34 @@ st.markdown(
         </div>
         <div class="right-side">
             <div class="dropdown">
-                <label for="view-select">Select View:</label>
-                <select id="view-select" name="view">
-                    <option value="crop_health">Crop Health</option>
-                    <option value="yield_prediction">Yield Prediction</option>
-                </select>
+        </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Instruction text css to remove extra space
+st.markdown(
+    """
+    <style>
+    .instruction-text {
+        margin-top: 0px; 
+        font-size: 20px;
+        margin-bottom: -70px; 
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Display the instruction text 
+st.markdown('<p class="instruction-text">Make a selection below to view desired content:</p>', unsafe_allow_html=True)
+
+# View selection
+view = st.selectbox("View Selection", ["Crop Health", "Yield Prediction"], key="view", label_visibility="hidden")
+
+# Close the HTML divs for the banner
+st.markdown(
+    """
             </div>
         </div>
     </div>
@@ -139,12 +152,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# View selection
-view = st.selectbox("Select View:", ["Crop Health", "Yield Prediction"], key="view")
-
 # Render content based on the selected view
 if view == "Crop Health":
-
 # Function to create the map
     def create_map():
         m = folium.Map(location=[36.7783, -119.4179], zoom_start=5) #CA Coordinates
@@ -203,43 +212,68 @@ if view == "Crop Health":
     # Sidebar options
     st.sidebar.title("Options")
 
-    with st.sidebar.expander("🌍 Define Field of Interest"):
-            st.write("Draw a polygon to define the field.")
-            if st.button("Confirm Field"):
-                st.session_state["field_defined"] = True
+    field = st.sidebar.selectbox("🌍 Define Field of Interest", ["Confirm field has been selected", "Complete"], help="Use the tools to select a field on the map.\n\n" "Select 'Complete' when done.")
 
-    with st.sidebar.expander("📅 Period of Interest"):
-            period = st.radio("Select Period", options=["Single Day", "Multi-Day"], index=0 if st.session_state.get("period") is None else None)
+    period = st.sidebar.selectbox("📅 Period of Interest", ["Select a period", "Single Day", "Multi-Day"], help="Choose whether your analysis is for a single day or multiple days.\n\n" "Then, use the calendar to select the desired date(s).")
 
-            if period == "Single Day":
-                selected_date = st.date_input("Select Date", st.session_state.get("selected_date", None))
-                st.session_state["period"] = "Single Day"
-                st.session_state["selected_date"] = selected_date
-            elif period == "Multi-Day":
-                start_date = st.date_input("Start Date", st.session_state.get("start_date", None))
-                end_date = st.date_input("End Date", st.session_state.get("end_date", None))
-                st.session_state["period"] = "Multi-Day"
-                st.session_state["start_date"] = start_date
-                st.session_state["end_date"] = end_date
+    if period == "Single Day":
+        selected_date = st.sidebar.date_input("Select Date", st.session_state.get("selected_date", None))
+        st.session_state["period"] = "Single Day"
+        st.session_state["selected_date"] = selected_date
+        
+    elif period == "Multi-Day":
+        start_date = st.sidebar.date_input("Start Date", st.session_state.get("start_date", None))
+        end_date = st.sidebar.date_input("End Date", st.session_state.get("end_date", None))
+        st.session_state["period"] = "Multi-Day"
+        st.session_state["start_date"] = start_date
+        st.session_state["end_date"] = end_date
+    
+   # Initial options for the index and options selectboxes
+    options_index = ["Select an index", "NDVI", "EVI"]
+    options_other = ["Select an alternative view", "🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]
 
-    with st.sidebar.expander("🌱 Vegetation Indices"):
-            st.write("Select an index to view:")
+    # Initialize session state variables if they do not exist
+    if 'disable_selectbox_index' not in st.session_state:
+        st.session_state.disable_selectbox_index = False
+    if 'disable_selectbox_other' not in st.session_state:
+        st.session_state.disable_selectbox_other = False
 
-            if st.button("NDVI"):
-                st.write(create_tooltip(tooltip_ndvi))
+    # Function to handle changes in selectbox index - Index
+    def handle_selectbox_index_change():
+        if st.session_state.selectbox_index in ["NDVI", "EVI"]:
+            st.session_state.disable_selectbox_other = True
+        else:
+            st.session_state.disable_selectbox_other = False
 
-            if st.button("EVI"):
-                st.write(create_tooltip(tooltip_evi))
+    # Function to handle changes in selectbox other - Other
+    def handle_selectbox_other_change():
+        if st.session_state.selectbox_other in ["🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]:
+            st.session_state.disable_selectbox_index = True
+        else:
+            st.session_state.disable_selectbox_index = False
 
-    with st.sidebar.expander("🔍 Other Views"):
-            if st.button("🌧️ Soil Moisture"):
-                st.write("Displaying soil moisture...")
+    # Selectbox Index with default value and options in the sidebar
+    selectbox_index = st.sidebar.selectbox(
+        "🌱 Vegetation Index",
+        options=options_index,
+        index=0,
+        disabled=st.session_state.disable_selectbox_index,
+        key='selectbox_index',
+        on_change=handle_selectbox_index_change,
+        help="Normalized Difference Vegetation Index (NDVI) is a measure of vegetation greenness.\n\n" "Enhanced Vegetation Index (EVI) additionally corrects for some atmospheric conditions and canopy background.\n\n" "By choosing an index, any selection for Other Views will be disabled."
+    )
 
-            if st.button("🌿 Chlorophyll Content"):
-                st.write("Displaying chlorophyll content...")
+    # Selectbox Other with default value and options in the sidebar
+    selectbox_other = st.sidebar.selectbox(
+        "🔍 Other Views",
+        options=options_other,
+        index=0,
+        disabled=st.session_state.disable_selectbox_other,
+        key='selectbox_other',
+        on_change=handle_selectbox_other_change,
+        help="Select an alternate view below.\n\n" "By doing so, any selection for Vegetation Index will be disabled."
+    )
 
-            if st.button("☀️ Surface Temperature"):
-                st.write("Displaying surface temperature...")
 
     if st.sidebar.button("🔄 Refresh"):
             message = st.sidebar.empty()
@@ -255,7 +289,7 @@ else:
     # Yield Prediction Plots
     def plot_yield_prediction():
     # Mock data for demonstration
-        time_periods = pd.date_range(start='2020-01-01', periods=24, freq='M')
+        time_periods = pd.date_range(start='2020-01-01', periods=24, freq='ME')
         actual_yield = np.random.randint(50, 150, size=len(time_periods))
         predicted_yield = actual_yield + np.random.randint(-20, 20, size=len(time_periods))
         compare_yield = actual_yield + np.random.randint(-30, 30, size=len(time_periods))
@@ -274,12 +308,21 @@ else:
 
     st.sidebar.title("Options")
 
-    crop = st.sidebar.selectbox("Crop", ["Strawberries", "Blueberries", "Blackberries"])
-    time_horizon = st.sidebar.selectbox("Time Horizon", ["Month", "Season", "Year"])
-    time_units = st.sidebar.selectbox("Time Units", ["Days", "Months", "Years"])
-    yield_units = st.sidebar.selectbox("Yield Units", ["Lbs", "Bushels"])
-    period_to_predict = st.sidebar.selectbox("Period to Predict", [f"{y} {time_horizon}" for y in range(2019, 2025)])
-    period_to_compare = st.sidebar.selectbox("Period to Compare", [f"{y} {time_horizon}" for y in range(2019, 2025)])
+    crop = st.sidebar.selectbox("🌱 Crop", ["Select a crop", "🍓 Strawberries", "🫐 Blueberries", "🍇 Grapes"])
+    time_horizon = st.sidebar.selectbox("⏳ Time Horizon", ["Select a time horizon", "🕰️ Month", "🍂 Season", "📆 Year"], help="The amount of time you wish to view on the graph.")
+    time_units = st.sidebar.selectbox("🕒 Time Units", ["Select a time unit", "📅 Days", "🕰️ Months", "📆 Years"], help="The units of time for the graph.")
+    yield_units = st.sidebar.selectbox("🎚️ Yield Units", ["Select a yield unit", "⚖️ Lbs", "🧺 Bushels"])
+
+    # Placeholder text for the initial selectbox state
+    placeholder_predict = "Select a period to predict"
+    placeholder_compare = "Select a period to compare"
+
+    # Dynamic options list
+    options = [f"{y} {time_horizon}" for y in range(2019, 2025)]
+
+    # Selectbox widgets
+    period_to_predict = st.sidebar.selectbox("🔮 Period to Predict", [placeholder_predict] + options)
+    period_to_compare = st.sidebar.selectbox("📊 Period to Compare", [placeholder_compare] + options)
 
     if st.sidebar.button("Generate Graph"):
         message = st.sidebar.empty()
