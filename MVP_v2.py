@@ -357,7 +357,8 @@ if view == "Crop Health":
             st.session_state["area"] = calculate_area(output['last_active_drawing'])
             # st.write("Area of Interest (AOI) saved in session state.")
             #print calculated area converted to acres
-            st.write("Calculated Area:", st.session_state["area"]/4046.8564224, "acres")
+            st.write("Calculated Area:", round(st.session_state["area"]/4046.8564224,3), "acres")
+            st.write("Predicted Yield:", round((st.session_state["area"]/4046.8564224) * 252.93856192,3), "pounds of strawberries / week")
             st.markdown('</div>', unsafe_allow_html=True)
 
     # st.write("Area of Interest (AOI):", st.session_state["aoi"])
