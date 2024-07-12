@@ -1,3 +1,9 @@
+.venv
+.env
+*.pyc
+*.pth
+login.cookies
+*.npy
 landsat_examples/data/*
 landsat_examples/metadata/*
 .DS_Store
