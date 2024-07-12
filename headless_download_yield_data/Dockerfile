@@ -18,4 +18,5 @@ RUN apt install ca-certificates fonts-liberation libappindicator3-1 libasound2 l
 # RUN python
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN python download.py
+
+ENTRYPOINT [ "python", "download.py"]
