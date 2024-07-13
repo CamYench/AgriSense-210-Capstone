@@ -200,9 +200,12 @@ def calculate_area(geojson):
         st.write("CRS:", crs)
 
         # Create a GeoDataFrame, project it to the UTM zone and calculate the area
-        gdf = gpd.GeoDataFrame(index=[0], crs="EPSG:4326", geometry=[geom])
+        gdf = gpd.GeoDataFrame(index=[0], crs="EPSG:4326", geometry=[geom]) # type: ignore
         gdf = gdf.to_crs(crs)
-        gdf["area"] = gdf["geometry"].apply(lambda x: x.area)
+        if gdf:
+            gdf["area"] = gdf["geometry"].apply(lambda x: x.area)
+        else:
+            raise ValueError("GeoDataFrame is empty.")
 
 
         return gdf["area"].sum()
