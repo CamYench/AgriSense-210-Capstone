@@ -17,7 +17,7 @@ import torch
 from model_utils import CNNFeatureExtractor, HybridModel, preprocess_input, predict_yield
 
 # Load the trained model
-model_path = 'trained_model/best_hybrid_model.pth'
+model_path = 'train_model/best_hybrid_model.pth'
 
 cnn_feature_extractor = CNNFeatureExtractor()
 model = HybridModel(cnn_feature_extractor)
