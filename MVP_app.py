@@ -11,6 +11,9 @@ import geopandas as gpd
 import utm
 from shapely.geometry import shape, Polygon, mapping
 
+# Import the model and functions from model_utils
+from model_utils import CNNFeatureExtractor, HybridModel, preprocess_input, predict_yield
+
 # Initial setup
 st.set_page_config(layout="wide")
 
@@ -96,7 +99,7 @@ def get_base64_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 # Path to logo
-logo_path = "AgriSense_logo.png"
+logo_path = "assets/AgriSense_logo.png"
 
 # Get the base64-encoded image
 base64_image = get_base64_image(logo_path)
