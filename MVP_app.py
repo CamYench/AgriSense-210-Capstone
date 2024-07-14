@@ -11,8 +11,18 @@ import geopandas as gpd
 import utm
 from shapely.geometry import shape, Polygon, mapping
 
+import torch
+
 # Import the model and functions from model_utils
 from model_utils import CNNFeatureExtractor, HybridModel, preprocess_input, predict_yield
+
+# Load the trained model
+model_path = 'trained_model/best_hybrid_model.pth'
+
+cnn_feature_extractor = CNNFeatureExtractor()
+model = HybridModel(cnn_feature_extractor)
+model.load_state_dict(torch.load(model_path))
+model.eval()
 
 # Initial setup
 st.set_page_config(layout="wide")
