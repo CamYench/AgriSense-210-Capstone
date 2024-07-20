@@ -1,10 +1,15 @@
+.venv
+.env
+*.pyc
+*.pth
+login.cookies
+*.npy
 landsat_examples/data/*
 landsat_examples/metadata/*
 .DS_Store
 ._.DS_Store
 **/.DS_Store
 **/._.DS_Store
-*.png
 *.tif
 *.tar.gz
 *.tiff

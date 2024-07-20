@@ -1,12 +1,28 @@
 import streamlit as st
 import folium
-from streamlit_folium import folium_static
+from streamlit_folium import folium_static, st_folium
 from folium.plugins import Draw, MiniMap
 import time
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import base64
+import geopandas as gpd
+import utm
+from shapely.geometry import shape, Polygon, mapping
+
+import torch
+
+# Import the model and functions from model_utils
+from model_utils import CNNFeatureExtractor, HybridModel, preprocess_input, predict_yield
+
+# Load the trained model
+model_path = 'train_model/best_hybrid_model.pth'
+
+cnn_feature_extractor = CNNFeatureExtractor()
+model = HybridModel(cnn_feature_extractor)
+model.load_state_dict(torch.load(model_path))
+model.eval()
 
 # Initial setup
 st.set_page_config(layout="wide")
@@ -20,6 +36,10 @@ if "field_defined" not in st.session_state:
     st.session_state["field_defined"] = False
 if "polygon_coordinates" not in st.session_state:
     st.session_state["polygon_coordinates"] = None
+if "aoi" not in st.session_state:
+    st.session_state["aoi"] = None
+if "area" not in st.session_state:
+    st.session_state["area"] = None
 
 
 # CSS and JavaScript
@@ -44,15 +64,16 @@ st.markdown(
     .dropdown label { margin-right: 10px; }
     .dropdown select { background-color: #444444 !important; color: white !important; border: none; padding: 10px; border-radius: 4px; }
     .dropdown select:hover { background-color: #555555 !important; }
-    .map-container { position: relative; width: 90%; height: 600px; margin: auto; }
+    .map-container { position: relative; width: 100%; height: 600px; margin: auto; }
     .coordinates { position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 5px; border-radius: 3px; font-size: 12px; }
     .color-legend { position: absolute; bottom: 50px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 3px; }
     .color-legend div:hover { background-color: #dddddd; }
+    iframe { height: 500px !important; }  /* Control the iframe height */
+    .output-container { margin-bottom: 200px; }  /* Add padding under the output text */
     </style>
     """,
     unsafe_allow_html=True,
 )
-
 script = """
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -88,7 +109,7 @@ def get_base64_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 # Path to logo
-logo_path = "AgriSense_logo.png"
+logo_path = "assets/AgriSense_logo.png"
 
 # Get the base64-encoded image
 base64_image = get_base64_image(logo_path)
@@ -152,11 +173,64 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+
+# def calculate_area(geojson):
+#     if geojson and "features" in geojson:
+#         # Convert GeoJSON to a shapely geometry
+#         geom = shape(geojson["features"][0]["geometry"])
+
+#         # Detect the appropriate UTM zone
+#         centroid = geom.centroid
+#         utm_zone = utm.from_latlon(centroid.y, centroid.x)[2]
+#         is_northern = centroid.y >= 0
+#         crs = f"EPSG:{32600 + utm_zone if is_northern else 32700 + utm_zone}"
+
+#         # Create a GeoDataFrame, project it to the UTM zone and calculate the area
+#         gdf = gpd.GeoDataFrame(index=[0], crs="EPSG:4326", geometry=[geom])
+#         gdf = gdf.to_crs(crs)
+#         gdf["area"] = gdf["geometry"].apply(lambda x: x.area)
+#         return gdf["area"].sum()
+#     return 0
+
+def calculate_area(geojson):
+    try:
+
+        # Handle the case where the GeoJSON object does not contain 'features'
+        if "geometry" in geojson:
+            geom = shape(geojson["geometry"])
+        elif geojson and "features" in geojson:
+            geom = shape(geojson["features"][0]["geometry"])
+        else:
+            st.write("Invalid GeoJSON structure.")
+            return 0
+
+        # Detect the appropriate UTM zone
+        centroid = geom.centroid
+        st.write("Centroid:", centroid)
+        utm_zone = utm.from_latlon(centroid.y, centroid.x)[2]
+        is_northern = centroid.y >= 0
+        crs = f"EPSG:{32600 + utm_zone if is_northern else 32700 + utm_zone}"
+        st.write("CRS:", crs)
+
+        # Create a GeoDataFrame, project it to the UTM zone and calculate the area
+        gdf = gpd.GeoDataFrame(index=[0], crs="EPSG:4326", geometry=[geom]) # type: ignore
+        gdf = gdf.to_crs(crs)
+        if gdf:
+            gdf["area"] = gdf["geometry"].apply(lambda x: x.area)
+        else:
+            raise ValueError("GeoDataFrame is empty.")
+
+
+        return gdf["area"].sum()
+    except Exception as e:
+        st.write(f"Exception occurred in calculate_area: {e}")
+    return 0
+
 # Render content based on the selected view
 if view == "Crop Health":
 # Function to create the map
     def create_map():
-        m = folium.Map(location=[36.7783, -119.4179], zoom_start=5) #CA Coordinates
+        m = folium.Map(location=[36.633, -121.545], zoom_start=11) #CA Coordinates
 
         # Add draw tool
         draw = Draw(export=False)
@@ -281,8 +355,31 @@ if view == "Crop Health":
             time.sleep(3)
             message.empty()
 
+
+
     map_ = create_map()
-    folium_static(map_, width=1025, height=475)
+    output = st_folium(map_, width=1025, height=475)
+
+
+
+
+
+
+    # Save the last drawn GeoJSON to session state
+    if output and 'last_active_drawing' in output:
+        with st.container():
+            st.markdown('<div class="output-container">', unsafe_allow_html=True)
+            st.session_state["aoi"] = output['last_active_drawing']
+            st.session_state["area"] = calculate_area(output['last_active_drawing'])
+            # st.write("Area of Interest (AOI) saved in session state.")
+            #print calculated area converted to acres
+            st.write("Calculated Area:", round(st.session_state["area"]/4046.8564224,3), "acres")
+            st.write("Predicted Yield:", round((st.session_state["area"]/4046.8564224) * 252.93856192,3), "pounds of strawberries / week")
+            st.markdown('</div>', unsafe_allow_html=True)
+
+    # st.write("Area of Interest (AOI):", st.session_state["aoi"])
+    # st.write("Calculated Area:", st.session_state["area"], "square meters")
+
 
 else:
     
