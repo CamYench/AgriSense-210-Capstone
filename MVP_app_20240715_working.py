@@ -22,12 +22,12 @@ from model_utils import CNNFeatureExtractor, HybridModel, preprocess_input, pred
 from landsat_handler import retrieve_latest_images, convert_selected_area, mask_tif
 
 # Load the trained model
-model_path = 'train_model/best_hybrid_model.pth'
+# model_path = 'train_model/best_hybrid_model.pth'
 
-cnn_feature_extractor = CNNFeatureExtractor()
-model = HybridModel(cnn_feature_extractor)
-model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
-model.eval()
+# cnn_feature_extractor = CNNFeatureExtractor()
+# model = HybridModel(cnn_feature_extractor)
+# model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+# model.eval() 
 
 #get latest landsat
 
@@ -49,7 +49,18 @@ if "aoi" not in st.session_state:
     st.session_state["aoi"] = None
 if "area" not in st.session_state:
     st.session_state["area"] = None
-
+if 'selected_option' not in st.session_state:
+    st.session_state.selected_option = "Select an Option Below"
+if 'message_shown' not in st.session_state:
+    st.session_state.message_shown = False
+if 'disable_selectbox_index' not in st.session_state:
+    st.session_state.disable_selectbox_index = False
+if 'disable_selectbox_other' not in st.session_state:
+    st.session_state.disable_selectbox_other = False
+if 'selectbox_other' not in st.session_state:
+    st.session_state.selectbox_other = "Select an Option Below"
+if 'refresh_message_shown' not in st.session_state:
+    st.session_state.refresh_message_shown = False
 
 # CSS and JavaScript
 st.markdown(
@@ -64,7 +75,7 @@ st.markdown(
     .tooltip .tooltiptext { visibility: hidden; width: 200px; background-color: #024b30; color: white; text-align: left; border-radius: 6px; padding: 10px; position: absolute; z-index: 1; top: 0; left: 110%; opacity: 0; transition: opacity 0.3s; }
     .tooltip span { font-size: 18px; cursor: pointer; }
     .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-    .banner { display: flex; justify-content: space-between; align-items: center; background-color: #024b30; height: 100px; padding: 15px; color: white; width: 100%; box-sizing: border-box; }
+    .banner { display: flex; justify-content: space-between; align-items: center; background-color: #EAF7EE; height: 100px; padding: 15px; color: white; width: 100%; box-sizing: border-box; }
     .left-side { display: flex; align-items: center; }
     .banner img { width: 100px; margin-right: 20px; }
     .title { font-size: 2em; margin: 0; }
@@ -118,7 +129,7 @@ def get_base64_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 # Path to logo
-logo_path = "assets/AgriSense_logo.png"
+logo_path = "AgriSenseLogo2.png"
 
 # Get the base64-encoded image
 base64_image = get_base64_image(logo_path)
@@ -242,7 +253,21 @@ if view == "Crop Health":
         m = folium.Map(location=[36.633, -121.545], zoom_start=11) #CA Coordinates
 
         # Add draw tool
-        draw = Draw(export=False)
+        draw = Draw(
+            export=False,             # Disables the export feature
+            draw_options={
+                'polyline': False,    # Disables drawing polylines
+                'polygon': True,      # Enables drawing polygons
+                'rectangle': False,    # Enables drawing rectangles
+                'circle': False,      # Disables drawing circles
+                'marker': False,        # Enables placing markers
+                'circlemarker': False        # Enables placing markers
+            },
+            edit_options={
+                'edit': False,        # Disables editing of drawn shapes
+                'remove': False       # Disables removal of drawn shapes
+            }
+        )
         draw.add_to(m)
 
         # Add a Google Satellite layer
@@ -295,74 +320,82 @@ if view == "Crop Health":
     # Sidebar options
     st.sidebar.title("Options")
 
-    field = st.sidebar.selectbox("🌍 Define Field of Interest", ["Confirm field has been selected", "Complete"], help="Use the tools to select a field on the map.\n\n" "Select 'Complete' when done.")
+    # field = st.sidebar.selectbox("🌍 Define Field of Interest", ["Confirm field has been selected", "Complete"], help="Use the tools to select a field on the map.\n\n" "Select 'Complete' when done.")
 
-    period = st.sidebar.selectbox("📅 Period of Interest", ["Select a period", "Single Day", "Multi-Day"], help="Choose whether your analysis is for a single day or multiple days.\n\n" "Then, use the calendar to select the desired date(s).")
+    # period = st.sidebar.selectbox("📅 Period of Interest", ["Select a period", "Single Day", "Multi-Day"], help="Choose whether your analysis is for a single day or multiple days.\n\n" "Then, use the calendar to select the desired date(s).")
 
-    if period == "Single Day":
-        selected_date = st.sidebar.date_input("Select Date", st.session_state.get("selected_date", None))
-        st.session_state["period"] = "Single Day"
-        st.session_state["selected_date"] = selected_date
+    # if period == "Single Day":
+    #     selected_date = st.sidebar.date_input("Select Date", st.session_state.get("selected_date", None))
+    #     st.session_state["period"] = "Single Day"
+    #     st.session_state["selected_date"] = selected_date
         
-    elif period == "Multi-Day":
-        start_date = st.sidebar.date_input("Start Date", st.session_state.get("start_date", None))
-        end_date = st.sidebar.date_input("End Date", st.session_state.get("end_date", None))
-        st.session_state["period"] = "Multi-Day"
-        st.session_state["start_date"] = start_date
-        st.session_state["end_date"] = end_date
+    # elif period == "Multi-Day":
+    #     start_date = st.sidebar.date_input("Start Date", st.session_state.get("start_date", None))
+    #     end_date = st.sidebar.date_input("End Date", st.session_state.get("end_date", None))
+    #     st.session_state["period"] = "Multi-Day"
+    #     st.session_state["start_date"] = start_date
+    #     st.session_state["end_date"] = end_date
     
    # Initial options for the index and options selectboxes
-    options_index = ["Select an index", "NDVI", "EVI"]
-    options_other = ["Select an alternative view", "🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]
-
-    # Initialize session state variables if they do not exist
-    if 'disable_selectbox_index' not in st.session_state:
-        st.session_state.disable_selectbox_index = False
-    if 'disable_selectbox_other' not in st.session_state:
-        st.session_state.disable_selectbox_other = False
+    #options_index = ["Select an index", "NDVI", "EVI"]
+    options_other = ["Select an Option Below", "NDVI", "EVI", "🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]
 
     # Function to handle changes in selectbox index - Index
-    def handle_selectbox_index_change():
-        if st.session_state.selectbox_index in ["NDVI", "EVI"]:
-            st.session_state.disable_selectbox_other = True
-        else:
-            st.session_state.disable_selectbox_other = False
+    # def handle_selectbox_index_change():
+    #     if st.session_state.selectbox_index in ["NDVI", "EVI"]:
+    #         st.session_state.disable_selectbox_other = True
+    #     else:
+    #         st.session_state.disable_selectbox_other = False
 
     # Function to handle changes in selectbox other - Other
     def handle_selectbox_other_change():
-        if st.session_state.selectbox_other in ["🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]:
-            st.session_state.disable_selectbox_index = True
-        else:
-            st.session_state.disable_selectbox_index = False
+        st.session_state.message_shown = True
+        st.session_state.refresh_message_shown = False
+        st.session_state.selected_option = st.session_state.selectbox_other
+    if st.session_state.selectbox_other in ["EVI", "NDVI", "🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]:
+        st.session_state.disable_selectbox_index = True
+    else:
+        st.session_state.disable_selectbox_index = False
 
     # Selectbox Index with default value and options in the sidebar
-    selectbox_index = st.sidebar.selectbox(
-        "🌱 Vegetation Index",
-        options=options_index,
-        index=0,
-        disabled=st.session_state.disable_selectbox_index,
-        key='selectbox_index',
-        on_change=handle_selectbox_index_change,
-        help="Normalized Difference Vegetation Index (NDVI) is a measure of vegetation greenness.\n\n" "Enhanced Vegetation Index (EVI) additionally corrects for some atmospheric conditions and canopy background.\n\n" "By choosing an index, any selection for Other Views will be disabled."
-    )
+    # selectbox_index = st.sidebar.selectbox(
+    #     "🌱 Vegetation Index",
+    #     options=options_index,
+    #     index=0,
+    #     disabled=st.session_state.disable_selectbox_index,
+    #     key='selectbox_index',
+    #     on_change=handle_selectbox_index_change,
+    #     help="Normalized Difference Vegetation Index (NDVI) is a measure of vegetation greenness.\n\n" "Enhanced Vegetation Index (EVI) additionally corrects for some atmospheric conditions and canopy background.\n\n" "By choosing an index, any selection for Other Views will be disabled."
+    # )
 
     # Selectbox Other with default value and options in the sidebar
     selectbox_other = st.sidebar.selectbox(
-        "🔍 Other Views",
+        "🔍 Field Views",
         options=options_other,
-        index=0,
+        index=options_other.index(st.session_state.selected_option),
         disabled=st.session_state.disable_selectbox_other,
         key='selectbox_other',
         on_change=handle_selectbox_other_change,
-        help="Select an alternate view below.\n\n" "By doing so, any selection for Vegetation Index will be disabled."
     )
 
+    message = st.sidebar.empty()
+    
+    if st.session_state.selected_option != "Select an Option Below" and st.session_state.message_shown:
+        message.write("Generating Satellite Data... It's worth the wait!")
+        time.sleep(1)  # Simulate data generation delay (adjust as needed, not sure how long this will take)
+        message.empty()  
 
+        # Reset message_shown flag
+        st.session_state.message_shown = False
+    
     if st.sidebar.button("🔄 Refresh"):
-            message = st.sidebar.empty()
-            message.write("Refreshing data...")
-            time.sleep(3)
-            message.empty()
+        message.write("Refreshing data...")
+        time.sleep(3)
+        message.empty()
+
+        st.session_state.selected_option = "Select an Option Below"
+        st.session_state.message_shown = False
+        st.experimental_rerun()  # Rerun the app to reset the state
 
 
 
@@ -428,50 +461,59 @@ if view == "Crop Health":
 
 
 else:
-    
-    # Yield Prediction Plots
-    def plot_yield_prediction():
-    # Mock data for demonstration
-        time_periods = pd.date_range(start='2020-01-01', periods=24, freq='ME')
-        actual_yield = np.random.randint(50, 150, size=len(time_periods))
-        predicted_yield = actual_yield + np.random.randint(-20, 20, size=len(time_periods))
-        compare_yield = actual_yield + np.random.randint(-30, 30, size=len(time_periods))
 
-        fig, ax = plt.subplots(figsize=(10, 5))
-        ax.plot(time_periods, actual_yield, label='Actual Yield', color='orange', linewidth=2)
-        ax.plot(time_periods, predicted_yield, label='Predicted Yield', color='blue', linestyle='--', linewidth=2)
-        ax.plot(time_periods, compare_yield, label='Compare Yield', color='green', linestyle='-.', linewidth=2)
+    message = st.empty()
 
-        ax.set_xlabel("Time")
-        ax.set_ylabel("Yield")
-        ax.set_title("Yield Prediction Comparison")
-        ax.legend()
+    if st.session_state["aoi"] is None:
+        with message.container():
+            st.write("Please return to the Crop Health view and select a field.")
 
-        st.pyplot(fig)
-
-    st.sidebar.title("Options")
-
-    crop = st.sidebar.selectbox("🌱 Crop", ["Select a crop", "🍓 Strawberries", "🫐 Blueberries", "🍇 Grapes"])
-    time_horizon = st.sidebar.selectbox("⏳ Time Horizon", ["Select a time horizon", "🕰️ Month", "🍂 Season", "📆 Year"], help="The amount of time you wish to view on the graph.")
-    time_units = st.sidebar.selectbox("🕒 Time Units", ["Select a time unit", "📅 Days", "🕰️ Months", "📆 Years"], help="The units of time for the graph.")
-    yield_units = st.sidebar.selectbox("🎚️ Yield Units", ["Select a yield unit", "⚖️ Lbs", "🧺 Bushels"])
-
-    # Placeholder text for the initial selectbox state
-    placeholder_predict = "Select a period to predict"
-    placeholder_compare = "Select a period to compare"
-
-    # Dynamic options list
-    options = [f"{y} {time_horizon}" for y in range(2019, 2025)]
-
-    # Selectbox widgets
-    period_to_predict = st.sidebar.selectbox("🔮 Period to Predict", [placeholder_predict] + options)
-    period_to_compare = st.sidebar.selectbox("📊 Period to Compare", [placeholder_compare] + options)
-
-    if st.sidebar.button("Generate Graph"):
-        message = st.sidebar.empty()
-        message.write("Generating Graph...")
-        time.sleep(3)
+    else: 
         message.empty()
+    
+        # Yield Prediction Plots
+        def plot_yield_prediction():
+        # Mock data for demonstration
+            time_periods = pd.date_range(start='2024-01-01', periods=13, freq='ME')
+            actual_yield = np.random.randint(50, 150, size=len(time_periods))
+            predicted_yield = actual_yield + np.random.randint(-20, 20, size=len(time_periods))
+            # compare_yield = actual_yield + np.random.randint(-30, 30, size=len(time_periods))
 
-    plot_yield_prediction()
+            fig, ax = plt.subplots(figsize=(10, 5))
+            ax.plot(time_periods, actual_yield, label='Actual Yield', color='green', linewidth=2)
+            ax.plot(time_periods, predicted_yield, label='Predicted Yield', color='lightblue', linestyle='--', linewidth=2)
+            # ax.plot(time_periods, compare_yield, label='Compare Yield', color='green', linestyle='-.', linewidth=2)
+
+            ax.set_xlabel("Time")
+            ax.set_ylabel("Yield")
+            ax.set_title("Yield Prediction Comparison")
+            ax.legend()
+
+            st.pyplot(fig)
+
+        st.sidebar.title("Options")
+
+        # crop = st.sidebar.selectbox("🌱 Crop", ["Select a crop", "🍓 Strawberries", "🫐 Blueberries", "🍇 Grapes"])
+        # time_horizon = st.sidebar.selectbox("⏳ Time Horizon", ["Select a time horizon", "🕰️ Month", "🍂 Season", "📆 Year"], help="The amount of time you wish to view on the graph.")
+        # time_units = st.sidebar.selectbox("🕒 Time Units", ["Select a time unit", "📅 Days", "🕰️ Months", "📆 Years"], help="The units of time for the graph.")
+        # yield_units = st.sidebar.selectbox("🎚️ Yield Units", ["Select a yield unit", "⚖️ Lbs", "🧺 Bushels"])
+
+        # Placeholder text for the initial selectbox state
+        placeholder_predict = "Select a period to predict"
+        placeholder_compare = "Select a period to compare"
+
+        # Dynamic options list
+        # options = [f"{y} {time_horizon}" for y in range(2019, 2025)]
+
+        # Selectbox widgets
+        # period_to_predict = st.sidebar.selectbox("🔮 Period to Predict", [placeholder_predict] + options)
+        # period_to_compare = st.sidebar.selectbox("📊 Period to Compare", [placeholder_compare] + options)
+
+        if st.sidebar.button("Generate Graph"):
+            message = st.sidebar.empty()
+            message.write("Generating Graph...")
+            time.sleep(3)
+            message.empty()
+
+        plot_yield_prediction()
 
