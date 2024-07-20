@@ -9,3 +9,4 @@ landsat_examples/metadata/*
 *.tar.gz
 *.tiff
 launch.json
+masking_pipeline/for_local_machine/metadata/LANDSAT_OT_C2_L2.csv.gz
