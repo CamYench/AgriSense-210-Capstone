@@ -6,6 +6,8 @@ import time
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import matplotlib.cm as cm
 import base64
 import geopandas as gpd
 import utm
@@ -374,25 +376,51 @@ if view == "Crop Health":
 
     # Save the last drawn GeoJSON to session state
     if output and 'last_active_drawing' in output:
-        latest_files_names = retrieve_latest_images()
-        st_landsat = mask_tif(output['last_active_drawing'],latest_files_names[1])
-        with st.container():
-            st.markdown('<div class="output-container">', unsafe_allow_html=True)
-            st.session_state["aoi"] = output['last_active_drawing']
-            st.session_state["area"] = calculate_area(output['last_active_drawing'])
-            # st.write("Area of Interest (AOI) saved in session state.")
-            #print calculated area converted to acres
-            st.write("Calculated Area:", round(st.session_state["area"]/4046.8564224,3), "acres")
-            st.write("Predicted Yield:", round((st.session_state["area"]/4046.8564224) * 252.93856192,3), "pounds of strawberries / week")
+        if output['last_active_drawing'] == None:
+            st.write("Please select a target field area.")
+        else:
+            latest_file_names = retrieve_latest_images()
+            evi_landsat = mask_tif(output['last_active_drawing'],latest_file_names[0])
+            st_landsat = mask_tif(output['last_active_drawing'],latest_file_names[1])
+            with st.container():
+                st.markdown('<div class="output-container">', unsafe_allow_html=True)
+                st.session_state["aoi"] = output['last_active_drawing']
+                st.session_state["area"] = calculate_area(output['last_active_drawing'])
+                # st.write("Area of Interest (AOI) saved in session state.")
+                #print calculated area converted to acres
+                st.write("Calculated Area:", round(st.session_state["area"]/4046.8564224,3), "acres")
+                st.write("Predicted Yield:", round((st.session_state["area"]/4046.8564224) * 252.93856192,3), "pounds of strawberries / week")
             
-            #plot cropped landsat
-            fig, ax = plt.subplots(figsize=(10, 10))
-            ax.imshow(st_landsat[0])
-            ax.set_title("Masked and Cropped TIFF Image")
-            ax.axis('off')
-            st.pyplot(fig)
 
-            st.markdown('</div>', unsafe_allow_html=True)
+                #plot cropped landsat images
+                fig, (ax1,ax2) = plt.subplots(1,2,figsize=(10, 10))
+                # Define colormap and normalization
+                cmap = cm.viridis
+                norm_evi = mcolors.Normalize(vmin=0, vmax=np.max(evi_landsat[0]))
+                norm_st = mcolors.Normalize(vmin=0, vmax=np.max(st_landsat[0]))
+
+
+                #evi plot
+                im1 = ax1.imshow(evi_landsat[0], cmap=cmap, norm=norm_evi)
+                ax1.set_title(f"Selected Field's EVI as of: {latest_file_names[3]}")
+                ax1.axis('off')
+                fig.colorbar(im1, ax=ax1, orientation='horizontal', fraction=0.046, pad=0.04)
+
+                #surface temperature plot
+                im2 = ax2.imshow(st_landsat[0], cmap=cmap, norm=norm_evi)
+                ax2.set_title(f"Selected Field's Surface Temperature as of: {latest_file_names[3]}")
+                ax2.axis('off')
+                fig.colorbar(im2, ax=ax2, orientation='horizontal', fraction=0.046, pad=0.04)
+
+
+                #show figure in streamlit
+                st.pyplot(fig)
+
+                st.write(f'Maximum EVI Value: {np.max(evi_landsat[0])}')
+                st.write(f'Minimum EVI Value: {np.min(evi_landsat[0])}')
+                st.write(f'Max Surface Temp: {np.max(st_landsat[0])}')
+                st.write(f'Minimum Surface Temp: {np.min(st_landsat[0])}')
+                st.markdown('</div>', unsafe_allow_html=True)
 
     # st.write("Area of Interest (AOI):", st.session_state["aoi"])
     # st.write("Calculated Area:", st.session_state["area"], "square meters")
