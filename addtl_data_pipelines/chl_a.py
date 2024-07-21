@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import rasterio
+import rasterio.io
 
 DATA_PATH = Path(__file__).parent / "local_data"
 
@@ -128,18 +129,60 @@ def process_band(band: np.ndarray, band_specs: BandSpecs, logging: bool = True):
     return data
 
 
-def find_band_data_files(path: Path, band_specs: BandSpecs):
+def process_file(path: Path, band_specs: BandSpecs):
+    """
+    Process a raster file and return the dataset reader and the processed data.
 
-    # find all nir band files
+    Args:
+        path (Path): The path to the raster file.
+        band_specs (BandSpecs): The specifications for processing the band data.
+
+    Returns:
+        Tuple[rasterio.io.DatasetReader, np.ndarray]: A tuple containing the dataset reader
+        and the processed data.
+
+    Raises:
+        ValueError: If more than one band is found in the raster file.
+    """
+    rio_dataset_reader = rasterio.open(path)  # type: rasterio.io.DatasetReader
+    indexes = rio_dataset_reader.indexes
+    if len(indexes) > 1:
+        raise ValueError(f"Found {len(indexes)} indexes in file {path.name}.")
+
+    band_data = rio_dataset_reader.read(1)  # type: np.ndarray
+    processed_data = process_band(band_data, band_specs)
+    return rio_dataset_reader, processed_data
+
+
+def process_grouped_files(grouped_files: dict[str, Path], band_specs: BandSpecs):
+    grouped_data: dict[str, tuple[rasterio.io.DatasetReader, np.ndarray]] = {}
+    for band_name, band_file_path in grouped_files.items():
+        rio_dataset_reader, data = process_file(band_file_path, band_specs)
+        grouped_data[band_name] = (rio_dataset_reader, data)
+    return grouped_data
+
+
+def find_band_data_files(path: Path, band_specs: BandSpecs):
+    """
+    Find band data files based on the given path and band specifications.
+
+    Args:
+        path (Path): The directory path to search for band data files.
+        band_specs (BandSpecs): An instance of BandSpecs class containing the band indices.
+
+    Returns:
+        List[Tuple[Path, Path, Path]]: A list of tuples, where each tuple contains three Path objects representing
+        the NIR, red, and green band files that match the given band specifications.
+    """
+    # find all NIR band files
     nir_band_files = [f for f in path.glob("*" + band_specs.nir_bidx + ".tif")]
     red_band_files = [f for f in path.glob("*" + band_specs.red_bidx + ".tif")]
     green_band_files = [f for f in path.glob("*" + band_specs.green_bidx + ".tif")]
 
-    grouped_files = []
+    grouped_files: list[dict[str, Path]] = []
     for nir_f in nir_band_files:
         for red_f in red_band_files:
             for green_f in green_band_files:
-
                 if (
                     nir_f.name.replace(band_specs.nir_bidx, band_specs.red_bidx)
                     == red_f.name
@@ -149,7 +192,7 @@ def find_band_data_files(path: Path, band_specs: BandSpecs):
                     print(
                         f"Found files:\n  {nir_f.name}\n  {red_f.name}\n  {green_f.name}"
                     )
-                    grouped = (nir_f, red_f, green_f)
+                    grouped = {"nir": nir_f, "red": red_f, "green": green_f}
                     grouped_files.append(grouped)
 
     return grouped_files
@@ -159,6 +202,15 @@ def main():
     bs = BandSpecs()
     print("Loaded band specs")
     band_files = find_band_data_files(DATA_PATH, bs)
+    for grouped_files in band_files[:1]:
+        processed_files = process_grouped_files(grouped_files, bs)
+
+        nir_dataset_reader, nir_data = processed_files["nir"]
+        red_dataset_reader, red_data = processed_files["red"]
+        green_dataset_reader, green_data = processed_files["green"]
+
+        mtvi2_data = calc_mtvi2(nir_data, green_data, red_data)
+        print("here")
 
     pass
 
