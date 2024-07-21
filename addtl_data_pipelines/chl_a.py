@@ -4,6 +4,7 @@ Research has show this index to be the best metric for measuring chlorophyll con
 """
 
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import rasterio
@@ -22,6 +23,9 @@ ADDITIVE_OFFSET = -0.2
 RED_BAND = "B4"
 GREEN_BAND = "B3"
 NIR_BAND = "B5"
+
+# OUTPUT params
+NO_DATA_FILLER = -99999.0
 
 
 class BandSpecs:
@@ -198,6 +202,22 @@ def find_band_data_files(path: Path, band_specs: BandSpecs):
     return grouped_files
 
 
+def save_mtvi2_to_tiff(
+    mtvi2_data: np.ndarray, metadata: dict[str, Any], path: Path, logging: bool = True
+):
+
+    mtvi2_data[np.isnan(mtvi2_data)] = NO_DATA_FILLER
+
+    metadata["dtype"] = "float64"
+    metadata["nodata"] = NO_DATA_FILLER
+
+    with rasterio.open(path, "w", **metadata) as dst:
+        dst.write(mtvi2_data, 1)
+
+    if logging:
+        print(f"Wrote mtvi2_data to {path.name}")
+
+
 def main():
     bs = BandSpecs()
     print("Loaded band specs")
@@ -210,7 +230,13 @@ def main():
         green_dataset_reader, green_data = processed_files["green"]
 
         mtvi2_data = calc_mtvi2(nir_data, green_data, red_data)
-        print("here")
+
+        mtvi2_metadata = nir_dataset_reader.meta  # type: dict
+
+        out_path = Path(str(grouped_files["nir"]).replace(bs.nir_bidx, "MTVI2"))
+        save_mtvi2_to_tiff(mtvi2_data, mtvi2_metadata, out_path)
+
+    print("Done")
 
     pass
 
