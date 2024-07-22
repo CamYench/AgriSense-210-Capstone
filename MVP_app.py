@@ -415,17 +415,26 @@ if view == "Crop Health":
                     masked_evi = np.where(mask, evi_landsat[0], np.nan)
                     
                     #evi plot
-                    fig, ax1 = plt.subplots(figsize=(10, 10))
-                    im1 = ax1.imshow(masked_evi, cmap='jet')
-                    ax1.set_title(f"Selected Field's EVI as of: {latest_file_names[3]}")
-                    ax1.axis('off')
-                    fig.colorbar(im1, ax=ax1, orientation='horizontal', fraction=0.046, pad=0.04)
+                    fig = px.imshow(masked_evi, color_continuous_scale='YlGn', 
+                                    title=f"Selected Field's EVI as of: {latest_file_names[3]}",
+                                    width=800, height=800)
+                    fig.update_coloraxes(colorbar_title_side="right")
+                    fig.update_yaxes(visible=False, showticklabels=False)
+                    fig.update_xaxes(visible=False, showticklabels=False)
+                    
 
                     #show figure in streamlit
-                    st.pyplot(fig)
+                    st.plotly_chart(fig)
+
+
                     st.write(f'Maximum EVI Value: {np.nanmax(masked_evi)}')
                     st.write(f'Minimum EVI Value: {np.nanmin(masked_evi)}')
 
+
+                    flat_data_evi = masked_evi.flatten()
+                    fig2 = px.histogram(flat_data_evi[~np.isnan(flat_data_evi)], nbins=50, title="Histogram of EVI")
+                    fig2.update_layout(xaxis_title="EVI", yaxis_title="Frequency", showlegend=False)
+                    st.plotly_chart(fig2)
 
                 elif st.session_state.selected_option == "☀️ Surface Temperature":
                     #convert to fahrenheit
@@ -436,25 +445,28 @@ if view == "Crop Health":
                     masked_temp = np.where(mask, st_landsat_f, np.nan)
 
                     #surface temperature plot
-                    fig, ax1 = plt.subplots(figsize=(10, 10))
-                    im2 = ax1.imshow(masked_temp, cmap='jet')
-                    ax1.set_title(f"Selected Field's Surface Temperature as of: {latest_file_names[3]}")
-                    ax1.axis('off')
-                    fig.colorbar(im2, ax=ax1, orientation='horizontal', fraction=0.046, pad=0.04)
+                    fig = px.imshow(masked_temp, color_continuous_scale='Jet', 
+                                    title=f"Selected Field's Surface Temperature (°F) as of: {latest_file_names[3]}",
+                                    width=800, height=800)
+                    fig.update_coloraxes(colorbar_title_side="right")
+                    fig.update_yaxes(visible=False, showticklabels=False)
+                    fig.update_xaxes(visible=False, showticklabels=False)
+
+
                     
                     #show figure in streamlit
-                    st.pyplot(fig)
+                    st.plotly_chart(fig)
+
+
                     st.write(f'Max Surface Temp: {np.nanmax(masked_temp)}')
                     st.write(f'Minimum Surface Temp: {np.nanmin(masked_temp)}')
 
-                    #legend debugging - REMOVE FOR PRODUCTION
-                    # flat_data = st_landsat_f.flatten()
-                    # fig2, ax2 = plt.subplots()
-                    # ax2.hist(flat_data[flat_data > 0], bins=50, edgecolor='black')
-                    # ax2.set_title("Histogram of Surface Temperature")
-                    # ax2.set_xlabel("Temperature")
-                    # ax2.set_ylabel("Frequency")
-                    # st.pyplot(fig2)
+                    # histogram of presented data
+                    flat_data = masked_temp.flatten()
+                    fig2 = px.histogram(flat_data[~np.isnan(flat_data)], nbins=50, title="Histogram of Surface Temperature (°F)")
+                    fig2.update_layout(xaxis_title="Temperature (°F)", yaxis_title="Frequency", showlegend=False)
+                    st.plotly_chart(fig2)
+
 
 
 
