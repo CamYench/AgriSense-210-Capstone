@@ -6,7 +6,9 @@ SMI = (LST_max - LST) / (LST_max - LST_min)
 from pathlib import Path
 
 import rasterio
+from rasterio import MemoryFile
 import numpy as np
+import boto3
 
 # change this depending on S3 implementation?
 DATA_PATH = Path(__file__).parent / "local_data"
@@ -33,7 +35,7 @@ def get_list_of_lst_tiffs(data_path:Path|None=None):
     return [f for f in data_path.glob("*_ST_B10.tif")]
 
     
-def read_lst_tiff(path:Path, scale_factor:float=0.00341802, offset:float=149.0):
+def read_lst_tiff(path:Path):
     dataset = rasterio.open(path)
     indexes = dataset.indexes
     if len(indexes) > 1:
@@ -41,6 +43,10 @@ def read_lst_tiff(path:Path, scale_factor:float=0.00341802, offset:float=149.0):
 
     data = dataset.read(1)
     print(f"Read in {path.name}")
+    return dataset, data
+
+
+def process_band_data(data: np.ndarray, scale_factor:float=0.00341802, offset:float=149.0):
     print("Raw")
     print(f"  min = {np.nanmin(data)}")
     print(f"  max = {np.nanmax(data)}")
@@ -70,38 +76,78 @@ def read_lst_tiff(path:Path, scale_factor:float=0.00341802, offset:float=149.0):
     print("Scaled - Celsius")
     print(f"  min = {np.nanmin(data)}")
     print(f"  max = {np.nanmax(data)}")
-    return dataset, data
+    return data
+
+def get_lst_file_paths_from_s3():
+    s3_client = boto3.client('s3')
+    paginator = s3_client.get_paginator('list_objects_v2')
+    page_iterator = paginator.paginate(Bucket="agrisense3", Prefix="converted/")
+
+    lst_files = []
+    for page in page_iterator:
+        for obj in page.get('Contents', []):
+            key = obj['Key']
+            if 'ST_B10' in key:
+                lst_files.append(key)
+    return lst_files
+
+
+
 
 def main():
-    lst_tiff_files = get_list_of_lst_tiffs()
-    for tiff_file_path in lst_tiff_files:
-        out_file_name = str(tiff_file_path).replace("ST_B10", "SMI")
-        print("Found")
-        print("\t"+str(tiff_file_path))
-        print("Creating")
-        print("\t"+out_file_name)
 
-        # read in tiff_file
-        tiff_dataset, tiff_data = read_lst_tiff(tiff_file_path)
+    # retrieve lst files
+    lst_files = get_lst_file_paths_from_s3()
 
-        smi_data = calc_smi_from_lst(tiff_data)
-        # replace nan's with filler
-        smi_data[np.isnan(smi_data)] = SMI_OUT_NO_DATA
-        print(f"Finished calculating SMI data")
-
-        # write tif
-        out_tiff_path = Path(out_file_name)
-        out_meta = tiff_dataset.meta
-        out_meta['dtype'] = "float64"
+    for lst_f in lst_files:
+        s3_client = boto3.client("s3")
+        s3_response = s3_client.get_object(Bucket="agrisense3", Key=lst_f)
+        with MemoryFile(s3_response['Body'].read()) as memfile:
+            with memfile.open() as src:
+                st_data = process_band_data(src.read(1))
+                st_data = calc_smi_from_lst(st_data)
+                out_meta = src.meta
+        out_meta["dtype"] = "float64"
         out_meta["nodata"] = SMI_OUT_NO_DATA
+        out_f_path = lst_f.replace("ST_B10", "SMI")
 
-        with rasterio.open(out_tiff_path, 'w', **out_meta) as dst:
-            dst.write(smi_data, 1)
+        # upload to s3
+        # file locally then upload to s3?
+    
+    # print(lst_files)
 
-        print(f"Finished writing SMI to tif file {out_tiff_path.name}")
+
+
+
+    # lst_tiff_files = get_list_of_lst_tiffs()
+    # for tiff_file_path in lst_tiff_files:
+    #     out_file_name = str(tiff_file_path).replace("ST_B10", "SMI")
+    #     print("Found")
+    #     print("\t"+str(tiff_file_path))
+    #     print("Creating")
+    #     print("\t"+out_file_name)
+
+    #     # read in tiff_file
+    #     tiff_dataset, tiff_data = read_lst_tiff(tiff_file_path)
+
+    #     smi_data = calc_smi_from_lst(tiff_data)
+    #     # replace nan's with filler
+    #     smi_data[np.isnan(smi_data)] = SMI_OUT_NO_DATA
+    #     print(f"Finished calculating SMI data")
+
+    #     # write tif
+    #     out_tiff_path = Path(out_file_name)
+    #     out_meta = tiff_dataset.meta
+    #     out_meta['dtype'] = "float64"
+    #     out_meta["nodata"] = SMI_OUT_NO_DATA
+
+    #     with rasterio.open(out_tiff_path, 'w', **out_meta) as dst:
+    #         dst.write(smi_data, 1)
+
+    #     print(f"Finished writing SMI to tif file {out_tiff_path.name}")
 
     print("Done.")
 
-    
+
 if __name__ == "__main__":
     main()
