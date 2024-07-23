@@ -62,6 +62,12 @@ if 'selectbox_other' not in st.session_state:
     st.session_state.selectbox_other = "Select an Option Below"
 if 'refresh_message_shown' not in st.session_state:
     st.session_state.refresh_message_shown = False
+if 'previous_aoi' not in st.session_state:
+    st.session_state.previous_aoi = None
+if 'evi_landsat' not in st.session_state:
+    st.session_state['evi_landsat'] = None
+if 'st_landsat' not in st.session_state:
+    st.session_state['st_landsat'] = None
 
 # CSS and JavaScript
 st.markdown(
@@ -194,7 +200,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-
+#get latest landsat file names
+latest_file_names = retrieve_latest_images()
 
 # Constants for Landsat 8 TIRS band 10
 L_MIN = 0.1  # Replace with metadata value
@@ -385,39 +392,47 @@ if view == "Crop Health":
     if output and 'last_active_drawing' in output:
         if output['last_active_drawing'] == None:
             st.write("Please select a target field area.")
+        elif output['last_active_drawing'] == st.session_state['previous_aoi']:
+            pass
         else:
-            latest_file_names = retrieve_latest_images()
-            evi_landsat = mask_tif(output['last_active_drawing'],latest_file_names[0])
-            st_landsat = mask_tif(output['last_active_drawing'],latest_file_names[1])
-            with st.container():
-                st.markdown('<div class="output-container">', unsafe_allow_html=True)
-                st.session_state["aoi"] = output['last_active_drawing']
-                st.session_state["area"] = calculate_area(output['last_active_drawing'])
+            
+            st.session_state['evi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[0])
+            st.session_state['st_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[1])
+            
+            st.session_state['previous_aoi'] = st.session_state["aoi"]
+            st.session_state["aoi"] = output['last_active_drawing']
+            st.session_state["area"] = calculate_area(output['last_active_drawing'])
                 # st.write("Area of Interest (AOI) saved in session state.")
-                #print calculated area converted to acres
-                st.write("Calculated Area:", round(st.session_state["area"]/4046.8564224,3), "acres")
-                st.write("Predicted Yield:", round((st.session_state["area"]/4046.8564224) * 252.93856192,3), "pounds of strawberries / week")
+                
+                
             
 
 
-                # # Define colormap and normalization
-                # cmap = cm.viridis
-                # norm_evi = mcolors.Normalize(vmin=0, vmax=np.max(evi_landsat[0]))
-                # norm_st = mcolors.Normalize(vmin=0, vmax=np.max(st_landsat[0]))
+    if st.session_state["aoi"] == None:
+                
+        pass
 
-                if st.session_state.selected_option == "Select an Option Below":
-                    st.write("Please select metric to display!")
+    else:
 
-                elif st.session_state.selected_option == "EVI":
+        with st.container():
+            # st.markdown('<div class="output-container">', unsafe_allow_html=True)
+            #print calculated area converted to acres
+            st.write("Calculated Area:", round(st.session_state["area"]/4046.8564224,3), "acres")
+            st.write("Predicted Yield:", round((st.session_state["area"]/4046.8564224) * 252.93856192,3), "pounds of strawberries / week")
+
+            if st.session_state.selected_option == "Select an Option Below":
+                st.write("Please select metric to display!")
+
+            elif st.session_state.selected_option == "EVI":
                 
                     # Mask the EVI values to include only those greater than 0
-                    mask = evi_landsat[0] > 0
-                    masked_evi = np.where(mask, evi_landsat[0], np.nan)
+                    mask = st.session_state['evi_landsat'][0] > 0
+                    masked_evi = np.where(mask, st.session_state['evi_landsat'][0], np.nan)
                     
                     #evi plot
                     fig = px.imshow(masked_evi, color_continuous_scale='YlGn', 
                                     title=f"Selected Field's EVI as of: {latest_file_names[3]}",
-                                    width=800, height=800)
+                                    width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
                     fig.update_xaxes(visible=False, showticklabels=False)
@@ -432,13 +447,14 @@ if view == "Crop Health":
 
 
                     flat_data_evi = masked_evi.flatten()
-                    fig2 = px.histogram(flat_data_evi[~np.isnan(flat_data_evi)], nbins=50, title="Histogram of EVI")
+                    fig2 = px.histogram(flat_data_evi[~np.isnan(flat_data_evi)], nbins=50, title="Histogram of EVI",
+                                        width=1025, height=500)
                     fig2.update_layout(xaxis_title="EVI", yaxis_title="Frequency", showlegend=False)
                     st.plotly_chart(fig2)
 
-                elif st.session_state.selected_option == "☀️ Surface Temperature":
+            elif st.session_state.selected_option == "☀️ Surface Temperature":
                     #convert to fahrenheit
-                    st_landsat_f = dn_to_fahrenheit(st_landsat[0], L_MIN, L_MAX, QCAL_MIN, QCAL_MAX, K1, K2)
+                    st_landsat_f = dn_to_fahrenheit(st.session_state['st_landsat'][0], L_MIN, L_MAX, QCAL_MIN, QCAL_MAX, K1, K2)
 
                     # Mask the temperature values to include only those greater than 0 and less than 200
                     mask = (st_landsat_f > 0) & (st_landsat_f < 200)
@@ -447,7 +463,7 @@ if view == "Crop Health":
                     #surface temperature plot
                     fig = px.imshow(masked_temp, color_continuous_scale='Jet', 
                                     title=f"Selected Field's Surface Temperature (°F) as of: {latest_file_names[3]}",
-                                    width=800, height=800)
+                                    width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
                     fig.update_xaxes(visible=False, showticklabels=False)
@@ -463,21 +479,22 @@ if view == "Crop Health":
 
                     # histogram of presented data
                     flat_data = masked_temp.flatten()
-                    fig2 = px.histogram(flat_data[~np.isnan(flat_data)], nbins=50, title="Histogram of Surface Temperature (°F)")
+                    fig2 = px.histogram(flat_data[~np.isnan(flat_data)], nbins=50, title="Histogram of Surface Temperature (°F)",
+                                        width=1025, height=500)
                     fig2.update_layout(xaxis_title="Temperature (°F)", yaxis_title="Frequency", showlegend=False)
                     st.plotly_chart(fig2)
 
 
 
 
-                elif st.session_state.selected_option == "🌿 Chlorophyll Content":
+            elif st.session_state.selected_option == "🌿 Chlorophyll Content":
                     st.write(f"{st.session_state.selected_option} visualization coming soon!")
-                elif st.session_state.selected_option == "🌧️ Soil Moisture":
+            elif st.session_state.selected_option == "🌧️ Soil Moisture":
                     st.write(f"{st.session_state.selected_option} visualization coming soon!")
-                elif st.session_state.selected_option == "NDVI":
+            elif st.session_state.selected_option == "NDVI":
                     st.write(f"{st.session_state.selected_option} visualization coming soon!")
 
-                st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
     # st.write("Area of Interest (AOI):", st.session_state["aoi"])
     # st.write("Calculated Area:", st.session_state["area"], "square meters")
