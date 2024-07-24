@@ -15,13 +15,12 @@ import json
 
 def retrieve_latest_images():
     # Initialize S3 client and search client
-    # s3_client = boto3.client('s3')
-    s3_client = boto3.client(
-    's3',
-    aws_access_key_id='ASIAZSICGRC5F3K5DWHH',
-    aws_secret_access_key='SSsMBrjuUe9FiwLrZKYrucHLJPgKHkf13icOP8xK',
-    aws_session_token='IQoJb3JpZ2luX2VjEI7//////////wEaCXVzLWVhc3QtMSJGMEQCIAkROXN5Vgs9RB3ukR7ASSn89a8mYeBw5NdWwLVTEDSUAiAs4gunXReQ/+nJtAg/9foxDg9K85H6cqaupRGC42+v7yrsAghmEAIaDDY1NzY3MTQ4OTcyMiIMW7boLu1gCv36cb/RKskCs/GKmkoYWiDgJf4GYungxYnYY39QGZoDS93Fn3AjMNGBh4R/ItBFIRNt0psUFDo6riGFngqE1pxaECqP4Lf1gBhQmI8x1KTQ4FQ6WhPorGu0DfIwOpgRdISxcwK3m55zafiQn9msMWWJEoyFU58x/UZ+XjU/upltLjN5vF9g7F+8uZVHWpJTg/kTEBbIJhPLJi/Z5un+TbKBhwVMrcBA19QOSR2nWqXetjBYtiRorufcz12ivejLpOIHhCstizMw3TnxM1jCeUFxrTtEPskIt35HUmNQjsZY2dDSDuZWUIB+l4clF2N1cAQ40agAmQEnCTmUwsytToxPUtOAtNU/AyjTgLebdU38SpP/OU9iQrjbnh7cjMXi/hO6J+JVTddCl0kkB98QRqOYYg+wWLawdYmTiffeWNwipBDdt69gcJDlV9fDwk0AeRUwsvH1tAY6qAEmzr/RYnmF7eNLwFyzP9qJKuBLDl4qIfOmml+5ySJbTBa0QSBvnRsDfU2ifGHJFfm5uvRTe1zUH0USNNEGpoT3rZgcLq1Dif451MBsmPEtpm+Ltw8N7dCJZ8cbTUB47dp7bdLq+tcVP2bl29ppSc2X3z4qEcui/5duanPz8KY6qHCJlfmcmZ7cev+vYcp0CL3e85NSPQguwG7p+jK+sKnFhgEd4BGSRE0='
-)
+    s3_client = boto3.client('s3')
+    # s3_client = boto3.client(
+    # 's3',
+    # aws_access_key_id='ASIAZSICGRC5O2STIAHF',
+    # aws_secret_access_key='WLKuMMDSAs2wL8LODrqJNcgpMxVEvopK5gc1Y2Tg',
+    # aws_session_token='IQoJb3JpZ2luX2VjEL///////////wEaCXVzLWVhc3QtMSJIMEYCIQCAdPeNDcRifPob36+FSNeannCg6LKIj/M6c90otwBZfQIhAIikkSA5vhaKno/+msruWduDkxMZRRKLqyn7XW4Yjbc2KvUCCJj//////////wEQAhoMNjU3NjcxNDg5NzIyIgymCkReJMp6FmJoD9IqyQIx9G+XvUngXlLhCgJPEVgbWKvzg54JOzTnAz70nkAs2J5xG/Hg2fMrMsr7v3LqKnVc8eHliYWaIZKLpcNTfeQSgkE71TRkI0s/2zkilv+EAQiZHv2BQ8WUAbpPy9+FdSC9tFvgU6APMZsoxjSw6xQQP85QWpYx5kqkyuUWhBkKqtmFhh82TWta/oahFd9C7KgcxlDRdkXLkWLgeWyd1mughUv6zlbn4JO4AVNbpLWMSGoR1jbg6IqTejyrZ7lRmuM8KtMlaDuxmjGZUkQ/Lz1D+0E71bAQ+18+MjcYYoh7kIztxH6LulgFW+kDltHmgKj4RcTp3m+UuREUYSHF2d7xy0vCZMQsTu4ikeB0zUeiJ/9SCMNataK6ss4E0IxkRK7XLWvl6hQYSp7qgvBlDnLtCDg2Psz8v0VAlbKFhA2RcKEVsofZ23f9CDDm64C1BjqmAUo4aDrfge4e/9tpvuWHrO1ayfOb25KrlZMCSTjULzicsYxNAUYsRmD4IBFvan8nF37zgL7t7lGhsgKA1WOfATa61E3cRezHjEtipe5r6NMCseS42pV3CxPKp3NiQPF8I46WkgddGPrcADIxwyw3aF9Rkp+lmJbFzIH2RU5M8EoDOyTC7kbOyLjqo49GChZvY1ArIraCdRrqnWkbymkAZW4ynA8/c48=')
     paginator = s3_client.get_paginator('list_objects_v2')
     page_iterator = paginator.paginate(Bucket="agrisense3", Prefix="converted/")
     # evi_objects = page_iterator.search("Contents[?contains(Key, `EVI`)][]")
