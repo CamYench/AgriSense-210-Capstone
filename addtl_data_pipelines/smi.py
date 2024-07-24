@@ -3,6 +3,7 @@ SMI is a function of the Land Surface Temperature (LST) of a given area, which i
 SMI = (LST_max - LST) / (LST_max - LST_min)
 """
 
+import os
 from pathlib import Path
 
 import rasterio
@@ -12,6 +13,8 @@ import boto3
 
 # change this depending on S3 implementation?
 DATA_PATH = Path(__file__).parent / "local_data"
+TMP_DIR = Path.home() / "tmp"
+TMP_DIR.mkdir(exist_ok=True)
 LST_VALID_MIN = 293
 LST_VALID_MAX = 61440
 SMI_OUT_NO_DATA = -99999.0
@@ -96,55 +99,65 @@ def get_lst_file_paths_from_s3():
 
 def main():
 
-    # retrieve lst files
-    lst_files = get_lst_file_paths_from_s3()
+    use_s3 = True
 
-    for lst_f in lst_files:
-        s3_client = boto3.client("s3")
-        s3_response = s3_client.get_object(Bucket="agrisense3", Key=lst_f)
-        with MemoryFile(s3_response['Body'].read()) as memfile:
-            with memfile.open() as src:
-                st_data = process_band_data(src.read(1))
-                st_data = calc_smi_from_lst(st_data)
-                out_meta = src.meta
-        out_meta["dtype"] = "float64"
-        out_meta["nodata"] = SMI_OUT_NO_DATA
-        out_f_path = lst_f.replace("ST_B10", "SMI")
+    if use_s3:
 
-        # upload to s3
-        # file locally then upload to s3?
+        # retrieve lst files
+        lst_files = get_lst_file_paths_from_s3()
     
-    # print(lst_files)
+        for lst_f in lst_files:
+            s3_client = boto3.client("s3")
+            s3_response = s3_client.get_object(Bucket="agrisense3", Key=lst_f)
+            with MemoryFile(s3_response['Body'].read()) as memfile:
+                with memfile.open() as src:
+                    st_data = process_band_data(src.read(1))
+                    smi_data = calc_smi_from_lst(st_data)
+                    out_meta = src.meta
+            out_meta["dtype"] = "float64"
+            out_meta["nodata"] = SMI_OUT_NO_DATA
+            out_f_path = lst_f.replace("ST_B10", "SMI")
+            out_f_path = out_f_path.replace('converted', str(TMP_DIR))
+            with rasterio.open(out_f_path, 'w', **out_meta) as dst:
+                dst.write(smi_data, 1)
 
+            print(f'Finished writing tif file to {out_f_path}')
+            # upload to s3
+            # file locally then upload to s3?
+            s3_path = 'smi_output/'+out_f_path.split('/')[-1]
+            s3_client.upload_file(out_f_path, 'agrisense3', s3_path)
+            print(f"Uploaded to S3 at {s3_path}")
 
-
-
-    # lst_tiff_files = get_list_of_lst_tiffs()
-    # for tiff_file_path in lst_tiff_files:
-    #     out_file_name = str(tiff_file_path).replace("ST_B10", "SMI")
-    #     print("Found")
-    #     print("\t"+str(tiff_file_path))
-    #     print("Creating")
-    #     print("\t"+out_file_name)
-
-    #     # read in tiff_file
-    #     tiff_dataset, tiff_data = read_lst_tiff(tiff_file_path)
-
-    #     smi_data = calc_smi_from_lst(tiff_data)
-    #     # replace nan's with filler
-    #     smi_data[np.isnan(smi_data)] = SMI_OUT_NO_DATA
-    #     print(f"Finished calculating SMI data")
-
-    #     # write tif
-    #     out_tiff_path = Path(out_file_name)
-    #     out_meta = tiff_dataset.meta
-    #     out_meta['dtype'] = "float64"
-    #     out_meta["nodata"] = SMI_OUT_NO_DATA
-
-    #     with rasterio.open(out_tiff_path, 'w', **out_meta) as dst:
-    #         dst.write(smi_data, 1)
-
-    #     print(f"Finished writing SMI to tif file {out_tiff_path.name}")
+            os.remove(out_f_path)
+            print(f'Removed local copy - {not os.path.exists(out_f_path)}')
+    else:
+    
+        lst_tiff_files = get_list_of_lst_tiffs()
+        for tiff_file_path in lst_tiff_files:
+            out_file_name = str(tiff_file_path).replace("ST_B10", "SMI")
+            print("Found")
+            print("\t"+str(tiff_file_path))
+            print("Creating")
+            print("\t"+out_file_name)
+    
+            # read in tiff_file
+            tiff_dataset, tiff_data = read_lst_tiff(tiff_file_path)
+    
+            smi_data = calc_smi_from_lst(tiff_data)
+            # replace nan's with filler
+            smi_data[np.isnan(smi_data)] = SMI_OUT_NO_DATA
+            print(f"Finished calculating SMI data")
+    
+            # write tif
+            out_tiff_path = Path(out_file_name)
+            out_meta = tiff_dataset.meta
+            out_meta['dtype'] = "float64"
+            out_meta["nodata"] = SMI_OUT_NO_DATA
+    
+            with rasterio.open(out_tiff_path, 'w', **out_meta) as dst:
+                dst.write(smi_data, 1)
+    
+            print(f"Finished writing SMI to tif file {out_tiff_path.name}")
 
     print("Done.")
 
