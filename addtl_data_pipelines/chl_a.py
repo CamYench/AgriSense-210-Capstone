@@ -7,10 +7,15 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import boto3
 import rasterio
 import rasterio.io
+from rasterio import MemoryFile
+
 
 DATA_PATH = Path(__file__).parent / "local_data"
+TMP_DIR = Path.home() / "tmp"
+TMP_DIR.mkdir(exist_ok=True)
 
 
 # band specs for surface reflectance
@@ -133,7 +138,7 @@ def process_band(band: np.ndarray, band_specs: BandSpecs, logging: bool = True):
     return data
 
 
-def process_file(path: Path, band_specs: BandSpecs):
+def process_file(path: Path, band_specs: BandSpecs, from_s3:bool = False):
     """
     Process a raster file and return the dataset reader and the processed data.
 
@@ -148,21 +153,37 @@ def process_file(path: Path, band_specs: BandSpecs):
     Raises:
         ValueError: If more than one band is found in the raster file.
     """
-    rio_dataset_reader = rasterio.open(path)  # type: rasterio.io.DatasetReader
-    indexes = rio_dataset_reader.indexes
-    if len(indexes) > 1:
-        raise ValueError(f"Found {len(indexes)} indexes in file {path.name}.")
+    if from_s3:
+        s3_client = boto3.client("s3")
+        s3_response = s3_client.get_object(Bucket="agrisense3", Key=str(path))
+        with MemoryFile(s3_response['Body'].read()) as memfile:
+            with memfile.open() as src:
+                indexes = src.indexes
+                if len(indexes) > 1:
+                    raise ValueError(f"Found {len(indexes)} indexes")
+                band_data = src.read(1)  # type: np.ndarray
+                processed_data = process_band(band_data, band_specs)
+                metadata = src.meta
+                return metadata, processed_data
 
-    band_data = rio_dataset_reader.read(1)  # type: np.ndarray
-    processed_data = process_band(band_data, band_specs)
-    return rio_dataset_reader, processed_data
+
+    else:
+        rio_dataset_reader = rasterio.open(path)  # type: rasterio.io.DatasetReader
+        indexes = rio_dataset_reader.indexes
+        if len(indexes) > 1:
+            raise ValueError(f"Found {len(indexes)} indexes in file {path.name}.")
+    
+        band_data = rio_dataset_reader.read(1)  # type: np.ndarray
+        processed_data = process_band(band_data, band_specs)
+        metadata = rio_dataset_reader.meta
+        return metadata, processed_data
 
 
-def process_grouped_files(grouped_files: dict[str, Path], band_specs: BandSpecs):
+def process_grouped_files(grouped_files: dict[str, Path], band_specs: BandSpecs, from_s3:bool=False):
     grouped_data: dict[str, tuple[rasterio.io.DatasetReader, np.ndarray]] = {}
     for band_name, band_file_path in grouped_files.items():
-        rio_dataset_reader, data = process_file(band_file_path, band_specs)
-        grouped_data[band_name] = (rio_dataset_reader, data)
+        metadata, data = process_file(band_file_path, band_specs, from_s3)
+        grouped_data[band_name] = (metadata, data)
     return grouped_data
 
 
@@ -217,28 +238,83 @@ def save_mtvi2_to_tiff(
     if logging:
         print(f"Wrote mtvi2_data to {path.name}")
 
+def find_band_data_files_on_s3(bs:BandSpecs):
+    s3_client = boto3.client('s3')
+    paginator = s3_client.get_paginator('list_objects_v2')
+    page_iterator = paginator.paginate(Bucket="agrisense3", Prefix="converted/")
+
+    nir_band_files = []
+    red_band_files = []
+    green_band_files = []
+    
+    for page in page_iterator:
+        for obj in page.get('Contents', []):
+            key = Path(obj['Key'])
+            if bs.nir_bidx+".tif" in key.name:
+                nir_band_files.append(key)
+            elif bs.red_bidx+".tif" in key.name:
+                red_band_files.append(key)
+            elif bs.green_bidx+".tif" in key.name:
+                green_band_files.append(key)
+
+
+
+    grouped_files: list[dict[str, Path]] = []
+    for nir_f in nir_band_files:
+        for red_f in red_band_files:
+            for green_f in green_band_files:
+                if (
+                    nir_f.name.replace(bs.nir_bidx, bs.red_bidx)
+                    == red_f.name
+                    and nir_f.name.replace(bs.nir_bidx, bs.green_bidx)
+                    == green_f.name
+                ):
+                    print(
+                        f"Found files:\n  {nir_f.name}\n  {red_f.name}\n  {green_f.name}"
+                    )
+                    grouped = {"nir": nir_f, "red": red_f, "green": green_f}
+                    grouped_files.append(grouped)
+    return grouped_files
+
 
 def main():
     bs = BandSpecs()
     print("Loaded band specs")
-    band_files = find_band_data_files(DATA_PATH, bs)
-    for grouped_files in band_files[:1]:
-        processed_files = process_grouped_files(grouped_files, bs)
 
-        nir_dataset_reader, nir_data = processed_files["nir"]
-        red_dataset_reader, red_data = processed_files["red"]
-        green_dataset_reader, green_data = processed_files["green"]
+    use_s3 = True
+    if use_s3:
+        band_files = find_band_data_files_on_s3(bs)
+    else:
+        band_files = find_band_data_files(DATA_PATH, bs)
+
+    for grouped_files in band_files:
+        processed_files = process_grouped_files(grouped_files, bs, from_s3=use_s3)
+
+        nir_metadata, nir_data = processed_files["nir"]
+        red_metadata, red_data = processed_files["red"]
+        green_metadata, green_data = processed_files["green"]
 
         mtvi2_data = calc_mtvi2(nir_data, green_data, red_data)
 
-        mtvi2_metadata = nir_dataset_reader.meta  # type: dict
+        mtvi2_metadata = nir_metadata.copy()
 
         out_path = Path(str(grouped_files["nir"]).replace(bs.nir_bidx, "MTVI2"))
+        out_path = TMP_DIR / out_path.name
+        print(f"out_path = {out_path}")
         save_mtvi2_to_tiff(mtvi2_data, mtvi2_metadata, out_path)
+        print(f"Saved MTVI2 tif at {out_path}")
+
+        if use_s3:
+            s3_path = "mtvi2_output/"+out_path.name
+            print(f"Uploading to S3 at {s3_path}")
+            s3_client = boto3.client('s3')
+            s3_client.upload_file(out_path, 'agrisense3', s3_path)
+
+            # remove local copy
+            out_path.unlink()
+            print(f"Removed local copy - {not out_path.exists()}")
 
     print("Done")
-
-    pass
 
 
 if __name__ == "__main__":
