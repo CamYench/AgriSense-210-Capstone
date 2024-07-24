@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!--====== Required meta tags ======-->
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!--====== Title ======-->
+  <title>AgriSense - Sustainable Agriculture</title>
+
+  <!--====== Favicon Icon ======-->
+  <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/svg" />
+
+  <!--====== Bootstrap css ======-->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+  <!--====== Line Icons css ======-->
+  <link rel="stylesheet" href="assets/css/lineicons.css" />
+
+  <!--====== Style css ======-->
+  <link rel="stylesheet" href="assets/scss/starterv1.css" />
+
+  <link rel="stylesheet" href="stylev1.css" />
+</head>
+
+<body>
+  <!--====== PART START ======-->
+  <div class="background"></div>
+
+ 
+      <button id="back-to-top" onclick="scrollToTop()">&#9650;</button>
+
+      <script>
+      window.onscroll = function() {scrollFunction()};
+      
+      function scrollFunction() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+              document.getElementById("back-to-top").style.display = "block";
+          } else {
+              document.getElementById("back-to-top").style.display = "none";
+          }
+      }
+      
+      function scrollToTop() {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+      }
+      </script>
+
+
+    <!--====== NAVBAR ONE PART START ======-->
+    <section class="navbar-area navbar-one">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg">
+                        <a class="navbar-brand" href="javascript:void(0)">
+                            <img src="AgriSenseLogo2.png" alt="Logo" class="logo"/>
+                        </a>
+                        <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbarOne"
+                            aria-controls="navbarOne"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                        >
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                            <ul class="navbar-nav m-auto">
+                                <li class="nav-item">
+                                    <a href="#about">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#services">Services</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#demo">Demo</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#team">Our Team</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#resources">Resources</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="navbar-btn d-none d-sm-inline-block">
+                           
+                        </div>
+                    </nav>
+                    <!-- navbar -->
+                </div>
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </section>
+    <!--====== NAVBAR ONE PART ENDS ======-->
+
+
+    <!--====== Bootstrap js ======-->
+    <script src="https://cdn.ayroui.com/1.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        //===== close navbar-collapse when a  clicked
+        let navbarTogglerOne = document.querySelector(
+        ".navbar-one .navbar-toggler"
+        );
+        navbarTogglerOne.addEventListener("click", function () {
+        navbarTogglerOne.classList.toggle("active");
+        });
+    </script>
+
+    <!--======  Start Section Title One ======-->
+    <div class="section-title-one">
+        <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <div class="content">
+                    <h2 class="fw-bold">AgriSense</h2>
+                    <p>
+                        Precision agriculture using satellite imagery.
+                    </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+    <!--====== ABOUT TWO PART ENDS ======-->
+ <!--====== FEATURE ONE PART START ======-->
+ <section id="about">
+ <section class="features-area features-one">
+    <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <!-- row -->
+        </div>
+    </div>
+    <!-- row -->
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-7 col-sm-9">
+            <div class="features-style-one text-center">
+                <div class="features-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="60" height="60"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"/></svg>
+                </div>
+                <div class="features-content">
+                <h4 class="features-title">Crop Monitoring</h4>
+                <p class="text">
+                    Our technology enables precise crop monitoring for informed decision-making.
+                </p>
+                <div class="features-btn rounded-buttons">
+                    <a
+                        class="btn primary-btn-outline rounded-full"
+                        href="javascript:void(0)"
+                        >
+                    KNOW MORE
+                    </a>
+                </div>
+                </div>
+            </div>
+            <!-- single features -->
+        </div>
+        <div class="col-lg-4 col-md-7 col-sm-9">
+            <div class="features-style-one text-center">
+                <div class="features-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="60" height="60">><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M0 48C0 21.5 21.5 0 48 0H336c26.5 0 48 21.5 48 48V464c0 26.5-21.5 48-48 48H240V432c0-26.5-21.5-48-48-48s-48 21.5-48 48v80H48c-26.5 0-48-21.5-48-48V48zM80 224c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H80zm80 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H176c-8.8 0-16 7.2-16 16zm112-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H272zM64 112v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zM176 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H176zm80 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H272c-8.8 0-16 7.2-16 16zm384 80v16c0 44.2-35.8 80-80 80H544V272c0-44.2 35.8-80 80-80h16zm0 128c0 44.2-35.8 80-80 80H544V384c0-44.2 35.8-80 80-80h16v16zm0 112c0 44.2-35.8 80-80 80H544V496c0-44.2 35.8-80 80-80h16v16zM512 496v16H496c-44.2 0-80-35.8-80-80V416h16c44.2 0 80 35.8 80 80zm0-96H496c-44.2 0-80-35.8-80-80V304h16c44.2 0 80 35.8 80 80v16zm0-128v16H496c-44.2 0-80-35.8-80-80V192h16c44.2 0 80 35.8 80 80zM528 32c13.3 0 24 10.7 24 24V160c0 13.3-10.7 24-24 24s-24-10.7-24-24V56c0-13.3 10.7-24 24-24zm96 64v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V96c0-13.3 10.7-24 24-24s24 10.7 24 24zM456 72c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V96c0-13.3 10.7-24 24-24z"/></svg>
+                </div>
+                <div class="features-content">
+                <h4 class="features-title">Yield Prediction</h4>
+                <p class="text">
+                    We use historical data and current crop health to accurately predict seasonal yields.
+                </p>
+                <div class="features-btn rounded-buttons">
+                    <a
+                        class="btn primary-btn-outline rounded-full"
+                        href="javascript:void(0)"
+                        >
+                    KNOW MORE
+                    </a>
+                </div>
+                </div>
+            </div>
+            <!-- single features -->
+        </div>
+        <div class="col-lg-4 col-md-7 col-sm-9">
+            <div class="features-style-one text-center">
+                <div class="features-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="60" height="60"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38 29.8L163 255.7c17.2 4.9 29 20.6 29 38.5v39.9c0 11 6.2 21 16 25.9s16 14.9 16 25.9v39c0 15.6 14.9 26.9 29.9 22.6c16.1-4.6 28.6-17.5 32.7-33.8l2.8-11.2c4.2-16.9 15.2-31.4 30.3-40l8.1-4.6c15-8.5 24.2-24.5 24.2-41.7v-8.3c0-12.7-5.1-24.9-14.1-33.9l-3.9-3.9c-9-9-21.2-14.1-33.9-14.1H257c-11.1 0-22.1-2.9-31.8-8.4l-34.5-19.7c-4.3-2.5-7.6-6.5-9.2-11.2c-3.2-9.6 1.1-20 10.2-24.5l5.9-3c6.6-3.3 14.3-3.9 21.3-1.5l23.2 7.7c8.2 2.7 17.2-.4 21.9-7.5c4.7-7 4.2-16.3-1.2-22.8l-13.6-16.3c-10-12-9.9-29.5 .3-41.3l15.7-18.3c8.8-10.3 10.2-25 3.5-36.7l-2.4-4.2c-3.5-.2-6.9-.3-10.4-.3C163.1 48 84.4 108.9 57.7 193zM464 256c0-36.8-9.6-71.4-26.4-101.5L412 164.8c-15.7 6.3-23.8 23.8-18.5 39.8l16.9 50.7c3.5 10.4 12 18.3 22.6 20.9l29.1 7.3c1.2-9 1.8-18.2 1.8-27.5zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/></svg>
+                </div>
+                <div class="features-content">
+                <h4 class="features-title">Sustainable Farming</h4>
+                <p class="text">
+                    Promoting sustainable farming methods for a healthier planet and thriving communities.
+                </p>
+                <div class="features-btn rounded-buttons">
+                    <a
+                        class="btn primary-btn-outline rounded-full"
+                        href="javascript:void(0)"
+                        >
+                    KNOW MORE
+                    </a>
+                </div>
+                </div>
+            </div>
+            <!-- single features -->
+        </div>
+    </div>
+    <!-- row -->
+    </div>
+    <!-- container -->
+</section>
+</section>
+<!--====== FEATURE ONE PART ENDS ======-->
+<!--====== PART ENDS ======-->
+<!--====== Glightbox  Css ======-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+
+    <!--====== CARD PART START ======-->
+    <section id="services">
+    <section class="card-area pb-5">
+        <div class="container">
+        <div class="row justify-content-center">
+            <div class="section-title text-center">
+                <h2 class="title">Crop Health Indicators</h2>
+            </div>
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-card card-style-one">
+                    <div class="card-image">
+                    <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\soil_moisture.png" alt="Soil Moisture" />
+                    </div>
+                    <div class="card-content">
+                    <h4 class="card-title">
+                        <a href="javascript:void(0)">Soil Moisture</a>
+                    </h4>
+                    <p class="text">
+                        We promote efficient irrigation practices by monitoring soil moisture to conserve water.
+                    </p>
+                    </div>
+                </div>
+                <!-- single-card -->
+            </div>
+            <!-- col -->
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-card card-style-one">
+                    <div class="card-image">
+                    <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\chlorophyll_content.png" alt="Chlorophyll Content" />
+                    </div>
+                    <div class="card-content">
+                    <h4 class="card-title">
+                        <a href="javascript:void(0)">Chlorophyll Content</a>
+                    </h4>
+                    <p class="text">
+                        Monitoring chlorophyll levels enables customized nutrient applications, ensuring optimal nutrition.
+                    </p>
+                    </div>
+                </div>
+                <!-- single-card -->
+            </div>
+            <!-- col -->
+            <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="single-card card-style-one">
+                    <div class="card-image">
+                    <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\surface_temp.png" alt="Surface Temperature" />
+                    </div>
+                    <div class="card-content">
+                    <h4 class="card-title">
+                        <a href="javascript:void(0)">Surface Temperature</a>
+                    </h4>
+                    <p class="text">
+                        We utilize surface temperature data to assess crop stress and enhance agricultural productivity.
+                    </p>
+                    </div>
+                </div>
+                <!-- single-card -->
+            </div>
+            <!-- col -->
+        </div>
+        <!-- row -->
+        </div>
+        <!-- container -->
+    </section>
+    <!--====== CARD PART ENDS ======-->
+    </section>
+   
+    <!--====== VIDEO ONE PART START ======-->
+    <section id="demo">
+    <section class="video-area video-one">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-10">
+                <div class="video-title text-center">
+                <h5>Learn & Share</h5>
+                <h2>Our Product in Action</h2>
+                <p class="text-lg">
+                    Explore our product demo and experience how easy it is to get started.
+                </p>
+                </div>
+                <!-- video title -->
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="video-content text-center">
+                <img src="https://cdn-image.farmtogether.com/_next/image?url=https%3A%2F%2Fblog.farmtogether.com%2Fcontent%2Fimages%2F2020%2F07%2Fdan-meyers-0AgtPoAARtE-unsplash.jpg&w=1920&q=90" alt="Video" />
+                <a class="video-popup glightbox" href="https://youtu.be/Z-hpGSdlSaQ">
+                <i class="lni lni-play"></i>
+                </a>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+    <!-- container -->
+    </section>
+    <!--====== VIDEO ONE PART ENDS ======-->
+    </section>
+    <!--====== Glightbox js ======-->
+    <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+
+    <script>
+        //========= glightbox
+        const videoTwo = GLightbox({
+            selector: ".glightbox",
+            type: "video",
+            source: "youtube", 
+            width: 900,
+            autoplayVideos: true,
+        });
+    </script>
+
+    <!--====== TEAM STYLE ONE START ======-->
+    <section id="team">
+    <section class="team-area">
+        <h2>Meet our Team</h2>
+        <div class="container">
+        <div class="row">
+           
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single-team text-center team-style-one">
+                    <div class="team-image">
+                    <img src="https://ca.slack-edge.com/T0WA5NWKG-U03NDG0V5LY-6bf398dd40d4-512" alt="Team" />
+                    </div>
+                    <div class="team-content">
+                    <h4 class="name">Pascual Eley</h4>
+                    <span class="sub-title">Data Scientist</span>
+                    
+                    </div>
+                </div>
+                <!-- single team -->
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single-team text-center team-style-one">
+                    <div class="team-image">
+                    <img src="https://ca.slack-edge.com/T0WA5NWKG-U02BVUQDRKP-011ea24337e8-512" alt="Team" />
+                    </div>
+                    <div class="team-content">
+                    <h4 class="name">Josh Fram</h4>
+                    <span class="sub-title">Data Scientist</span>
+                    
+                    </div>
+                </div>
+                <!-- single team -->
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single-team text-center team-style-one">
+                    <div class="team-image">
+                    <img src="https://ca.slack-edge.com/T0WA5NWKG-U02SLU639N0-44dff3a375c0-512" alt="Team" />
+                    </div>
+                    <div class="team-content">
+                    <h4 class="name">Maria Manna</h4>
+                    <span class="sub-title">Data Scientist</span>
+                    
+                    </div>
+                </div>
+                <!-- single team -->
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single-team text-center team-style-one">
+                    <div class="team-image">
+                    <img src="https://ca.slack-edge.com/T0WA5NWKG-U03KLEZJJMN-6556dd409e54-512" alt="Team" />
+                    </div>
+                    <div class="team-content">
+                    <h4 class="name">Diego McDonald</h4>
+                    <span class="sub-title">Data Scientist</span>
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single-team text-center team-style-one">
+                    <div class="team-image">
+                    <img src="https://ca.slack-edge.com/T0WA5NWKG-U04DDKPC53R-5e958a7aec6a-512" alt="Team" />
+                    </div>
+                    <div class="team-content">
+                    <h4 class="name">Cameron Yenche</h4>
+                    <span class="sub-title">Data Scientist</span>
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="single-team text-center team-style-one">
+                    <div class="team-image">
+                    <img src="advisors1.png" alt="Team" />
+                    </div>
+                    <div class="team-content">
+                    <span class="sub-title"><b>Advisors:</b> Korin Reid</span>
+                    <span class="sub-title">& Ramesh Sarukkai</span>
+                    
+                    
+                </div>
+                <!-- single team -->
+            </div>
+        </div>
+        <!-- row -->
+        </div>
+        <!-- container -->
+    </section>
+    <!--====== TEAM STYLE ONE ENDS ======-->
+    </section>
+    <!--====== FOOTER ONE PART START ======-->
+    <section id="resources">
+    <footer class="footer-area footer-one">
+        <div class="footer-widget">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-sm-12">
+                        <div class="footer-link">
+                            <h6 class="footer-title">Try it out!</h6>
+                            <ul>
+                                <li><a href="javascript:void(0)">Web App (Beta)</a></li>
+                            </ul>
+                        </div>
+                        <!-- footer link -->
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4 col-sm-12">
+                        <div class="footer-link">
+                            <h6 class="footer-title">Github</h6>
+                            <ul>
+                                <li><a href="https://github.com/CamYench/AgriSense-210-Capstone.git">Project Documentation</a></li>
+                            </ul>
+                        </div>
+                        <!-- footer link -->
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4 col-sm-12">
+                        <!-- Start Footer Contact -->
+                        <div class="footer-contact">
+                            <h6 class="footer-title">Help & Support</h6>
+                            <ul>
+                                <li><i class="lni lni-envelope"></i> support@agrisense.com</li>
+                            </ul>
+                        </div>
+                        <!-- End Footer Contact -->
+                    </div>
+                </div>
+                <!-- row -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- footer widget -->
+        <div class="footer-copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="copyright text-center d-md-flex justify-content-between align-items-center">
+                            <!-- Add copyright text here if we want -->
+                        </div>
+                        <!-- copyright -->
+                    </div>
+                </div>
+                <!-- row -->
+            </div>
+            <!-- container -->
+        </div>
+        <!-- footer copyright -->
+
+        <!-- Move the logo out of the column layout -->
+        <div class="footer-logo">
+            <a href="javascript:void(0)">
+                <img src="AgriSenseLogo2.png" alt="Logo" />
+            </a>
+        </div>
+    </footer>
+    <!--====== FOOTER ONE PART ENDS ======-->
+    </section>
+</body>
+
+</html>
