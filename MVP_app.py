@@ -68,6 +68,10 @@ if 'evi_landsat' not in st.session_state:
     st.session_state['evi_landsat'] = None
 if 'st_landsat' not in st.session_state:
     st.session_state['st_landsat'] = None
+if 'smi_landsat' not in st.session_state:
+    st.session_state['smi_landsat'] = None
+if 'mtvi_landsat' not in st.session_state:
+    st.session_state['mtvi_landsat'] = None
 
 # CSS and JavaScript
 st.markdown(
@@ -398,6 +402,8 @@ if view == "Crop Health":
             
             st.session_state['evi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[0])
             st.session_state['st_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[1])
+            st.session_state['smi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[2])
+            st.session_state['mtvi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[3])
             
             st.session_state['previous_aoi'] = st.session_state["aoi"]
             st.session_state["aoi"] = output['last_active_drawing']
@@ -431,7 +437,7 @@ if view == "Crop Health":
                     
                     #evi plot
                     fig = px.imshow(masked_evi, color_continuous_scale='YlGn', 
-                                    title=f"Selected Field's EVI as of: {latest_file_names[3]}",
+                                    title=f"Selected Field's EVI as of: {latest_file_names[4]}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
@@ -462,7 +468,7 @@ if view == "Crop Health":
 
                     #surface temperature plot
                     fig = px.imshow(masked_temp, color_continuous_scale='Jet', 
-                                    title=f"Selected Field's Surface Temperature (°F) as of: {latest_file_names[3]}",
+                                    title=f"Selected Field's Surface Temperature (°F) as of: {latest_file_names[4]}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
@@ -488,9 +494,62 @@ if view == "Crop Health":
 
 
             elif st.session_state.selected_option == "🌿 Chlorophyll Content":
-                    st.write(f"{st.session_state.selected_option} visualization coming soon!")
+                    # Mask the MTVI2 values to include only those greater than 0
+                    mask = st.session_state['mtvi_landsat'][0] > 0
+                    masked_mtvi = np.where(mask, st.session_state['mtvi_landsat'][0], np.nan)
+                    
+                    #mtvi plot
+                    fig = px.imshow(masked_mtvi, color_continuous_scale='YlGn', 
+                                    title=f"Selected Field's Chlorophyll Content (MTVI2) as of: {latest_file_names[4]}",
+                                    width=1025, height=800)
+                    fig.update_coloraxes(colorbar_title_side="right")
+                    fig.update_yaxes(visible=False, showticklabels=False)
+                    fig.update_xaxes(visible=False, showticklabels=False)
+                    
+
+                    #show figure in streamlit
+                    st.plotly_chart(fig)
+
+
+                    st.write(f'Maximum MTVI2 Value: {np.nanmax(masked_mtvi)}')
+                    st.write(f'Minimum MTVI2 Value: {np.nanmin(masked_mtvi)}')
+
+
+                    flat_data_mtvi = masked_mtvi.flatten()
+                    fig2 = px.histogram(flat_data_mtvi[~np.isnan(flat_data_mtvi)], nbins=50, title="Histogram of MTVI2",
+                                        width=1025, height=500)
+                    fig2.update_layout(xaxis_title="MTVI2", yaxis_title="Frequency", showlegend=False)
+                    st.plotly_chart(fig2)
+
+
             elif st.session_state.selected_option == "🌧️ Soil Moisture":
-                    st.write(f"{st.session_state.selected_option} visualization coming soon!")
+                    # Mask the soil moisture index (SMI) values to include only those greater than 0
+                    mask = st.session_state['smi_landsat'][0] > 0
+                    masked_smi = np.where(mask, st.session_state['smi_landsat'][0], np.nan)
+                    
+                    #smi plot
+                    fig = px.imshow(masked_smi, color_continuous_scale='YlGn', 
+                                    title=f"Selected Field's SMI as of: {latest_file_names[4]}",
+                                    width=1025, height=800)
+                    fig.update_coloraxes(colorbar_title_side="right")
+                    fig.update_yaxes(visible=False, showticklabels=False)
+                    fig.update_xaxes(visible=False, showticklabels=False)
+                    
+
+                    #show figure in streamlit
+                    st.plotly_chart(fig)
+
+
+                    st.write(f'Maximum SMI Value: {np.nanmax(masked_smi)}')
+                    st.write(f'Minimum SMI Value: {np.nanmin(masked_smi)}')
+
+
+                    flat_data_smi = masked_smi.flatten()
+                    fig2 = px.histogram(flat_data_smi[~np.isnan(flat_data_smi)], nbins=50, title="Histogram of SMI",
+                                        width=1025, height=500)
+                    fig2.update_layout(xaxis_title="SMI", yaxis_title="Frequency", showlegend=False)
+                    st.plotly_chart(fig2)
+
             elif st.session_state.selected_option == "NDVI":
                     st.write(f"{st.session_state.selected_option} visualization coming soon!")
 

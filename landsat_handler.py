@@ -18,11 +18,14 @@ def retrieve_latest_images():
     s3_client = boto3.client('s3')
     # s3_client = boto3.client(
     # 's3',
-    # aws_access_key_id='ASIAZSICGRC5O2STIAHF',
-    # aws_secret_access_key='WLKuMMDSAs2wL8LODrqJNcgpMxVEvopK5gc1Y2Tg',
-    # aws_session_token='IQoJb3JpZ2luX2VjEL///////////wEaCXVzLWVhc3QtMSJIMEYCIQCAdPeNDcRifPob36+FSNeannCg6LKIj/M6c90otwBZfQIhAIikkSA5vhaKno/+msruWduDkxMZRRKLqyn7XW4Yjbc2KvUCCJj//////////wEQAhoMNjU3NjcxNDg5NzIyIgymCkReJMp6FmJoD9IqyQIx9G+XvUngXlLhCgJPEVgbWKvzg54JOzTnAz70nkAs2J5xG/Hg2fMrMsr7v3LqKnVc8eHliYWaIZKLpcNTfeQSgkE71TRkI0s/2zkilv+EAQiZHv2BQ8WUAbpPy9+FdSC9tFvgU6APMZsoxjSw6xQQP85QWpYx5kqkyuUWhBkKqtmFhh82TWta/oahFd9C7KgcxlDRdkXLkWLgeWyd1mughUv6zlbn4JO4AVNbpLWMSGoR1jbg6IqTejyrZ7lRmuM8KtMlaDuxmjGZUkQ/Lz1D+0E71bAQ+18+MjcYYoh7kIztxH6LulgFW+kDltHmgKj4RcTp3m+UuREUYSHF2d7xy0vCZMQsTu4ikeB0zUeiJ/9SCMNataK6ss4E0IxkRK7XLWvl6hQYSp7qgvBlDnLtCDg2Psz8v0VAlbKFhA2RcKEVsofZ23f9CDDm64C1BjqmAUo4aDrfge4e/9tpvuWHrO1ayfOb25KrlZMCSTjULzicsYxNAUYsRmD4IBFvan8nF37zgL7t7lGhsgKA1WOfATa61E3cRezHjEtipe5r6NMCseS42pV3CxPKp3NiQPF8I46WkgddGPrcADIxwyw3aF9Rkp+lmJbFzIH2RU5M8EoDOyTC7kbOyLjqo49GChZvY1ArIraCdRrqnWkbymkAZW4ynA8/c48=')
+    # aws_access_key_id='ASIAZSICGRC5IGUMLDVH',
+    # aws_secret_access_key='x3I7whN2rs7GVChQj7cyT/PqUUK6vMvIeN/xwvQh',
+    # aws_session_token='IQoJb3JpZ2luX2VjEN3//////////wEaCXVzLWVhc3QtMSJIMEYCIQD2asuGwqfEfGYk2WHZCxMclU6X4We3XmwOW3Qx45b1RgIhAPGel695fVjm9z79wZrbcfZpwTjc3UU8PplftPlKTiwsKvUCCLX//////////wEQAhoMNjU3NjcxNDg5NzIyIgwYrRGerdTW8tANC1oqyQKeVEuYo2DBaU6yGPQ1chky7iuGptD8TGmH78eEuoxRT0jE1JDOwRjqqxA4sYqrUJCKfNr1xfEUrjU4I9xVgXBrDflZI2kuBOOfZtX+YLZOWVtT4g2zWFTTHA+LEDBMCy9cfOJPDdjUC9n4lJZ3I007aJWt0awL0KTm1hgMBSEaB6CKq5oCCpUJiLqxw5EcjgDuJbQ/JZH4UR8l3giCnWEl8j7DBNq/5FZ8a81oPpFYYfPCq+N/CwQfo0b97me/pdIsuL+G/lZTyK3tjCxNObqdB/pt+aX2L+YDFz6+8CFz1nTPVEVv9ZNhJjzijLSR6VXKryVebyqeRAd3fWDhELtcaZAtJrG90+Ig6UZKee52Pj5dphvayXTsGsVeoO0g20DGv9jyXN635XJZ8zL+c1AVpZAZIFaaLy+dMks3ZPRrPo/OPdo3wGWbiTD+nYe1BjqmAWrSx++3au7LG8RaeWdnLxmW2qMiviTskvXxgDwhZ+0RzYTlf0bSpFdR6qFBA2wN87vvfnHJctemYI3Nutwr8hfBvY1pTP2N4Hv+YobsZu1VR37nE8uBJ8aZ3lM6q0RFCH8VEHqRuOapRjWofIlF0Bgxd3oRJb7lYmf9pOMR/QG7TX6Gj8LDNJyGeBuX35sycViFRQYm8n5sJd64t3yC6P9DLj+7Pks=')
+    
     paginator = s3_client.get_paginator('list_objects_v2')
     page_iterator = paginator.paginate(Bucket="agrisense3", Prefix="converted/")
+    page_iterator_mtvi = paginator.paginate(Bucket="agrisense3", Prefix="mtvi2_output")
+    page_iterator_smi = paginator.paginate(Bucket="agrisense3", Prefix="smi_output")
     # evi_objects = page_iterator.search("Contents[?contains(Key, `EVI`)][]")
     
     
@@ -52,8 +55,31 @@ def retrieve_latest_images():
                         latest_surface_temp=key
                 except ValueError:
                     continue
+
+    for page in page_iterator_mtvi:
+        for obj in page.get('Contents', []):
+            key=obj['Key']
+            if 'MTVI2' in key:
+                try:
+                    date_str = key[30:38]
+                    if date_str == most_recent_date:
+                        latest_mtvi=key
+                except ValueError:
+                    continue
+
+    for page in page_iterator_smi:
+        for obj in page.get('Contents', []):
+            key=obj['Key']
+            if 'SMI' in key:
+                try:
+                    date_str = key[28:36]
+                    if date_str == most_recent_date:
+                        latest_smi=key
+                except ValueError:
+                    continue
     
-    return (latest_evi, latest_surface_temp, latest_soil_moisture, most_recent_date)
+
+    return (latest_evi, latest_surface_temp, latest_smi, latest_mtvi, most_recent_date)
                 
 
 
