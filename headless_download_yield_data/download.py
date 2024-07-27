@@ -1,15 +1,15 @@
-import dotenv
 import os
 import time
-import logging
 from pathlib import Path
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
 
-from utils import save_cookie, load_cookies
+import dotenv
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from utils import load_cookies, save_cookie
 
 LOADED_ENV = dotenv.load_dotenv(".env")
 if not LOADED_ENV:
@@ -31,20 +31,19 @@ if not LOGIN_PASSWORD:
 DEST_DIR = os.getenv("DEST_DIR")
 if not DEST_DIR:
     raise ValueError("Please set the DEST_DIDR environment variable in .env.")
+else:
+    DEST_DIR = Path(DEST_DIR)
+
+# exec options
+HEADLESS = True
 
 
 
-
-# setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-logger.addHandler(stream_handler)
 
 # driver options
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+if HEADLESS:
+    chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument('log-level=3')
 driver = webdriver.Chrome(options=chrome_options)
@@ -59,7 +58,7 @@ else: # need to login again --> 2FA
 
 
 if URL == LOGIN_URL:
-    logger.info("Logging in...")
+    print("Logging in...")
     # start scraping
     driver.get(URL)
 
@@ -102,9 +101,50 @@ elif URL == DEST_URL:
     driver.set_window_size(1920, 1080)
     driver.get("https://google.com")
     load_cookies(driver, LOGIN_COOKIES_PATH)
-    logger.info("Navigating to destination URL")
+    print("Navigating to destination URL")
     driver.get(URL)
-    iframe = driver.find_element(by=By.XPATH, value="//iframe")
+    try:
+        iframe = driver.find_element(by=By.XPATH, value="//iframe")
+    except NoSuchElementException:
+        login_again = input("Did not find correct iframe. Cookies likely expired. Login again? Requires 2FA. (y/n): ")
+        if login_again.lower() == 'y' and 'berkeley' in driver.current_url:
+            username = input("Username: ")
+            password = input("Password: ")
+            username_element = driver.find_element(by=By.ID, value="username")
+            username_element.send_keys(username)
+            password_element = driver.find_element(by=By.ID, value="password")
+            password_element.send_keys(password)
+            submit_element = driver.find_element(by=By.ID, value='submit')
+            submit_element.click()
+            print("Logged in...")
+            print("Sending passcode...")
+            verify_text_ele = driver.find_element(by=By.TAG_NAME, value='p')
+            verify_text = verify_text_ele.text
+            send_passcode_btn = driver.find_element(by=By.CLASS_NAME, value="send-passcode-button")
+            send_passcode_btn.click()
+            print(f"Verify Test: \n\t{verify_text}")
+            passcode = input("Passcode (7 digits): ")
+            passcode_input_element = driver.find_element(by=By.ID, value="passcode-input")
+            passcode_input_element.send_keys(passcode)
+            verify_btn = driver.find_element(by=By.CLASS_NAME, value="verify-button")
+            verify_btn.click()
+            trust_browser_btn = driver.find_element(by=By.ID, value='trust-browser-button')
+            trust_browser_btn.click() 
+            stay_signed_in_ele = driver.find_element(by=By.ID, value='idSIButton9')
+            stay_signed_in_ele.click()
+            print("Logged in...")
+            save_cookie(driver, LOGIN_COOKIES_PATH)
+            try:
+                iframe = driver.find_element(by=By.XPATH, value="//iframe")
+            except NoSuchElementException:
+                print('Some other error. Couldnt find correct iframe. Exiting...')
+                exit(1)
+                
+
+        else:
+            print("Exiting...")
+            exit(1)
+
     iframe_src = iframe.get_attribute("src")
 
     if not iframe_src:
@@ -117,7 +157,7 @@ elif URL == DEST_URL:
     WebDriverWait(driver, 10).until(lambda x: district_dropdown.is_displayed())
     salinas_option = district_dropdown.find_element(by=By.XPATH, value="//option[.='SALINAS/WATSONVILLE']")
     salinas_option.click()
-    logger.info("Selected Salinas/Watsonville district")
+    print("Selected Salinas/Watsonville district")
 
     # wait until loading is finished
     # time.sleep(10)
@@ -127,7 +167,7 @@ elif URL == DEST_URL:
     unit_dropdown = driver.find_element(by=By.XPATH, value="//*[@data-parametername='Unit']")
     pounds_option = unit_dropdown.find_element(by=By.XPATH,value="//option[.='POUNDS']")
     pounds_option.click()
-    logger.info("Selected POUNDS unit")
+    print("Selected POUNDS unit")
     # wait_element = driver.find_element(by=By.CLASS_NAME, value="WaitText")
     # time.sleep(10)
     WebDriverWait(driver, 10).until(lambda x: not driver.find_element(by=By.CLASS_NAME, value="WaitText").is_displayed())
@@ -138,7 +178,7 @@ elif URL == DEST_URL:
     sections_dropdown_btn.click()
     daily_section_option = driver.find_element(by=By.XPATH, value=".//label[.='DAILY']")
     daily_section_option.click()
-    logger.info("Selected DAILY section")
+    print("Selected DAILY section")
     # wait_element = driver.find_element(by=By.CLASS_NAME, value="WaitText")
     # time.sleep(10)
     WebDriverWait(driver, 10).until(lambda x: not driver.find_element(by=By.CLASS_NAME, value="WaitText").is_displayed())
@@ -146,7 +186,7 @@ elif URL == DEST_URL:
     # generate report
     view_report_btn = driver.find_element(by=By.CLASS_NAME, value="SubmitButton")
     view_report_btn.click()
-    logger.info("Generated report")
+    print("Generated report")
     # wait_element = driver.find_element(by=By.CLASS_NAME, value="WaitText")
     # time.sleep(10)
     WebDriverWait(driver, 10).until(lambda x: not driver.find_element(by=By.CLASS_NAME, value="WaitText").is_displayed())
@@ -161,7 +201,7 @@ elif URL == DEST_URL:
     excel_dl_btn.click()
 
     time.sleep(10)
-    logger.info("Downloaded excel file")
+    print("Downloaded excel file")
 
 
 # done
@@ -175,7 +215,10 @@ if len(xlsx_files) == 0:
     raise ValueError("No excel file downloaded")
 
 # move file to destination directory
+DEST_DIR.mkdir(exist_ok=True)
 for xlsx_file in xlsx_files:
-    xlsx_file.rename(Path(DEST_DIR) / xlsx_file.name)
+    dest_file = DEST_DIR / xlsx_file.name
+    print(f"Report moved to {dest_file}")
+    xlsx_file.rename(dest_file)
 
 
