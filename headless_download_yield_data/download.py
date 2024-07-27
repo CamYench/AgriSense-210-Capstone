@@ -31,13 +31,19 @@ if not LOGIN_PASSWORD:
 DEST_DIR = os.getenv("DEST_DIR")
 if not DEST_DIR:
     raise ValueError("Please set the DEST_DIDR environment variable in .env.")
+else:
+    DEST_DIR = Path(DEST_DIR)
+
+# exec options
+HEADLESS = True
 
 
 
 
 # driver options
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+if HEADLESS:
+    chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument('log-level=3')
 driver = webdriver.Chrome(options=chrome_options)
@@ -100,8 +106,44 @@ elif URL == DEST_URL:
     try:
         iframe = driver.find_element(by=By.XPATH, value="//iframe")
     except NoSuchElementException:
-        print("Did not find correct iframe. Cookies likely expired.")
-        exit(1)
+        login_again = input("Did not find correct iframe. Cookies likely expired. Login again? Requires 2FA. (y/n): ")
+        if login_again.lower() == 'y' and 'berkeley' in driver.current_url:
+            username = input("Username: ")
+            password = input("Password: ")
+            username_element = driver.find_element(by=By.ID, value="username")
+            username_element.send_keys(username)
+            password_element = driver.find_element(by=By.ID, value="password")
+            password_element.send_keys(password)
+            submit_element = driver.find_element(by=By.ID, value='submit')
+            submit_element.click()
+            print("Logged in...")
+            print("Sending passcode...")
+            verify_text_ele = driver.find_element(by=By.TAG_NAME, value='p')
+            verify_text = verify_text_ele.text
+            send_passcode_btn = driver.find_element(by=By.CLASS_NAME, value="send-passcode-button")
+            send_passcode_btn.click()
+            print(f"Verify Test: \n\t{verify_text}")
+            passcode = input("Passcode (7 digits): ")
+            passcode_input_element = driver.find_element(by=By.ID, value="passcode-input")
+            passcode_input_element.send_keys(passcode)
+            verify_btn = driver.find_element(by=By.CLASS_NAME, value="verify-button")
+            verify_btn.click()
+            trust_browser_btn = driver.find_element(by=By.ID, value='trust-browser-button')
+            trust_browser_btn.click() 
+            stay_signed_in_ele = driver.find_element(by=By.ID, value='idSIButton9')
+            stay_signed_in_ele.click()
+            print("Logged in...")
+            save_cookie(driver, LOGIN_COOKIES_PATH)
+            try:
+                iframe = driver.find_element(by=By.XPATH, value="//iframe")
+            except NoSuchElementException:
+                print('Some other error. Couldnt find correct iframe. Exiting...')
+                exit(1)
+                
+
+        else:
+            print("Exiting...")
+            exit(1)
 
     iframe_src = iframe.get_attribute("src")
 
@@ -173,7 +215,10 @@ if len(xlsx_files) == 0:
     raise ValueError("No excel file downloaded")
 
 # move file to destination directory
+DEST_DIR.mkdir(exist_ok=True)
 for xlsx_file in xlsx_files:
-    xlsx_file.rename(Path(DEST_DIR) / xlsx_file.name)
+    dest_file = DEST_DIR / xlsx_file.name
+    print(f"Report moved to {dest_file}")
+    xlsx_file.rename(dest_file)
 
 
