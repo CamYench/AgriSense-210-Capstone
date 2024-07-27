@@ -121,12 +121,13 @@ ul {
 }
 
 ul li {
-    margin: 0.5rem 0;
+    margin: 0rem 0;
 }
 
 .pb-5 {
     background-color: var(--background);
     padding-top: 70px;
+    padding-bottom: 150px;
 }
 .pb-5 h2 {
     font-weight: 700;
@@ -572,6 +573,20 @@ ul li {
     font-size:x-large;
   }
 
+  .services-title h5 {
+    font-weight: 600;
+    color: var(--sectiontitle);
+  }
+  .services-title h2 {
+    font-weight: 700;
+    color: var(--sectiontitle);
+    margin-top: 10px;
+  }
+  .services-title .text-lg {
+    margin-top: 24px;
+    color: var(--dark-3);
+  }
+
   .section-title-one .content p {
     color: var(--white); 
     font-weight: bold;
@@ -610,7 +625,7 @@ ul li {
   ===========================*/
   .features-one {
     background-color: var(--background);
-    padding-top: 30px;
+    padding-top: 100px;
     padding-bottom: 40px;
   }
   .features-one .section-title {
@@ -637,14 +652,51 @@ ul li {
   
   .features-style-one {
     position: relative;
-    background-color: var(--box);
-    padding: 40px 20px;
-    margin-top: 40px;
-    box-shadow: var(--shadow-2);
+    background-color: var(--background);
     border-radius: 4px;
     perspective: 1000px;
   }
   
+  .flip-card {
+    background-color: transparent;
+    width: 416px;
+    height: 416px;
+    perspective: 1000px;
+  }
+  
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  }
+  
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  .flip-card-front {
+    background-color: var(--box);
+    color: black;
+  }
+  
+  .flip-card-back {
+    background-color: var(--box);
+    color: white;
+    transform: rotateY(180deg);
+  }
+
   .features-style-one .features-icon {
     position: relative;
     display: inline-block;
@@ -662,7 +714,9 @@ ul li {
     -ms-transition: all 0.3s ease-out 0s;
     -o-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s;
-  }
+    margin-top: 25px; /* Adjust this value to move the icon down */
+}
+
   @media (max-width: 767px) {
     .features-style-one .features-icon {
       height: 70px;
@@ -677,7 +731,8 @@ ul li {
     background-color: var(--boxhover);
   }
   .features-style-one .features-content {
-    margin-top: 24px;
+    margin-top: 40px;
+    padding: 20px;
   }
   .features-style-one .features-title {
     font-size: 26px;
@@ -689,6 +744,8 @@ ul li {
     -ms-transition: all 0.3s ease-out 0s;
     -o-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s;
+    padding-bottom: 17px;
+    margin-top: -30px;
   }
   @media only screen and (min-width: 992px) and (max-width: 1199px), (max-width: 767px) {
     .features-style-one .features-title {
@@ -697,12 +754,140 @@ ul li {
   }
   .features-style-one .text {
     color: var(--boxtext);
-    margin-top: 16px;
+    margin-top: 20px;
+
   }
   .features-style-one .features-btn {
     margin-top: 32px;
   }
-/*===========================
+
+/* ===== Buttons Css ===== */
+.slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .primary-btn {
+  background: var(--primary);
+  color: var(--white);
+  box-shadow: var(--shadow-2);
+}
+.slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .active.primary-btn, .slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .primary-btn:hover, .slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .primary-btn:focus {
+  background: var(--primary-dark);
+  color: var(--white);
+  box-shadow: var(--shadow-4);
+}
+.slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .deactive.primary-btn {
+  background: var(--gray-4);
+  color: var(--dark-3);
+  pointer-events: none;
+}
+
+.slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .primary-btn-outline {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .active.primary-btn-outline, .slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .primary-btn-outline:hover, .slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .primary-btn-outline:focus {
+  background: var(--primary-dark);
+  color: var(--white);
+}
+.slider-one .bd-example .carousel .carousel-inner .carousel-item .carousel-caption .carousel-btn li .deactive.primary-btn-outline {
+  color: var(--dark-3);
+  border-color: var(--gray-4);
+  pointer-events: none;
+}
+  /*===========================
+  scroll css
+===========================*/
+.scroll-section {
+  background-color: var(--background);
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+
+.scroll-text {
+  font-size: 2em;
+  text-align: center;
+  color: var(--card);
+  font-weight: bold;
+}
+
+.scroll-container ul {
+  display: block; /* Ensure the list is displayed as a block */
+  list-style-type:none; /* Default bullets */
+
+  font-size: 1.5em;
+  color: var(--card);
+  line-height: 40px;
+  font-weight: bold;
+}
+
+.scroll-section .title {
+  text-align: center;
+  max-width: 550px;
+  margin: auto;
+  margin-bottom: 50px;
+  position: relative;
+  z-index: 5;
+  padding-top: 50px;
+  color: black;
+  font-weight: 700;
+  
+}
+
+#impact {
+  background-color: var(--background); 
+  padding: 50px 0;
+}
+
+.scroll-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+  height: 80vh;
+  
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar in Chrome, Safari, and other WebKit browsers */
+}
+
+.scroll-item {
+  flex: 0 0 auto;
+  background: var(--background);
+  min-width: 100%; /* Set a minimum width for the cards */
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+}
+
+
+.scroll-item h3 {
+  margin-top: 0;
+}
+
+.scroll-item p {
+  margin-bottom: 0;
+}
+
+.vertical-content {
+  height: 200vh; /* Just to make sure there's enough vertical scrolling space */
+  padding: 20px;
+}
+
+.scroll-title h5 {
+  font-weight: 600;
+  color: var(--sectiontitle);
+}
+.scroll-title h2 {
+  font-weight: 700;
+  color: var(--sectiontitle);
+  margin-top: 10px;
+}
+.scroll-title .text-lg {
+  margin-top: 24px;
+  color: var(--dark-3);
+}
+
+  /*===========================
   card-01 css
 ===========================*/
 .single-card {
@@ -746,10 +931,13 @@ ul li {
     margin-top: 8px;
   }
 
+  .card-area {
+    padding-bottom: 150px;
+  }
 /*===== VIDEO ONE =====*/
 .video-one {
     background-color: var(--primary);
-    padding-top: 120px;
+    padding-top: 20px;
     padding-bottom: 200px;
   }
   .video-one .video-title h5 {
@@ -773,6 +961,7 @@ ul li {
   }
   .video-one .video-content img {
     border-radius: 8px;
+    max-height: 500px;
   }
   .video-one .video-content a {
     width: 88px;
@@ -815,6 +1004,119 @@ ul li {
     background-color: var(--background);
   }
 
+/* tabs-four */
+@media (max-width: 767px) {
+  .tabs-four .nav {
+    display: block;
+  }
+}
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .tabs-four .nav {
+    display: flex;
+  }
+}
+.tabs-four .nav .nav-item a {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--dark-3);
+  font-weight: 700;
+  padding: 13px;
+  -webkit-transition: all 0.3s ease-out 0s;
+  -moz-transition: all 0.3s ease-out 0s;
+  -ms-transition: all 0.3s ease-out 0s;
+  -o-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+  display: block;
+  position: relative;
+}
+@media (max-width: 767px) {
+  .tabs-four .nav .nav-item a {
+    margin-top: -4px;
+  }
+}
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .tabs-four .nav .nav-item a {
+    margin-top: 0;
+  }
+}
+.tabs-four .nav .nav-item a i {
+  margin-right: 5px;
+  font-size: 18px;
+}
+.tabs-four .nav .nav-item a::before {
+  position: absolute;
+  content: "";
+  background-color: var(--gray-4);
+  width: 100%;
+  height: 4px;
+  left: 0;
+  bottom: 0;
+}
+.tabs-four .nav .nav-item a.active {
+  color: var(--background);
+  background: var(--selecttab);
+}
+.tabs-four .nav .nav-item a.active::before {
+  background: var(--selecttabunderline);
+}
+.tabs-four .tab-content .tab-text {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1800px;
+}
+
+.tabs-four .tab-content .tab-text .text {
+  color: var(--dark-3);
+  flex: 1;
+  margin-right: 60px; /* Add some space between text and image */
+}
+
+.tabs-title h5 {
+  font-weight: 600;
+  color: var(--sectiontitle);
+}
+.tabs-title h2 {
+  font-weight: 700;
+  color: var(--sectiontitle);
+  margin-top: 10px;
+  padding-bottom: 80px;
+}
+.tabs-title .text-lg {
+  margin-top: 24px;
+  color: var(--dark-3);
+}
+
+.tab-image {
+  max-width: 50%; /* Adjust the width as necessary */
+  height: auto;
+}
+
+.single-tabs {
+  max-width: 1800px; /* Adjust the max-width as necessary */
+  margin: 0 auto; /* Center the container */
+  padding-bottom: 100px;
+}
+
+#tab-four-four .tab-text {
+  padding-left: 50px; /* Adjust this value as needed */
+  padding-right: 200px; /* Adjust this value as needed */
+  /* Optional: Adjust top and bottom padding if needed */
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+#tab-four-four .tab-text {
+  max-width: 1530px; /* Adjust this value as needed */
+  margin: 0 auto; /* Center-align the content */
+  line-height: 25px;
+}
+
+#tab-four-four .tab-text a {
+  color: var(--citationlink); /* Change this to the color you want */
+  text-decoration: none; /* Optional: Remove underline */
+}
   /*===========================
   teams css 
 ===========================*/
@@ -834,6 +1136,8 @@ ul li {
     font-weight: 700;
     color: var(--sectiontitle);
     text-align: center;
+    padding-bottom: 80px;
+    padding-top: 80px;
   }
 
 
@@ -877,6 +1181,8 @@ ul li {
     padding-bottom: 25px;
   }
   
+
+ 
 /*===== FOOTER ONE =====*/
 .footer-one {
     position: relative;
@@ -891,12 +1197,11 @@ ul li {
     transform: translate(-50%, -50%);
     max-width: 20%;
     opacity: 0.2;
-    padding-bottom: 100px;
 }
 
 .footer-one .footer-widget {
     padding-top: 250px;
-    padding-bottom: 30px;
+    padding-bottom: 130px;
     position: relative;
     z-index: 1;
 }
@@ -971,6 +1276,7 @@ ul li {
     margin-top: 24px;
     padding: 0;
     list-style: none;
+    text-align: center;
 }
 
 .footer-one .footer-contact ul li {
@@ -987,8 +1293,8 @@ ul li {
 
 .footer-one .footer-contact ul li i {
     font-size: 18px;
-    position: absolute;
-    left: 0;
+    position: relative;
+    left: -5px;
     top: 4px;
 }
 

@@ -14,6 +14,13 @@
   <!--====== Favicon Icon ======-->
   <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/svg" />
 
+    <!--====== Font Awesome ======-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!--====== Material Icons ======-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
   <!--====== Bootstrap css ======-->
   <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
 
@@ -76,13 +83,19 @@
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
                             <ul class="navbar-nav m-auto">
                                 <li class="nav-item">
-                                    <a href="#about">About</a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="#services">Services</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="#impact">Impact</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#features">Features</a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="#demo">Demo</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#method">Methodology</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#team">Our Team</a>
@@ -140,9 +153,16 @@
     </div>
     <!--====== ABOUT TWO PART ENDS ======-->
  <!--====== FEATURE ONE PART START ======-->
- <section id="about">
+ <section id="services">
  <section class="features-area features-one">
     <div class="container">
+        <div class="services-title text-center">
+            <h5>What do we offer?</h5>
+            <h2>Services We Provide</h2>
+            <p class="text-lg">
+                <hr style="width: 100px; border: 3px solid #000; margin: 20px auto;">
+            </p>
+        </div>
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <!-- row -->
@@ -152,74 +172,129 @@
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-7 col-sm-9">
             <div class="features-style-one text-center">
-                <div class="features-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="60" height="60"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"/></svg>
-                </div>
-                <div class="features-content">
-                <h4 class="features-title">Crop Monitoring</h4>
-                <p class="text">
-                    Our technology enables precise crop monitoring for informed decision-making.
-                </p>
-                <div class="features-btn rounded-buttons">
-                    <a
-                        class="btn primary-btn-outline rounded-full"
-                        href="javascript:void(0)"
-                        >
-                    KNOW MORE
-                    </a>
-                </div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="features-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="60" height="60"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"/></svg>
+                            </div>
+                            <div class="features-content">
+                                <h4 class="features-title">Crop Monitoring</h4>
+                                <p class="text">
+                                Our technology enables precise crop monitoring for informed decision-making.
+                                </p>
+                                <div class="features-btn rounded-buttons">
+                                    <a
+                                    class="btn primary-btn-outline rounded-full"
+                                    href="javascript:void(0)"
+                                    >
+                                    KNOW MORE
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="features-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="60" height="60"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"/></svg>
+                            </div>
+                            <div class="features-content">
+                                <h4 class="features-title">Crop Monitoring</h4>
+                                <p class="text">
+                                    By leveraging advanced satellite imagery, we provide real-time data on plant health, 
+                                    growth patterns, and potential stress factors. This innovative approach allows farmers 
+                                    to make informed decisions, resulting in better resource allocation and improved crop performance.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- single features -->
         </div>
+        
+        <!-- single features -->
         <div class="col-lg-4 col-md-7 col-sm-9">
             <div class="features-style-one text-center">
-                <div class="features-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="60" height="60">><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M0 48C0 21.5 21.5 0 48 0H336c26.5 0 48 21.5 48 48V464c0 26.5-21.5 48-48 48H240V432c0-26.5-21.5-48-48-48s-48 21.5-48 48v80H48c-26.5 0-48-21.5-48-48V48zM80 224c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H80zm80 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H176c-8.8 0-16 7.2-16 16zm112-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H272zM64 112v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zM176 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H176zm80 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H272c-8.8 0-16 7.2-16 16zm384 80v16c0 44.2-35.8 80-80 80H544V272c0-44.2 35.8-80 80-80h16zm0 128c0 44.2-35.8 80-80 80H544V384c0-44.2 35.8-80 80-80h16v16zm0 112c0 44.2-35.8 80-80 80H544V496c0-44.2 35.8-80 80-80h16v16zM512 496v16H496c-44.2 0-80-35.8-80-80V416h16c44.2 0 80 35.8 80 80zm0-96H496c-44.2 0-80-35.8-80-80V304h16c44.2 0 80 35.8 80 80v16zm0-128v16H496c-44.2 0-80-35.8-80-80V192h16c44.2 0 80 35.8 80 80zM528 32c13.3 0 24 10.7 24 24V160c0 13.3-10.7 24-24 24s-24-10.7-24-24V56c0-13.3 10.7-24 24-24zm96 64v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V96c0-13.3 10.7-24 24-24s24 10.7 24 24zM456 72c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V96c0-13.3 10.7-24 24-24z"/></svg>
-                </div>
-                <div class="features-content">
-                <h4 class="features-title">Yield Prediction</h4>
-                <p class="text">
-                    We use historical data and current crop health to accurately predict seasonal yields.
-                </p>
-                <div class="features-btn rounded-buttons">
-                    <a
-                        class="btn primary-btn-outline rounded-full"
-                        href="javascript:void(0)"
-                        >
-                    KNOW MORE
-                    </a>
-                </div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="features-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="60" height="60">><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M0 48C0 21.5 21.5 0 48 0H336c26.5 0 48 21.5 48 48V464c0 26.5-21.5 48-48 48H240V432c0-26.5-21.5-48-48-48s-48 21.5-48 48v80H48c-26.5 0-48-21.5-48-48V48zM80 224c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H80zm80 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H176c-8.8 0-16 7.2-16 16zm112-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H272zM64 112v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zM176 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H176zm80 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H272c-8.8 0-16 7.2-16 16zm384 80v16c0 44.2-35.8 80-80 80H544V272c0-44.2 35.8-80 80-80h16zm0 128c0 44.2-35.8 80-80 80H544V384c0-44.2 35.8-80 80-80h16v16zm0 112c0 44.2-35.8 80-80 80H544V496c0-44.2 35.8-80 80-80h16v16zM512 496v16H496c-44.2 0-80-35.8-80-80V416h16c44.2 0 80 35.8 80 80zm0-96H496c-44.2 0-80-35.8-80-80V304h16c44.2 0 80 35.8 80 80v16zm0-128v16H496c-44.2 0-80-35.8-80-80V192h16c44.2 0 80 35.8 80 80zM528 32c13.3 0 24 10.7 24 24V160c0 13.3-10.7 24-24 24s-24-10.7-24-24V56c0-13.3 10.7-24 24-24zm96 64v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V96c0-13.3 10.7-24 24-24s24 10.7 24 24zM456 72c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V96c0-13.3 10.7-24 24-24z"/></svg>
+                            </div>
+                            <div class="features-content">
+                                <h4 class="features-title">Yield Prediction</h4>
+                                <p class="text">
+                                    We use historical data and current crop health to accurately predict seasonal yields.
+                                </p>
+                                <div class="features-btn rounded-buttons">
+                                    <a
+                                    class="btn primary-btn-outline rounded-full"
+                                    href="javascript:void(0)"
+                                    >
+                                    KNOW MORE
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="features-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="60" height="60">><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M0 48C0 21.5 21.5 0 48 0H336c26.5 0 48 21.5 48 48V464c0 26.5-21.5 48-48 48H240V432c0-26.5-21.5-48-48-48s-48 21.5-48 48v80H48c-26.5 0-48-21.5-48-48V48zM80 224c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H80zm80 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H176c-8.8 0-16 7.2-16 16zm112-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H272zM64 112v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zM176 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H176zm80 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H272c-8.8 0-16 7.2-16 16zm384 80v16c0 44.2-35.8 80-80 80H544V272c0-44.2 35.8-80 80-80h16zm0 128c0 44.2-35.8 80-80 80H544V384c0-44.2 35.8-80 80-80h16v16zm0 112c0 44.2-35.8 80-80 80H544V496c0-44.2 35.8-80 80-80h16v16zM512 496v16H496c-44.2 0-80-35.8-80-80V416h16c44.2 0 80 35.8 80 80zm0-96H496c-44.2 0-80-35.8-80-80V304h16c44.2 0 80 35.8 80 80v16zm0-128v16H496c-44.2 0-80-35.8-80-80V192h16c44.2 0 80 35.8 80 80zM528 32c13.3 0 24 10.7 24 24V160c0 13.3-10.7 24-24 24s-24-10.7-24-24V56c0-13.3 10.7-24 24-24zm96 64v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V96c0-13.3 10.7-24 24-24s24 10.7 24 24zM456 72c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V96c0-13.3 10.7-24 24-24z"/></svg>
+                            </div>
+                            <div class="features-content">
+                                <h4 class="features-title">Yield Prediction</h4>
+                                <p class="text">
+                                    By analyzing key indicators such as plant vigor and environmental conditions, we enable precise 
+                                    forecasting. This cutting-edge technology empowers farmers to anticipate yields with greater 
+                                    accuracy, reducing waste and increasing profitability.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- single features -->
         </div>
+        <!-- single features -->
         <div class="col-lg-4 col-md-7 col-sm-9">
             <div class="features-style-one text-center">
-                <div class="features-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="60" height="60"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38 29.8L163 255.7c17.2 4.9 29 20.6 29 38.5v39.9c0 11 6.2 21 16 25.9s16 14.9 16 25.9v39c0 15.6 14.9 26.9 29.9 22.6c16.1-4.6 28.6-17.5 32.7-33.8l2.8-11.2c4.2-16.9 15.2-31.4 30.3-40l8.1-4.6c15-8.5 24.2-24.5 24.2-41.7v-8.3c0-12.7-5.1-24.9-14.1-33.9l-3.9-3.9c-9-9-21.2-14.1-33.9-14.1H257c-11.1 0-22.1-2.9-31.8-8.4l-34.5-19.7c-4.3-2.5-7.6-6.5-9.2-11.2c-3.2-9.6 1.1-20 10.2-24.5l5.9-3c6.6-3.3 14.3-3.9 21.3-1.5l23.2 7.7c8.2 2.7 17.2-.4 21.9-7.5c4.7-7 4.2-16.3-1.2-22.8l-13.6-16.3c-10-12-9.9-29.5 .3-41.3l15.7-18.3c8.8-10.3 10.2-25 3.5-36.7l-2.4-4.2c-3.5-.2-6.9-.3-10.4-.3C163.1 48 84.4 108.9 57.7 193zM464 256c0-36.8-9.6-71.4-26.4-101.5L412 164.8c-15.7 6.3-23.8 23.8-18.5 39.8l16.9 50.7c3.5 10.4 12 18.3 22.6 20.9l29.1 7.3c1.2-9 1.8-18.2 1.8-27.5zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/></svg>
-                </div>
-                <div class="features-content">
-                <h4 class="features-title">Sustainable Farming</h4>
-                <p class="text">
-                    Promoting sustainable farming methods for a healthier planet and thriving communities.
-                </p>
-                <div class="features-btn rounded-buttons">
-                    <a
-                        class="btn primary-btn-outline rounded-full"
-                        href="javascript:void(0)"
-                        >
-                    KNOW MORE
-                    </a>
-                </div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="features-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="60" height="60"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38 29.8L163 255.7c17.2 4.9 29 20.6 29 38.5v39.9c0 11 6.2 21 16 25.9s16 14.9 16 25.9v39c0 15.6 14.9 26.9 29.9 22.6c16.1-4.6 28.6-17.5 32.7-33.8l2.8-11.2c4.2-16.9 15.2-31.4 30.3-40l8.1-4.6c15-8.5 24.2-24.5 24.2-41.7v-8.3c0-12.7-5.1-24.9-14.1-33.9l-3.9-3.9c-9-9-21.2-14.1-33.9-14.1H257c-11.1 0-22.1-2.9-31.8-8.4l-34.5-19.7c-4.3-2.5-7.6-6.5-9.2-11.2c-3.2-9.6 1.1-20 10.2-24.5l5.9-3c6.6-3.3 14.3-3.9 21.3-1.5l23.2 7.7c8.2 2.7 17.2-.4 21.9-7.5c4.7-7 4.2-16.3-1.2-22.8l-13.6-16.3c-10-12-9.9-29.5 .3-41.3l15.7-18.3c8.8-10.3 10.2-25 3.5-36.7l-2.4-4.2c-3.5-.2-6.9-.3-10.4-.3C163.1 48 84.4 108.9 57.7 193zM464 256c0-36.8-9.6-71.4-26.4-101.5L412 164.8c-15.7 6.3-23.8 23.8-18.5 39.8l16.9 50.7c3.5 10.4 12 18.3 22.6 20.9l29.1 7.3c1.2-9 1.8-18.2 1.8-27.5zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/></svg>
+                            </div>
+                            <div class="features-content">
+                                <h4 class="features-title">Sustainable Farming</h4>
+                                <p class="text">
+                                    We promote sustainable farming methods for a healthier planet and thriving communities.
+                                </p>
+                                <div class="features-btn rounded-buttons">
+                                    <a
+                                    class="btn primary-btn-outline rounded-full"
+                                    href="javascript:void(0)"
+                                    >
+                                    KNOW MORE
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="features-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="60" height="60"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#FFFFFF" d="M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38 29.8L163 255.7c17.2 4.9 29 20.6 29 38.5v39.9c0 11 6.2 21 16 25.9s16 14.9 16 25.9v39c0 15.6 14.9 26.9 29.9 22.6c16.1-4.6 28.6-17.5 32.7-33.8l2.8-11.2c4.2-16.9 15.2-31.4 30.3-40l8.1-4.6c15-8.5 24.2-24.5 24.2-41.7v-8.3c0-12.7-5.1-24.9-14.1-33.9l-3.9-3.9c-9-9-21.2-14.1-33.9-14.1H257c-11.1 0-22.1-2.9-31.8-8.4l-34.5-19.7c-4.3-2.5-7.6-6.5-9.2-11.2c-3.2-9.6 1.1-20 10.2-24.5l5.9-3c6.6-3.3 14.3-3.9 21.3-1.5l23.2 7.7c8.2 2.7 17.2-.4 21.9-7.5c4.7-7 4.2-16.3-1.2-22.8l-13.6-16.3c-10-12-9.9-29.5 .3-41.3l15.7-18.3c8.8-10.3 10.2-25 3.5-36.7l-2.4-4.2c-3.5-.2-6.9-.3-10.4-.3C163.1 48 84.4 108.9 57.7 193zM464 256c0-36.8-9.6-71.4-26.4-101.5L412 164.8c-15.7 6.3-23.8 23.8-18.5 39.8l16.9 50.7c3.5 10.4 12 18.3 22.6 20.9l29.1 7.3c1.2-9 1.8-18.2 1.8-27.5zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/></svg>
+                            </div>
+                            <div class="features-content">
+                                <h4 class="features-title">Sustainable Farming</h4>
+                                <p class="text">
+                                    Sustainable farming practices are vital for preserving our environment and ensuring long-term 
+                                    agricultural viability. Our platform monitors key factors like soil health and water usage, 
+                                    helping  farmers adopt more sustainable practices while maintaining high productivity.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- single features -->
-        </div>
+        </div> 
+        <!-- single features -->
     </div>
-    <!-- row -->
-    </div>
-    <!-- container -->
 </section>
 </section>
 <!--====== FEATURE ONE PART ENDS ======-->
@@ -227,72 +302,140 @@
 <!--====== Glightbox  Css ======-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 
-    <!--====== CARD PART START ======-->
-    <section id="services">
+<section id="impact">
+<section class="scroll-section">
+    <div class="row justify-content-center">
+        <div class="scroll-title text-center">
+            <h5>Let's slow down...</h5>
+            <h2>Why is this important?</h2>
+        </div>
+        <div class="scroll-container">
+            <div class="scroll-item"><p class="scroll-text">70% of freshwater is used for agriculture, 50% of which<br>
+                is wasted in inefficient irrigation.<sup>[1][2]</sup></p></div>
+            <div class="scroll-item"><p class="scroll-text">Over 40% of fertilizer is wasted in unabsorbed runoff.<sup>[3]</sup></p></div>
+            <div class="scroll-item"><p class="scroll-text">1/3 of the world's farmable land has disappeared in<br>
+                the last 4 decades. Major contributing factors are<br>
+                overfertilization and unsustainable agriculture practices.<sup>[4]</sup></p></div>
+            <div class="scroll-item"><p class="scroll-text">Agriculture accounts for 22% of global greenhouse gas emissions.<sup>[5]</sup></p></div>
+            <div class="scroll-item"><p class="scroll-text">Farmers using precision agriculture technologies have achieved:<sup>[6]</sup></p>
+                <ul>
+                    <li>4% reduction in water use</li>
+                    <li>7% increase in fertilizer placement efficiency</li>
+                    <li>9% reduction in herbicide and pesticide use</li>
+                    <li>6% reduction in fossil fuel use</li>
+                    <li>4% increase in crop production</li>
+                    </ul> </div>
+            <div class="scroll-item"><p class="scroll-text"><b>AgriSense:<br>
+                Where Precision Meets Sustainability.<br>
+                Boost Your Profits, Reduce Our Planet's Footprint.</p></b></div>
+        </div>
+    </div>
+</section>
+<script>
+        const scrollContainer = document.querySelector('.scroll-container');
+  
+    const handleScroll = (evt) => {
+      evt.preventDefault();
+      const scrollSpeed = 2; // Increase this value for faster scrolling
+      scrollContainer.scrollLeft += evt.deltaY * scrollSpeed;
+  
+      // Check if user has scrolled to the end of the horizontal content
+      const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      if (scrollContainer.scrollLeft >= maxScrollLeft) {
+        scrollContainer.removeEventListener('wheel', handleScroll);
+      }
+    };
+  
+    scrollContainer.addEventListener('wheel', handleScroll);
+</script>
+
+
+<!--====== CARD PART START ======-->
+<section id="features">
     <section class="card-area pb-5">
         <div class="container">
-        <div class="row justify-content-center">
-            <div class="section-title text-center">
-                <h2 class="title">Crop Health Indicators</h2>
-            </div>
-            <div class="col-lg-4 col-md-7 col-sm-9">
-                <div class="single-card card-style-one">
-                    <div class="card-image">
-                    <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\soil_moisture.png" alt="Soil Moisture" />
-                    </div>
-                    <div class="card-content">
-                    <h4 class="card-title">
-                        <a href="javascript:void(0)">Soil Moisture</a>
-                    </h4>
-                    <p class="text">
-                        We promote efficient irrigation practices by monitoring soil moisture to conserve water.
-                    </p>
+            <div class="row justify-content-center">
+                <div class="section-title text-center">
+                    <h5>What we look for</h5>
+                    <h2>Key Indicators</h2>
+                </div>
+                
+                <!-- Existing Cards -->
+                <div class="col-lg-3 col-md-6 col-sm-9">
+                    <div class="single-card card-style-one">
+                        <div class="card-image">
+                            <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\soil_moisture.png" alt="Soil Moisture" />
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">
+                                <a>Soil Moisture</a>
+                            </h4>
+                            <p class="text">
+                                We promote efficient irrigation practices by monitoring soil moisture to conserve water.
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <!-- single-card -->
-            </div>
-            <!-- col -->
-            <div class="col-lg-4 col-md-7 col-sm-9">
-                <div class="single-card card-style-one">
-                    <div class="card-image">
-                    <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\chlorophyll_content.png" alt="Chlorophyll Content" />
-                    </div>
-                    <div class="card-content">
-                    <h4 class="card-title">
-                        <a href="javascript:void(0)">Chlorophyll Content</a>
-                    </h4>
-                    <p class="text">
-                        Monitoring chlorophyll levels enables customized nutrient applications, ensuring optimal nutrition.
-                    </p>
-                    </div>
-                </div>
-                <!-- single-card -->
-            </div>
-            <!-- col -->
-            <div class="col-lg-4 col-md-7 col-sm-9">
-                <div class="single-card card-style-one">
-                    <div class="card-image">
-                    <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\surface_temp.png" alt="Surface Temperature" />
-                    </div>
-                    <div class="card-content">
-                    <h4 class="card-title">
-                        <a href="javascript:void(0)">Surface Temperature</a>
-                    </h4>
-                    <p class="text">
-                        We utilize surface temperature data to assess crop stress and enhance agricultural productivity.
-                    </p>
+                <!-- col -->
+                <div class="col-lg-3 col-md-6 col-sm-9">
+                    <div class="single-card card-style-one">
+                        <div class="card-image">
+                            <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\chlorophyll_content.png" alt="Chlorophyll Content" />
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">
+                                <a>Chlorophyll Content</a>
+                            </h4>
+                            <p class="text">
+                                Monitoring chlorophyll enables customized nutrient applications, ensuring optimal nutrition.
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <!-- single-card -->
+                <!-- col -->
+                <div class="col-lg-3 col-md-6 col-sm-9">
+                    <div class="single-card card-style-one">
+                        <div class="card-image">
+                            <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\surface_temp.png" alt="Surface Temperature" />
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">
+                                <a>Surface Temperature</a>
+                            </h4>
+                            <p class="text">
+                                We utilize surface temperature data to assess crop stress and enhance agricultural productivity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- col -->
+
+                <!-- New Card -->
+                <div class="col-lg-3 col-md-6 col-sm-9">
+                    <div class="single-card card-style-one">
+                        <div class="card-image">
+                            <img src="C:\Users\Maria\OneDrive\Desktop\Grad_School\Capstone\AgriSenseWebDeliv\WebDeliv\vegindex.png" alt="Vegetation Indices" />
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">
+                                <a>Vegetation Indices</a>
+                            </h4>
+                            <p class="text">
+                                Assessing vegetation indices like EVI helps in monitoring crop health and optimizing resource use.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- col -->
+
             </div>
-            <!-- col -->
-        </div>
-        <!-- row -->
+            <!-- row -->
         </div>
         <!-- container -->
     </section>
     <!--====== CARD PART ENDS ======-->
-    </section>
+</section>
+
    
     <!--====== VIDEO ONE PART START ======-->
     <section id="demo">
@@ -340,6 +483,157 @@
             autoplayVideos: true,
         });
     </script>
+
+
+
+<!--====== TABS START ======-->
+<section id="method">
+<div class="tabs">
+    <div class="tabs-title text-center">
+        <h5>Behind the scenes</h5>
+        <h2>Our Methodology</h2>
+    </div>
+    <div class="single-tabs tabs-four">
+       <ul class="nav nav-justified" id="myTab" role="tablist">
+          <li class="nav-item">
+             <a class="active" id="tab-four-one-tab" data-bs-toggle="tab" href="#tab-four-one" role="tab"
+                aria-controls="tab-four-one" aria-selected="true">
+                <i class="fas fa-database"></i> The Data </a>
+          </li>
+          <li class="nav-item">
+             <a id="tab-four-two-tab" data-bs-toggle="tab" href="#tab-four-two" role="tab"
+                aria-controls="tab-four-two" aria-selected="false">
+                <i class="fas fa-brain"></i> The Model </a>
+          </li>
+          <li class="nav-item">
+             <a id="tab-four-three-tab" data-bs-toggle="tab" href="#tab-four-three" role="tab"
+                aria-controls="tab-four-three" aria-selected="false">
+                <i class="material-icons">cloud_queue</i> The Infrastructure </a>
+          </li>
+          <li class="nav-item">
+             <a id="tab-four-four-tab" data-bs-toggle="tab" href="#tab-four-four" role="tab"
+                aria-controls="three-four-four" aria-selected="false">
+                <i class="fas fa-file-alt"></i> Citations </a>
+          </li>
+       </ul>
+       <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tab-four-one" role="tabpanel"
+                aria-labelledby="tab-four-one-tab">
+                <div class="tab-text">
+                    <p class="text">
+                        Data Acquisition: Download Landsat and Cropscape data via APIs from nassgeodata.gmu.edu (Cropscape) and espa.cr.usgs.gov (Landsat) using custom ETL scripts; jobs are scheduled in Sagemaker and run automatically
+                        <br /><br />
+                        Reprojection and Resampling: Reproject and resample the data to ensure consistent spatial resolution and coordinate systems. Custom Python functions handle these transformations, preparing the data for uniform analysis.
+                        <br /><br />
+                        Masking: Apply a mask to the reprojected and resampled data to isolate specific areas of interest. A threshold creates the mask, which filters the target raster data.
+                        <br /><br />
+                        Loading to S3: Upload the processed and masked data to Amazon S3.
+                    </p>
+                    <img src="data_pipeline.png" alt="Data Pipeline" class="tab-image">
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-four-two" role="tabpanel" aria-labelledby="tab-four-two-tab">
+                <div class="tab-text">
+                    <p class="text">
+                        CNN Feature Extractor:
+                        Extracts features from each landsat image to identify regions of high/low productivity
+                        4 x Conv2d layers with 2x2 max pooling
+                        <br /><br />
+                        LSTM:
+                        Takes output from CNN feature extractor passed through single layer, 64 hidden size LSTM
+                        Concatenated with additional time features before passed to output layer (cyclical encoding for month/day-of-year, cumulative volume)
+                    </p>
+                    <img src="model.png" alt="Model" class="tab-image">
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-four-three" role="tabpanel" aria-labelledby="tab-four-three-tab">
+                <div class="tab-text">
+                    <p class="text">
+                        Compute:
+                        Amazon Sagemaker is a fully managed service that provides developers and data scientists with the ability to build, train, and deploy machine learning models quickly.
+                        <br /><br />
+                        Storage / Database:
+                        Amazon S3 is a scalable object storage service that provides secure, durable, and highly available storage for our wide range of data types.
+                        <br /><br />
+                        Front End:
+                        Streamlit: Streamlit is an open-source Python library that simplifies the creation of interactive, web-based dashboards. SageMaker allows for hosting Streamlit servers + connections to our models for real-time predictions and interactive data analysis.
+                    </p>
+                    <img src="infrastructure.png" alt="Infrastructure" class="tab-image">
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-four-four" role="tabpanel" aria-labelledby="tab-four-four-tab">
+                <div class="tab-text">
+                    <ol>
+                        <li id="citation-1">
+                            [1] “Water Scarcity.” <i>World Wildlife Fund</i>, 11 Nov. 2014, 
+                            <a href="https://www.worldwildlife.org/threats/water-scarcity" target="_blank">Link.</a>
+                        </li>
+                        <li id="citation-2">
+                            [2] Khokhar, T. “Globally, 70% of Freshwater is Used for Agriculture.” <i>World Bank</i>, 22 Mar. 2017, 
+                            <a href="https://blogs.worldbank.org/en/opendata/chart-globally-70-freshwater-used-agriculture" target="_blank">Link.</a>
+                        </li>
+                        <li id="citation-3">
+                            [3] Crosby, G. “The Nutrient Challenge of Sustainable Fertilizer Management.” <i>U.S. Department of Agriculture</i>, 7 Jun. 2016, 
+                            <a href="https://www.usda.gov/media/blog/2016/06/07/nutrient-challenge-sustainable-fertilizer-management" target="_blank">Link.</a>
+                        </li>
+                        <li id="citation-4">
+                            [4] J. Maximillian, M.L. Brusseau, E.P. Glenn, A.D. Matthias. “Environmental and Pollution Science (Third Edition), Chapter 25, Pollution and Environmental Perturbations in the Global System.” <i>Science Direct</i>, 1 Mar. 2019, 
+                            <a href="https://www.sciencedirect.com/science/article/pii/B9780128147191000252" target="_blank">Link.</a>
+                        </li>
+                        <li id="citation-5">
+                            [5] “Global Greenhouse Gas Overview.” <i>United States Environmental Protection Agency</i>, 11 Apr. 2024, 
+                            <a href="https://www.epa.gov/ghgemissions/global-greenhouse-gas-overview" target="_blank">Link.</a>
+                        </li>
+                        <li id="citation-6">
+                            [6] “U.S. Precision Agriculture Study Unveiled by AEM, AG Organizations.” <i>Association of Equipment Manufacturers</i>, 1 Feb. 2021, 
+                            <a href="https://newsroom.aem.org/precision-agriculture-improves-environmental-stewardship-while-increasing-yields" target="_blank">Link.</a>
+                        </li>
+                        <li id="break">
+                            <br />
+                            <b>Images & Web Design</b>
+                            <br />
+                        </li>
+                        <li id="image-1">
+                            “Green Rice Farm.” <i>PxHere</i>, Accessed 19 Jul. 2024, 
+                            <a href="https://c.pxhere.com/images/17/6a/5c7d7d79d88e0b1c82603202d76d-1442155.jpg!d" target="_blank">Link.</a>
+                        </li>
+                        <li id="image-2">
+                            Manna, M. “Soil Moisture.”<i>Artwork generated using Canva</i>, 15 Jul. 2024, 
+                            <a href="https://www.canva.com/design/DAGMKghdTgI/FRBEzf_92j8_6YUhUpdChw/edit?ui=eyJFIjp7IkE_IjoiViIsIkIiOiJCIn0sIkciOnsiQiI6dHJ1ZX19" target="_blank">Link.</a>
+                        </li>
+                        <li id="image-3">
+                            Manna, M. “Chlorophyll Content.”<i>Artwork generated using Canva</i>, 15 Jul. 2024, 
+                            <a href="https://www.canva.com/design/DAGMKghdTgI/FRBEzf_92j8_6YUhUpdChw/edit?ui=eyJFIjp7IkE_IjoiViIsIkIiOiJCIn0sIkciOnsiQiI6dHJ1ZX19" target="_blank">Link.</a>
+                        </li>
+                        <li id="image-4">
+                            Manna, M. “Surface Temperature.”<i>Artwork generated using Canva</i>, 15 Jul. 2024, 
+                            <a href="https://www.canva.com/design/DAGMKghdTgI/FRBEzf_92j8_6YUhUpdChw/edit?ui=eyJFIjp7IkE_IjoiViIsIkIiOiJCIn0sIkciOnsiQiI6dHJ1ZX19" target="_blank">Link.</a>
+                        </li>
+                        <li id="image-5">
+                            Meyers, D. "Pile of Leafed Plants." <i>Upsplash</i>, 19 Jul. 2019, 
+                            <a href="https://unsplash.com/photos/pile-of-leafed-plants-0AgtPoAARtE" target="_blank">Link.</a>
+                        </li>
+                        <li id="image-6">
+                            “Digital Presentation Cartoon Illustrations.” <i>Storyset</i>, Accessed 22 Jul. 2024, 
+                            <a href="https://storyset.com/illustration/digital-presentation/bro" target="_blank">Link.</a>
+                        </li>
+                        <li id="web-design">
+                            Chowdhury, M., Hammad, S. “Unique UI Components, Snippets, and Blocks for Bootstrap.” <i>Ayro UI</i>, 16 Apr. 2023, 
+                            <a href="https://ayroui.com/" target="_blank">Link.</a>
+                        </li>
+                        <li id="ai-generated-code">
+                            “OpenAI.” <i>ChatGPT</i>, Jun. 2024 Version, Large Language Model,
+                            <a href="https://openai.com/chatgpt/" target="_blank">Link.</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- tabs four -->
+</div>
+</section>
+
 
     <!--====== TEAM STYLE ONE START ======-->
     <section id="team">
@@ -435,6 +729,16 @@
     <section id="resources">
     <footer class="footer-area footer-one">
         <div class="footer-widget">
+            <div class="footer-logo">
+                <a href="javascript:void(0)">
+                    <img src="AgriSenseLogo2.png" alt="Logo" />
+                </a>
+            </div>
+            <!-- container -->
+        </div>
+        <!-- footer widget -->
+        <section id="resources">
+        <div class="footer-copyright">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-sm-12">
@@ -456,29 +760,16 @@
                         </div>
                         <!-- footer link -->
                     </div>
-
-                    <div class="col-xl-4 col-lg-4 col-sm-12">
-                        <!-- Start Footer Contact -->
-                        <div class="footer-contact">
-                            <h6 class="footer-title">Help & Support</h6>
-                            <ul>
-                                <li><i class="lni lni-envelope"></i> support@agrisense.com</li>
-                            </ul>
-                        </div>
-                        <!-- End Footer Contact -->
-                    </div>
-                </div>
-                <!-- row -->
-            </div>
-            <!-- container -->
-        </div>
-        <!-- footer widget -->
-        <div class="footer-copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="copyright text-center d-md-flex justify-content-between align-items-center">
-                            <!-- Add copyright text here if we want -->
+    
+                        <div class="col-xl-4 col-lg-4 col-sm-12">
+                            <!-- Start Footer Contact -->
+                            <div class="footer-contact">
+                                <h6 class="footer-title">Help & Support</h6>
+                                <ul>
+                                    <li><i class="lni lni-envelope"></i> support@agrisense.com</li>
+                                </ul>
+                            </div>
+                            <!-- End Footer Contact -->
                         </div>
                         <!-- copyright -->
                     </div>
@@ -488,13 +779,9 @@
             <!-- container -->
         </div>
         <!-- footer copyright -->
-
+        </section>
         <!-- Move the logo out of the column layout -->
-        <div class="footer-logo">
-            <a href="javascript:void(0)">
-                <img src="AgriSenseLogo2.png" alt="Logo" />
-            </a>
-        </div>
+        
     </footer>
     <!--====== FOOTER ONE PART ENDS ======-->
     </section>

@@ -68,39 +68,17 @@ if 'evi_landsat' not in st.session_state:
     st.session_state['evi_landsat'] = None
 if 'st_landsat' not in st.session_state:
     st.session_state['st_landsat'] = None
+if 'smi_landsat' not in st.session_state:
+    st.session_state['smi_landsat'] = None
+if 'mtvi_landsat' not in st.session_state:
+    st.session_state['mtvi_landsat'] = None
 
 # CSS and JavaScript
-st.markdown(
-    """
-    <style>
-    .icon { font-size: 18px; margin-right: 10px; vertical-align: middle; }
-    .dropdown-label { display: flex; align-items: center; }
-    .st-emotion-cache-13na8ym { background-color: inherit !important; }
-    .st-emotion-cache-p5msec:hover { background-color: #024b30 !important; color: white !important; }
-    .st-emotion-cache-p5msec:hover svg { fill: white !important; }
-    .tooltip { display: inline-flex; align-items: center; margin-left: 10px; position: relative; }
-    .tooltip .tooltiptext { visibility: hidden; width: 200px; background-color: #024b30; color: white; text-align: left; border-radius: 6px; padding: 10px; position: absolute; z-index: 1; top: 0; left: 110%; opacity: 0; transition: opacity 0.3s; }
-    .tooltip span { font-size: 18px; cursor: pointer; }
-    .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-    .banner { display: flex; justify-content: space-between; align-items: center; background-color: #EAF7EE; height: 100px; padding: 15px; color: white; width: 100%; box-sizing: border-box; }
-    .left-side { display: flex; align-items: center; }
-    .banner img { width: 100px; margin-right: 20px; }
-    .title { font-size: 2em; margin: 0; }
-    .right-side { display: flex; align-items: center; }
-    .dropdown { display: flex; align-items: center; margin-right: 10px; }
-    .dropdown label { margin-right: 10px; }
-    .dropdown select { background-color: #444444 !important; color: white !important; border: none; padding: 10px; border-radius: 4px; }
-    .dropdown select:hover { background-color: #555555 !important; }
-    .map-container { position: relative; width: 100%; height: 500px; margin: auto; }
-    .coordinates { position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 5px; border-radius: 3px; font-size: 12px; }
-    .color-legend { position: absolute; bottom: 50px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 3px; }
-    .color-legend div:hover { background-color: #dddddd; }
-    iframe { height: 500px !important; }  /* Control the iframe height */
-    .output-container { margin-bottom: 200px; }  /* Add padding under the output text */
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+
+with open('style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+
 script = """
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -200,6 +178,13 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+
+def stream_data(input_text):
+    for word in input_text.split(" "):
+        yield word + " "
+        time.sleep(0.04)
+
+
 #get latest landsat file names
 latest_file_names = retrieve_latest_images()
 
@@ -236,11 +221,11 @@ def calculate_area(geojson):
 
         # Detect the appropriate UTM zone
         centroid = geom.centroid
-        st.write("Centroid:", centroid)
+        # st.write("Centroid:", centroid)
         utm_zone = utm.from_latlon(centroid.y, centroid.x)[2]
         is_northern = centroid.y >= 0
         crs = f"EPSG:{32600 + utm_zone if is_northern else 32700 + utm_zone}"
-        st.write("CRS:", crs)
+        # st.write("CRS:", crs)
 
         # Create a GeoDataFrame, project it to the UTM zone and calculate the area
         gdf = gpd.GeoDataFrame(index=[0], crs="EPSG:4326", geometry=[geom]) # type: ignore
@@ -333,7 +318,7 @@ if view == "Crop Health":
     
    # Initial options for the index and options selectboxes
     #options_index = ["Select an index", "NDVI", "EVI"]
-    options_other = ["Select an Option Below", "NDVI", "EVI", "🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]
+    options_other = ["Select an Option Below", "🌱 EVI", "🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]
 
 
 
@@ -342,7 +327,7 @@ if view == "Crop Health":
         st.session_state.message_shown = True
         st.session_state.refresh_message_shown = False
         st.session_state.selected_option = st.session_state.selectbox_other
-    if st.session_state.selectbox_other in ["EVI", "NDVI", "🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]:
+    if st.session_state.selectbox_other in ["🌱 EVI", "🌧️ Soil Moisture", "🌿 Chlorophyll Content", "☀️ Surface Temperature"]:
         st.session_state.disable_selectbox_index = True
     else:
         st.session_state.disable_selectbox_index = False
@@ -398,6 +383,8 @@ if view == "Crop Health":
             
             st.session_state['evi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[0])
             st.session_state['st_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[1])
+            st.session_state['smi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[2])
+            st.session_state['mtvi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[3])
             
             st.session_state['previous_aoi'] = st.session_state["aoi"]
             st.session_state["aoi"] = output['last_active_drawing']
@@ -416,14 +403,21 @@ if view == "Crop Health":
 
         with st.container():
             # st.markdown('<div class="output-container">', unsafe_allow_html=True)
+            st.divider()
             #print calculated area converted to acres
-            st.write("Calculated Area:", round(st.session_state["area"]/4046.8564224,3), "acres")
-            st.write("Predicted Yield:", round((st.session_state["area"]/4046.8564224) * 252.93856192,3), "pounds of strawberries / week")
+            area_str = "Calculated Area: " + str(round(st.session_state["area"]/4046.8564224,2)) + " acres"
+            yield_str = "Predicted Yield: " + str(int(round((st.session_state["area"]/4046.8564224) * 252.93856192,0))) + " pounds of strawberries / week"
+            
+            st.write_stream(stream_data(area_str))
+            st.write_stream(stream_data(yield_str))
+
+            # st.write("Calculated Area: " + str(round(st.session_state["area"]/4046.8564224,3)) + " acres")
+            # st.write("Predicted Yield: " + str(int(round((st.session_state["area"]/4046.8564224) * 252.93856192,0))) + " pounds of strawberries / week")
 
             if st.session_state.selected_option == "Select an Option Below":
                 st.write("Please select metric to display!")
 
-            elif st.session_state.selected_option == "EVI":
+            elif st.session_state.selected_option == "🌱 EVI":
                 
                     # Mask the EVI values to include only those greater than 0
                     mask = st.session_state['evi_landsat'][0] > 0
@@ -431,7 +425,7 @@ if view == "Crop Health":
                     
                     #evi plot
                     fig = px.imshow(masked_evi, color_continuous_scale='YlGn', 
-                                    title=f"Selected Field's EVI as of: {latest_file_names[3]}",
+                                    title=f"Selected Field's EVI as of: {latest_file_names[4]}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
@@ -441,16 +435,32 @@ if view == "Crop Health":
                     #show figure in streamlit
                     st.plotly_chart(fig)
 
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric('Average EVI Value:', round(np.nanmean(masked_evi),3))
+                    col2.metric('Maximum EVI Value:', round(np.nanmax(masked_evi),3))
+                    col3.metric('Minimum EVI Value:', round(np.nanmin(masked_evi),3))
 
-                    st.write(f'Maximum EVI Value: {np.nanmax(masked_evi)}')
-                    st.write(f'Minimum EVI Value: {np.nanmin(masked_evi)}')
 
 
                     flat_data_evi = masked_evi.flatten()
                     fig2 = px.histogram(flat_data_evi[~np.isnan(flat_data_evi)], nbins=50, title="Histogram of EVI",
                                         width=1025, height=500)
                     fig2.update_layout(xaxis_title="EVI", yaxis_title="Frequency", showlegend=False)
+                    fig2.update_traces(marker_color='green', opacity=0.7)
                     st.plotly_chart(fig2)
+
+                    with st.expander("What is Landsat Enhanced Vegitation Index (EVI)?"):
+                        st.write('''
+                            Enhanced Vegetation Index is a way to quantify vegetation greenness, but is differentiated from other methods by correcting
+                                 for atmospheric conditions and canomy background noise.
+                                 ''')
+                        st.write('''
+                            If you want to get technical, the calculation from L1 Landsat data is: In Landsat 8-9, EVI = 2.5 * ((Band 5 – Band 4) / (Band 5 + 6 * Band 4 – 7.5 * Band 2 + 1))
+                                 
+                                 ''')
+                        st.write('''
+                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index
+                                 ''')
 
             elif st.session_state.selected_option == "☀️ Surface Temperature":
                     #convert to fahrenheit
@@ -462,7 +472,7 @@ if view == "Crop Health":
 
                     #surface temperature plot
                     fig = px.imshow(masked_temp, color_continuous_scale='Jet', 
-                                    title=f"Selected Field's Surface Temperature (°F) as of: {latest_file_names[3]}",
+                                    title=f"Selected Field's Surface Temperature (°F) as of: {latest_file_names[4]}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
@@ -473,9 +483,11 @@ if view == "Crop Health":
                     #show figure in streamlit
                     st.plotly_chart(fig)
 
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric('Average Surface Temp (°F):', round(np.nanmean(masked_temp),1))
+                    col2.metric('Maximum Surface Temp (°F):', round(np.nanmax(masked_temp),1))
+                    col3.metric('Minimum Surface Temp (°F):', round(np.nanmin(masked_temp),1))
 
-                    st.write(f'Max Surface Temp: {np.nanmax(masked_temp)}')
-                    st.write(f'Minimum Surface Temp: {np.nanmin(masked_temp)}')
 
                     # histogram of presented data
                     flat_data = masked_temp.flatten()
@@ -483,16 +495,111 @@ if view == "Crop Health":
                                         width=1025, height=500)
                     fig2.update_layout(xaxis_title="Temperature (°F)", yaxis_title="Frequency", showlegend=False)
                     st.plotly_chart(fig2)
+                    fig2.update_traces(marker_color='orange', opacity=0.7)
 
-
+                    with st.expander("Why Surface Temperature?"):
+                        st.write('''
+                            Surface Temperature is an important indicator of....
+                                 ''')
+                        st.write('''
+                            We get surface temperature using Landsat Collection 2 thermal infrared bands.
+                                 
+                                 ''')
+                        st.write('''
+                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature
+                                 ''')
 
 
             elif st.session_state.selected_option == "🌿 Chlorophyll Content":
-                    st.write(f"{st.session_state.selected_option} visualization coming soon!")
+                    # Mask the MTVI2 values to include only those greater than 0
+                    mask = st.session_state['mtvi_landsat'][0] > 0
+                    masked_mtvi = np.where(mask, st.session_state['mtvi_landsat'][0], np.nan)
+                    
+                    #mtvi plot
+                    fig = px.imshow(masked_mtvi, color_continuous_scale='YlGn', 
+                                    title=f"Selected Field's Chlorophyll Content (MTVI2) as of: {latest_file_names[4]}",
+                                    width=1025, height=800)
+                    fig.update_coloraxes(colorbar_title_side="right")
+                    fig.update_yaxes(visible=False, showticklabels=False)
+                    fig.update_xaxes(visible=False, showticklabels=False)
+                    
+
+                    #show figure in streamlit
+                    st.plotly_chart(fig)
+
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric('Average MTVI2 Value:', round(np.nanmean(masked_mtvi),3))
+                    col2.metric('Maximum MTVI2 Value:', round(np.nanmax(masked_mtvi),3))
+                    col3.metric('Minimum MTVI2 Value:', round(np.nanmin(masked_mtvi),3))
+
+
+
+                    flat_data_mtvi = masked_mtvi.flatten()
+                    fig2 = px.histogram(flat_data_mtvi[~np.isnan(flat_data_mtvi)], nbins=50, title="Histogram of MTVI2",
+                                        width=1025, height=500)
+                    fig2.update_layout(xaxis_title="MTVI2", yaxis_title="Frequency", showlegend=False)
+                    fig2.update_traces(marker_color='green', opacity=0.7)
+                    st.plotly_chart(fig2)
+
+                    with st.expander("What does Chlorophyll Content (MTVI2) mean?"):
+                        st.write('''
+                            Chlorophyll Content...
+                                 ''')
+                        st.write('''
+                            The way Chlorophyll content....
+                                 
+                                 ''')
+                        st.write('''
+                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2
+                                 ''')
+
+
             elif st.session_state.selected_option == "🌧️ Soil Moisture":
-                    st.write(f"{st.session_state.selected_option} visualization coming soon!")
+                    # Mask the soil moisture index (SMI) values to include only those greater than 0
+                    mask = st.session_state['smi_landsat'][0] > 0
+                    masked_smi = np.where(mask, st.session_state['smi_landsat'][0], np.nan)
+                    
+                    #smi plot
+                    fig = px.imshow(masked_smi, color_continuous_scale='Blues', 
+                                    title=f"Selected Field's SMI as of: {latest_file_names[4]}",
+                                    width=1025, height=800)
+                    fig.update_coloraxes(colorbar_title_side="right")
+                    fig.update_yaxes(visible=False, showticklabels=False)
+                    fig.update_xaxes(visible=False, showticklabels=False)
+                    
+
+                    #show figure in streamlit
+                    st.plotly_chart(fig)
+
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric('Average SMI Value:', round(np.nanmean(masked_smi),3))
+                    col2.metric('Maximum SMI Value:', round(np.nanmax(masked_smi),3))
+                    col3.metric('Minimum SMI Value:', round(np.nanmin(masked_smi),3))
+
+
+
+                    flat_data_smi = masked_smi.flatten()
+                    fig2 = px.histogram(flat_data_smi[~np.isnan(flat_data_smi)], nbins=50, title="Histogram of SMI",
+                                        width=1025, height=500)
+                    fig2.update_layout(xaxis_title="SMI", yaxis_title="Frequency", showlegend=False)
+                    fig2.update_traces(marker_color='dodgerblue', opacity=0.7)
+                    st.plotly_chart(fig2)
+
+                    with st.expander("What is Soil Moisture Index (SMI)?"):
+                        st.write('''
+                            SMI is...
+                                 ''')
+                        st.write('''
+                            Calculating SMI....
+                                 
+                                 ''')
+                        st.write('''
+                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2
+                                 ''')
+
             elif st.session_state.selected_option == "NDVI":
                     st.write(f"{st.session_state.selected_option} visualization coming soon!")
+            
 
             st.markdown('</div>', unsafe_allow_html=True)
 
