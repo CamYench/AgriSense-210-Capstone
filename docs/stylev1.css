@@ -3,15 +3,7 @@
     margin-top: 0px; /* Adjust margin as needed */
     z-index: 3;
 }
-/*
-.wave {
-    width: 100%;
-    height: 10px;
-    position: relative;
-    top: -228px; 
-    z-index: 4; 
-}
-*/
+
 #back-to-top {
     position: fixed;
     bottom: 20px;
@@ -714,7 +706,7 @@ ul li {
     -ms-transition: all 0.3s ease-out 0s;
     -o-transition: all 0.3s ease-out 0s;
     transition: all 0.3s ease-out 0s;
-    margin-top: 25px; /* Adjust this value to move the icon down */
+    margin-top: 25px; 
 }
 
   @media (max-width: 767px) {
@@ -1093,7 +1085,7 @@ Accordion styles
 .tabs-four .tab-content .tab-text .text {
   color: var(--dark-3);
   flex: 1;
-  margin-right: 60px; /* Add some space between text and image */
+  margin-right: 60px; 
 }
 
 .tabs-title h5 {
@@ -1112,34 +1104,50 @@ Accordion styles
   color: var(--dark-3);
 }
 
+.model-tab ul {
+  list-style-type: disc; 
+  margin-left: 20px; 
+}
+
+.model-tab ol {
+
+  margin-right: 60px; 
+}
+
+.model-tab ul li {
+  margin-left: 20px; 
+}
+
+.model-tab ol li {
+  margin-left: 20px; 
+}
 .tab-image {
-  max-width: 50%; /* Adjust the width as necessary */
+  max-width: 50%; 
   height: auto;
 }
 
 .single-tabs {
-  max-width: 1800px; /* Adjust the max-width as necessary */
-  margin: 0 auto; /* Center the container */
+  max-width: 1800px; 
+  margin: 0 auto; 
   padding-bottom: 42px;
 }
 
 #tab-four-four .tab-text {
-  padding-left: 50px; /* Adjust this value as needed */
-  padding-right: 200px; /* Adjust this value as needed */
-  /* Optional: Adjust top and bottom padding if needed */
+  padding-left: 50px; 
+  padding-right: 200px; 
   padding-top: 15px;
   padding-bottom: 15px;
 }
 
 #tab-four-four .tab-text {
-  max-width: 1530px; /* Adjust this value as needed */
-  margin: 0 auto; /* Center-align the content */
+  max-width: 1530px; 
+  margin: 0 auto; 
   line-height: 25px;
 }
 
 #tab-four-four .tab-text a {
-  color: var(--citationlink); /* Change this to the color you want */
-  text-decoration: none; /* Optional: Remove underline */
+  color: var(--citationlink); 
+  text-decoration: none; 
 }
   /*===========================
   teams css 
