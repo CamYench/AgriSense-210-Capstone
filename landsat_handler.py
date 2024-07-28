@@ -14,11 +14,10 @@ import json
 #currently assumes that multiple images from the same date do not exist
 
 
-
-
 def retrieve_latest_images():
     # Initialize S3 client and search client
     s3_client = boto3.client('s3')
+
     paginator = s3_client.get_paginator('list_objects_v2')
     page_iterator = paginator.paginate(Bucket="agrisense3", Prefix="converted/")
     page_iterator_mtvi = paginator.paginate(Bucket="agrisense3", Prefix="mtvi2_output")
@@ -28,8 +27,8 @@ def retrieve_latest_images():
     
     # create objects
     latest_evi = None
-    latest_soil_moisture = None
-    latest_surface_temp = None
+    latest_smi = None
+    latest_mtvi = None
     most_recent_date = None
 
     #iterate through bucket
@@ -82,6 +81,7 @@ def retrieve_latest_images():
 def retrieve_last_4_evi():
     # Initialize S3 client and search client
     s3_client = boto3.client('s3')
+
     paginator = s3_client.get_paginator('list_objects_v2')
     page_iterator = paginator.paginate(Bucket="agrisense3", Prefix="converted/")
     
@@ -137,16 +137,12 @@ def mask_tif(area_to_mask,image_fn):
     elif "features" in area_to_mask:
         geometries = [feature["geometry"] for feature in area_to_mask["features"]]
     
-
-    s3_client = boto3.client('s3')
-    #read the file from S3
-    s3_response = s3_client.get_object(Bucket='agrisense3', Key=image_fn)   
-    # Read the file into a memory file
-    with MemoryFile(s3_response['Body'].read()) as memfile:
-        with memfile.open() as src:
-            # Apply the mask
-            out_image, out_transform = mask(src, geometries, crop=True)
-            out_meta = src.meta
+    #read the local image
+    img = rasterio.open(image_fn)
+    with img as src: 
+        # Apply the mask
+        out_image, out_transform = mask(src, geometries, crop=True)
+        out_meta = src.meta
 
     # Update metadata to reflect the new dimensions
     out_meta.update({

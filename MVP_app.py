@@ -13,6 +13,7 @@ import geopandas as gpd
 import utm
 from shapely.geometry import shape, Polygon, mapping
 import plotly.express as px
+import os
 
 import torch
 
@@ -72,6 +73,14 @@ if 'smi_landsat' not in st.session_state:
     st.session_state['smi_landsat'] = None
 if 'mtvi_landsat' not in st.session_state:
     st.session_state['mtvi_landsat'] = None
+if 'evi_date' not in st.session_state:
+    st.session_state['evi_date'] = None
+if 'st_date' not in st.session_state:
+    st.session_state['st_date'] = None
+if 'smi_date' not in st.session_state:
+    st.session_state['smi_date'] = None
+if 'mtvi_date' not in st.session_state:
+    st.session_state['mtvi_date'] = None
 
 # CSS and JavaScript
 
@@ -186,7 +195,8 @@ def stream_data(input_text):
 
 
 #get latest landsat file names
-latest_file_names = retrieve_latest_images()
+# latest_file_names = retrieve_latest_images()
+latest_file_names = os.listdir('./latest_display_images/')
 
 # Constants for Landsat 8 TIRS band 10
 L_MIN = 0.1  # Replace with metadata value
@@ -205,7 +215,23 @@ def dn_to_fahrenheit(dn, l_min, l_max, qcal_min, qcal_max, k1, k2):
     fahrenheit = (kelvin - 273.15) * 9 / 5 + 32
     return fahrenheit
 
+def find_files_with_sequence(file_list, sequence):
+    """
+    Find and return the file names in the given directory that contain the specified sequence of letters.
 
+    :param file_list: list of strings object to search
+    :param sequence: Sequence of letters to search for in file names
+    :return: List of file names containing the sequence
+    """
+    matching_files = []
+
+    # Iterate through the files in the directory
+    for file_name in file_list:
+        # Check if the sequence is in the file name
+        if sequence in file_name:
+            matching_files.append(file_name)
+
+    return matching_files[0]
 
 def calculate_area(geojson):
     try:
@@ -348,7 +374,7 @@ if view == "Crop Health":
     
     if st.session_state.selected_option != "Select an Option Below" and st.session_state.message_shown:
         message.write("Generating Satellite Data... It's worth the wait!")
-        time.sleep(1)  # Simulate data generation delay (adjust as needed, not sure how long this will take)
+        time.sleep(3)  # Simulate data generation delay (adjust as needed, not sure how long this will take)
         message.empty()  
 
         # Reset message_shown flag
@@ -380,11 +406,20 @@ if view == "Crop Health":
         elif output['last_active_drawing'] == st.session_state['previous_aoi']:
             pass
         else:
-            
-            st.session_state['evi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[0])
-            st.session_state['st_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[1])
-            st.session_state['smi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[2])
-            st.session_state['mtvi_landsat'] = mask_tif(output['last_active_drawing'],latest_file_names[3])
+            latest_evi_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'EVI')
+            latest_st_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'ST')
+            latest_smi_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'SMI')
+            latest_mtvi_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'MTVI')
+
+
+            st.session_state['evi_landsat'] = mask_tif(output['last_active_drawing'],latest_evi_fp)
+            st.session_state['evi_date'] = latest_evi_fp[41:49]
+            st.session_state['st_landsat'] = mask_tif(output['last_active_drawing'],latest_st_fp)
+            st.session_state['st_date'] = latest_st_fp[41:49]
+            st.session_state['smi_landsat'] = mask_tif(output['last_active_drawing'],latest_smi_fp)
+            st.session_state['smi_date'] = latest_smi_fp[41:49]
+            st.session_state['mtvi_landsat'] = mask_tif(output['last_active_drawing'],latest_mtvi_fp)
+            st.session_state['mtvi_date'] = latest_mtvi_fp[41:49]
             
             st.session_state['previous_aoi'] = st.session_state["aoi"]
             st.session_state["aoi"] = output['last_active_drawing']
@@ -425,7 +460,7 @@ if view == "Crop Health":
                     
                     #evi plot
                     fig = px.imshow(masked_evi, color_continuous_scale='YlGn', 
-                                    title=f"Selected Field's EVI as of: {latest_file_names[4]}",
+                                    title=f"Selected Field's EVI as of: {st.session_state['evi_date']}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
@@ -452,7 +487,7 @@ if view == "Crop Health":
                     with st.expander("What is Landsat Enhanced Vegitation Index (EVI)?"):
                         st.write('''
                             Enhanced Vegetation Index is a way to quantify vegetation greenness, but is differentiated from other methods by correcting
-                                 for atmospheric conditions and canomy background noise.
+                                 for atmospheric conditions and canopy background noise.
                                  ''')
                         st.write('''
                             If you want to get technical, the calculation from L1 Landsat data is: In Landsat 8-9, EVI = 2.5 * ((Band 5 – Band 4) / (Band 5 + 6 * Band 4 – 7.5 * Band 2 + 1))
@@ -472,7 +507,7 @@ if view == "Crop Health":
 
                     #surface temperature plot
                     fig = px.imshow(masked_temp, color_continuous_scale='Jet', 
-                                    title=f"Selected Field's Surface Temperature (°F) as of: {latest_file_names[4]}",
+                                    title=f"Selected Field's Surface Temperature (°F) as of: {st.session_state['st_date']}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
@@ -499,7 +534,7 @@ if view == "Crop Health":
 
                     with st.expander("Why Surface Temperature?"):
                         st.write('''
-                            Surface Temperature is an important indicator of....
+                            Surface Temperature can be an important indicator of crop stress.
                                  ''')
                         st.write('''
                             We get surface temperature using Landsat Collection 2 thermal infrared bands.
@@ -517,7 +552,7 @@ if view == "Crop Health":
                     
                     #mtvi plot
                     fig = px.imshow(masked_mtvi, color_continuous_scale='YlGn', 
-                                    title=f"Selected Field's Chlorophyll Content (MTVI2) as of: {latest_file_names[4]}",
+                                    title=f"Selected Field's Chlorophyll Content (MTVI2) as of: {st.session_state['mtvi_date']}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
@@ -543,7 +578,7 @@ if view == "Crop Health":
 
                     with st.expander("What does Chlorophyll Content (MTVI2) mean?"):
                         st.write('''
-                            Chlorophyll Content...
+                            Chlorophyll Content readings can enable customized nutrient applications and optimal crop nutrition.
                                  ''')
                         st.write('''
                             The way Chlorophyll content....
@@ -561,7 +596,7 @@ if view == "Crop Health":
                     
                     #smi plot
                     fig = px.imshow(masked_smi, color_continuous_scale='Blues', 
-                                    title=f"Selected Field's SMI as of: {latest_file_names[4]}",
+                                    title=f"Selected Field's SMI as of: {st.session_state['smi_date']}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
                     fig.update_yaxes(visible=False, showticklabels=False)
@@ -587,7 +622,7 @@ if view == "Crop Health":
 
                     with st.expander("What is Soil Moisture Index (SMI)?"):
                         st.write('''
-                            SMI is...
+                            SMI gives an indication of crop watering needs and lets you get ahead of unexpected dry period impacts.
                                  ''')
                         st.write('''
                             Calculating SMI....
