@@ -625,8 +625,8 @@ ul li {
   ===========================*/
   .features-one {
     background-color: var(--background);
-    padding-top: 100px;
-    padding-bottom: 40px;
+    padding-top: 110px;
+    padding-bottom: 150px;
   }
   .features-one .section-title {
     padding-bottom: 10px;
@@ -791,102 +791,124 @@ ul li {
   border-color: var(--gray-4);
   pointer-events: none;
 }
-  /*===========================
-  scroll css
-===========================*/
-.scroll-section {
-  background-color: var(--background);
-  display: flex;
-  align-items: center;
-  height: 100vh;
-}
 
-.scroll-text {
-  font-size: 2em;
-  text-align: center;
-  color: var(--card);
-  font-weight: bold;
-}
-
-.scroll-container ul {
-  display: block; /* Ensure the list is displayed as a block */
-  list-style-type:none; /* Default bullets */
-
-  font-size: 1.5em;
-  color: var(--card);
-  line-height: 40px;
-  font-weight: bold;
-}
-
-.scroll-section .title {
-  text-align: center;
-  max-width: 550px;
-  margin: auto;
-  margin-bottom: 50px;
-  position: relative;
-  z-index: 5;
-  padding-top: 50px;
-  color: black;
-  font-weight: 700;
-  
-}
 
 #impact {
-  background-color: var(--background); 
-  padding: 50px 0;
-}
-
-.scroll-container {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
-  scrollbar-width: none; /* Hide scrollbar in Firefox */
-  height: 80vh;
-  
-}
-
-.scroll-container::-webkit-scrollbar {
-  display: none; /* Hide scrollbar in Chrome, Safari, and other WebKit browsers */
-}
-
-.scroll-item {
-  flex: 0 0 auto;
-  background: var(--background);
-  min-width: 100%; /* Set a minimum width for the cards */
-  display: grid;
-  place-items: center;
-  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1200px; 
+  padding: 20px; 
+  padding-bottom: 90px;
 }
 
 
-.scroll-item h3 {
-  margin-top: 0;
-}
-
-.scroll-item p {
-  margin-bottom: 0;
-}
-
-.vertical-content {
-  height: 200vh; /* Just to make sure there's enough vertical scrolling space */
-  padding: 20px;
-}
-
-.scroll-title h5 {
+/*===========================
+Accordion styles
+===========================*/
+.accordian-title h5 {
   font-weight: 600;
   color: var(--sectiontitle);
+  padding-top: 0px;
 }
-.scroll-title h2 {
+
+.accordian-title h2 {
   font-weight: 700;
   color: var(--sectiontitle);
   margin-top: 10px;
-}
-.scroll-title .text-lg {
-  margin-top: 24px;
-  color: var(--dark-3);
+  padding-bottom: 80px;
 }
 
+.accordion-style-three .accordion .card {
+  border-radius: 0;
+  border: 0;
+  overflow: visible;
+  max-width: 1300px;
+  justify-content: center;
+}
+
+.accordion-style-three .accordion .card .card-header {
+  padding: 0;
+  background: var(--background);
+}
+
+.accordion-style-three .accordion .card .card-header a {
+  display: block;
+  font-size: larger;
+  font-weight: 700;
+  line-height: 24px;
+  position: relative;
+  color: var(--menu);
+  -webkit-transition: all 0.3s ease-out 0s;
+  -moz-transition: all 0.3s ease-out 0s;
+  -ms-transition: all 0.3s ease-out 0s;
+  -o-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+  border: 2px solid var(--light-1);
+  border-radius: 0;
+  padding: 13px 16px;
+  z-index: 5;
+  border-left: 0;
+  border-right: 0;
+  background: var(--background);
+  margin-top: -2px;
+  text-align: center;
+}
+
+.accordion-style-three .accordion .card .card-header a::before {
+  position: absolute;
+  content: "\ea5e";
+  font-family: lineicons !important;
+  right: 16px;
+  top: 14px;
+  font-size: larger;
+  -webkit-transition: all 0.3s ease-out 0s;
+  -moz-transition: all 0.3s ease-out 0s;
+  -ms-transition: all 0.3s ease-out 0s;
+  -o-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.accordion-style-three .accordion .card .card-header a.collapsed {
+  color: var(--black);
+  border: 2px solid var(--light-1);
+  background: transparent;
+  border-left: 0;
+  border-right: 0;
+  font-size: larger;
+  text-align: center;
+}
+
+.accordion-style-three .accordion .card .card-header a.collapsed::before {
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  -ms-transform: rotate(0);
+  -o-transform: rotate(0);
+  transform: rotate(0);
+}
+
+.accordion-style-three .accordion .card .card-body {
+  padding: 30px;
+  background-color: var(--background);
+}
+
+.accordion-style-three .accordion .card .card-body .text {
+  color: var(--box);
+  font-size: 30px;
+  text-align: center;
+  font-weight: 450;
+}
+
+.material-icons, .fas {
+  vertical-align: middle;
+  margin-right: 10px;
+}
   /*===========================
   card-01 css
 ===========================*/
@@ -932,13 +954,14 @@ ul li {
   }
 
   .card-area {
+    padding-top: 50px;
     padding-bottom: 150px;
   }
 /*===== VIDEO ONE =====*/
 .video-one {
     background-color: var(--primary);
-    padding-top: 20px;
-    padding-bottom: 200px;
+    padding-top: 10px;
+    padding-bottom: 150px;
   }
   .video-one .video-title h5 {
     font-weight: 600;
@@ -1004,7 +1027,7 @@ ul li {
     background-color: var(--background);
   }
 
-/* tabs-four */
+/*===== TABS FOUR =====*/
 @media (max-width: 767px) {
   .tabs-four .nav {
     display: block;
@@ -1076,6 +1099,7 @@ ul li {
 .tabs-title h5 {
   font-weight: 600;
   color: var(--sectiontitle);
+  padding-top: 10px;
 }
 .tabs-title h2 {
   font-weight: 700;
@@ -1096,7 +1120,7 @@ ul li {
 .single-tabs {
   max-width: 1800px; /* Adjust the max-width as necessary */
   margin: 0 auto; /* Center the container */
-  padding-bottom: 100px;
+  padding-bottom: 42px;
 }
 
 #tab-four-four .tab-text {
@@ -1144,14 +1168,29 @@ ul li {
   .team-style-one:hover {
     box-shadow: var(--shadow-4);
   }
+
+  .team-style-one .team-image {
+    width: 100%;
+    height: 200px; 
+    overflow: hidden;
+}
+
   .team-style-one .team-image img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .team-style-one .team-content {
     padding: 20px 15px;
     width: 100%;
     background-color: var(--teambox);
-  }
+    height: 100px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+}
+  
   .team-style-one .team-content .name {
     font-size: 20px;
     font-weight: 600;

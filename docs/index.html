@@ -141,7 +141,7 @@
                     <div class="content">
                     <h2 class="fw-bold">AgriSense</h2>
                     <p>
-                        Precision agriculture using satellite imagery.
+                        Where precision meets sustainability.
                     </p>
                     </div>
                 </div>
@@ -302,52 +302,99 @@
 <!--====== Glightbox  Css ======-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 
+<!--======Accordians ======-->
 <section id="impact">
-<section class="scroll-section">
-    <div class="row justify-content-center">
-        <div class="scroll-title text-center">
+    <div class="single-accordion">
+        <div class="accordian-title text-center">
             <h5>Let's slow down...</h5>
             <h2>Why is this important?</h2>
         </div>
-        <div class="scroll-container">
-            <div class="scroll-item"><p class="scroll-text">70% of freshwater is used for agriculture, 50% of which<br>
-                is wasted in inefficient irrigation.<sup>[1][2]</sup></p></div>
-            <div class="scroll-item"><p class="scroll-text">Over 40% of fertilizer is wasted in unabsorbed runoff.<sup>[3]</sup></p></div>
-            <div class="scroll-item"><p class="scroll-text">1/3 of the world's farmable land has disappeared in<br>
-                the last 4 decades. Major contributing factors are<br>
-                overfertilization and unsustainable agriculture practices.<sup>[4]</sup></p></div>
-            <div class="scroll-item"><p class="scroll-text">Agriculture accounts for 22% of global greenhouse gas emissions.<sup>[5]</sup></p></div>
-            <div class="scroll-item"><p class="scroll-text">Farmers using precision agriculture technologies have achieved:<sup>[6]</sup></p>
-                <ul>
-                    <li>4% reduction in water use</li>
-                    <li>7% increase in fertilizer placement efficiency</li>
-                    <li>9% reduction in herbicide and pesticide use</li>
-                    <li>6% reduction in fossil fuel use</li>
-                    <li>4% increase in crop production</li>
-                    </ul> </div>
-            <div class="scroll-item"><p class="scroll-text"><b>AgriSense:<br>
-                Where Precision Meets Sustainability.<br>
-                Boost Your Profits, Reduce Our Planet's Footprint.</p></b></div>
+        <div class="accordion-style-three">
+            <div class="accordion" id="accordionthree">
+                <div class="card">
+                    <div class="card-header" id="headingEleven">
+                        <a href="#collapseEleven" data-bs-toggle="collapse" role="button" aria-expanded="true">Inefficient Irrigation</a>
+                    </div>
+                    <div id="collapseEleven" class="collapse show" data-bs-parent="#accordionthree">
+                        <div class="card-body">
+                            <p class="text">
+                                70% of freshwater is used for agriculture, 50% of which<br>
+                                is wasted in inefficient irrigation.<sup>[1][2]</sup>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- card -->
+                <div class="card">
+                    <div class="card-header" id="headingTwelve">
+                        <a class="collapsed" href="#collapseTwelve" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false">Wasted Fertilizer</a>
+                    </div>
+                    <div id="collapseTwelve" class="collapse" data-bs-parent="#accordionthree">
+                        <div class="card-body">
+                            <p class="text">
+                                Over 40% of fertilizer is wasted in unabsorbed runoff.<sup>[3]</sup>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- card -->
+                <div class="card">
+                    <div class="card-header" id="headingThirteen">
+                        <a class="collapsed" href="#collapseThirteen" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false">Loss of Farmable Land</a>
+                    </div>
+                    <div id="collapseThirteen" class="collapse" data-bs-parent="#accordionthree">
+                        <div class="card-body">
+                            <p class="text">
+                                1/3 of the world's farmable land has disappeared in<br>
+                                the last 4 decades. Major contributing factors are<br>
+                                overfertilization and unsustainable agriculture practices.<sup>[4]</sup>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- card -->
+                <div class="card">
+                    <div class="card-header" id="headingFourteen">
+                        <a class="collapsed" href="#collapseFourteen" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false">Greenhouse Gas Emissions</a>
+                    </div>
+                    <div id="collapseFourteen" class="collapse" data-bs-parent="#accordionthree">
+                        <div class="card-body">
+                            <p class="text">
+                                Agriculture accounts for 22% of global greenhouse gas emissions.<sup>[5]
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- card -->
+                <div class="card">
+                    <div class="card-header" id="headingFifteen">
+                        <a class="collapsed" href="#collapseFifteen" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false">Precision Agriculture</a>
+                    </div>
+                    <div id="collapseFifteen" class="collapse" data-bs-parent="#accordionthree">
+                        <div class="card-body">
+                            <p class="text">
+                                Farmers using precision agriculture technologies have achieved:<sup>[6]</sup><br/>
+                                <ul style="list-style-type: none; padding: 0 0 0 250px; color: var(--box); font-size: 20px; text-align: left; font-weight: 450;">
+                                    <li style="margin: 0rem 0;">4% reduction in water use</li>
+                                    <li style="margin: 0rem 0;">7% increase in fertilizer placement efficiency</li>
+                                    <li style="margin: 0rem 0;">9% reduction in herbicide and pesticide use</li>
+                                    <li style="margin: 0rem 0;">6% reduction in fossil fuel use</li>
+                                    <li style="margin: 0rem 0;">4% increase in crop production</li>
+                                </ul> 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- card -->
+            </div>
         </div>
     </div>
 </section>
-<script>
-        const scrollContainer = document.querySelector('.scroll-container');
-  
-    const handleScroll = (evt) => {
-      evt.preventDefault();
-      const scrollSpeed = 2; // Increase this value for faster scrolling
-      scrollContainer.scrollLeft += evt.deltaY * scrollSpeed;
-  
-      // Check if user has scrolled to the end of the horizontal content
-      const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-      if (scrollContainer.scrollLeft >= maxScrollLeft) {
-        scrollContainer.removeEventListener('wheel', handleScroll);
-      }
-    };
-  
-    scrollContainer.addEventListener('wheel', handleScroll);
-</script>
+
 
 
 <!--====== CARD PART START ======-->
@@ -766,7 +813,7 @@
                             <div class="footer-contact">
                                 <h6 class="footer-title">Help & Support</h6>
                                 <ul>
-                                    <li><i class="lni lni-envelope"></i> support@agrisense.com</li>
+                                    <li><i class="lni lni-envelope"></i> support@agrisense.info</li>
                                 </ul>
                             </div>
                             <!-- End Footer Contact -->
