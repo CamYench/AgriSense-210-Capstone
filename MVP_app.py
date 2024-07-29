@@ -702,7 +702,7 @@ else:
 
 
 
-home_url = 'www.agrisense.info'
+home_url = 'http://www.agrisense.info'
 st.markdown(f'''
 <a href={home_url}><button style="background-color:Grey;">AgriSense Home</button></a>
 ''',
