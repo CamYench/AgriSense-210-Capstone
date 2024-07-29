@@ -302,98 +302,63 @@
 <!--====== Glightbox  Css ======-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 
-<!--======Accordians ======-->
-<section id="impact">
-    <div class="single-accordion">
-        <div class="accordian-title text-center">
+<section id="impact" class="carousel-section">
+    <div class="carousel-container">
+        <div class="carousel-title text-center">
             <h5>Let's slow down...</h5>
             <h2>Why is this important?</h2>
         </div>
-        <div class="accordion-style-three">
-            <div class="accordion" id="accordionthree">
-                <div class="card">
-                    <div class="card-header" id="headingEleven">
-                        <a href="#collapseEleven" data-bs-toggle="collapse" role="button" aria-expanded="true">Inefficient Irrigation</a>
-                    </div>
-                    <div id="collapseEleven" class="collapse show" data-bs-parent="#accordionthree">
-                        <div class="card-body">
-                            <p class="text">
-                                70% of freshwater is used for agriculture, 50% of which<br>
-                                is wasted in inefficient irrigation.<sup>[1][2]</sup>
-                            </p>
+        <div class="void" id="void" style="animation: none;">
+            <div class="crop" style="animation: none;">
+                <ul id="card-list" style="--count: 5; animation: none; list-style-type: none; padding: 0; margin: 0;">
+                    <li>
+                        <div class="card">
+                            <span class="model-name">Inefficient Irrigation</span>
+                            <span>70% of freshwater is used for agriculture, 50% of which is wasted in inefficient irrigation.<sup>[1][2]</sup></span>
                         </div>
-                    </div>
-                </div>
-                <!-- card -->
-                <div class="card">
-                    <div class="card-header" id="headingTwelve">
-                        <a class="collapsed" href="#collapseTwelve" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false">Wasted Fertilizer</a>
-                    </div>
-                    <div id="collapseTwelve" class="collapse" data-bs-parent="#accordionthree">
-                        <div class="card-body">
-                            <p class="text">
-                                Over 40% of fertilizer is wasted in unabsorbed runoff.<sup>[3]</sup>
-                            </p>
+                    </li>
+                    <li>
+                        <div class="card">
+                            <span class="model-name">Wasted Fertilizer</span>
+                            <span>Over 40% of fertilizer is wasted in unabsorbed runoff.<sup>[3]</sup></span>
                         </div>
-                    </div>
-                </div>
-                <!-- card -->
-                <div class="card">
-                    <div class="card-header" id="headingThirteen">
-                        <a class="collapsed" href="#collapseThirteen" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false">Loss of Farmable Land</a>
-                    </div>
-                    <div id="collapseThirteen" class="collapse" data-bs-parent="#accordionthree">
-                        <div class="card-body">
-                            <p class="text">
-                                1/3 of the world's farmable land has disappeared in<br>
-                                the last 4 decades. Major contributing factors are<br>
-                                overfertilization and unsustainable agriculture practices.<sup>[4]</sup>
-                            </p>
+                    </li>
+                    <li>
+                        <div class="card">
+                            <span class="model-name">Loss of Farmable Land</span>
+                            <span>1/3 of the world's farmable land has disappeared in the last 4 decades. Major contributing factors are overfertilization and unsustainable agriculture practices.<sup>[4]</sup></span>
                         </div>
-                    </div>
-                </div>
-                <!-- card -->
-                <div class="card">
-                    <div class="card-header" id="headingFourteen">
-                        <a class="collapsed" href="#collapseFourteen" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false">Greenhouse Gas Emissions</a>
-                    </div>
-                    <div id="collapseFourteen" class="collapse" data-bs-parent="#accordionthree">
-                        <div class="card-body">
-                            <p class="text">
-                                Agriculture accounts for 22% of global greenhouse gas emissions.<sup>[5]
-                            </p>
+                    </li>
+                    <li>
+                        <div class="card">
+                            <span class="model-name">Greenhouse Gas Emissions</span>
+                            <span>Agriculture accounts for 22% of greenhouse gas emissions globally.<sup>[5]</sup></span>
                         </div>
-                    </div>
-                </div>
-                <!-- card -->
-                <div class="card">
-                    <div class="card-header" id="headingFifteen">
-                        <a class="collapsed" href="#collapseFifteen" data-bs-toggle="collapse" role="button"
-                        aria-expanded="false">Precision Agriculture</a>
-                    </div>
-                    <div id="collapseFifteen" class="collapse" data-bs-parent="#accordionthree">
-                        <div class="card-body">
-                            <p class="text">
-                                Farmers using precision agriculture technologies have achieved:<sup>[6]</sup><br/>
-                                <ul style="list-style-type: none; padding: 0 0 0 250px; color: var(--box); font-size: 20px; text-align: left; font-weight: 450;">
-                                    <li style="margin: 0rem 0;">4% reduction in water use</li>
-                                    <li style="margin: 0rem 0;">7% increase in fertilizer placement efficiency</li>
-                                    <li style="margin: 0rem 0;">9% reduction in herbicide and pesticide use</li>
-                                    <li style="margin: 0rem 0;">6% reduction in fossil fuel use</li>
-                                    <li style="margin: 0rem 0;">4% increase in crop production</li>
-                                </ul> 
-                            </p>
+                    </li>
+                    <li>
+                        <div class="card">
+                            <span class="model-name">Precision Agriculture</span>
+                            <span>
+                                Farmers using precision agriculture technologies have achieved:<sup>[6]</sup> <br /> <br />
+                                4% &darr; in water use<br>
+                                7% &uarr; in fertilizer efficiency<br>
+                                9% &darr; in herbicide & pesticide use<br>
+                                6% &darr; in fossil fuel use<br>
+                                4% &uarr; in crop production<br>
+                            </span>
                         </div>
-                    </div>
-                </div>
-                <!-- card -->
+                    </li>
+                </ul>
+                <div class="last-circle"></div>
+                <div class="second-circle"></div>
             </div>
+            <div class="mask" style="animation: none;"></div>
+            <div class="center-circle"></div>
         </div>
+        
     </div>
 </section>
+
 
 
 
@@ -415,7 +380,7 @@
                         </div>
                         <div class="card-content">
                             <h4 class="card-title">
-                                <a>Soil Moisture</a>
+                                <a>Soil Moisture<sup><sup style="font-weight: normal;">[7]</sup></sup></a>
                             </h4>
                             <p class="text">
                                 We promote efficient irrigation practices by monitoring soil moisture to conserve water.
@@ -431,7 +396,7 @@
                         </div>
                         <div class="card-content">
                             <h4 class="card-title">
-                                <a>Chlorophyll Content</a>
+                                <a>Chlorophyll Content<sup><sup style="font-weight: normal;">[8]</sup></sup></a>
                             </h4>
                             <p class="text">
                                 Monitoring chlorophyll enables customized nutrient applications, ensuring optimal nutrition.
@@ -580,7 +545,7 @@
                             <br /><br />
                             Loading to S3: Upload the processed and masked data to Amazon S3.
                         </p>
-                        <img src="agrisense_data_pipeline.jpg" alt="Data Pipeline" class="tab-image">
+                        <img src="data_pipeline.png" alt="Data Pipeline" class="tab-image">
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tab-four-two" role="tabpanel" aria-labelledby="tab-four-two-tab">
@@ -631,35 +596,43 @@
                             Front End:
                             Streamlit: Streamlit is an open-source Python library that simplifies the creation of interactive, web-based dashboards. SageMaker allows for hosting Streamlit servers + connections to our models for real-time predictions and interactive data analysis.
                         </p>
-                        <img src="agrisense_inference.jpg" alt="Infrastructure" class="tab-image">
+                        <img src="infrastructure.png" alt="Infrastructure" class="tab-image">
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tab-four-four" role="tabpanel" aria-labelledby="tab-four-four-tab">
                     <div class="tab-text">
                         <ol>
                             <li id="citation-1">
-                                [1] “Water Scarcity.” <i>World Wildlife Fund</i>, 11 Nov. 2014, 
+                                [1] “Water Scarcity”. <i>World Wildlife Fund</i>, 11 Nov. 2014, 
                                 <a href="https://www.worldwildlife.org/threats/water-scarcity" target="_blank">Link.</a>
                             </li>
                             <li id="citation-2">
-                                [2] Khokhar, T. “Globally, 70% of Freshwater is Used for Agriculture.” <i>World Bank</i>, 22 Mar. 2017, 
+                                [2] Khokhar, T. “Globally, 70% of Freshwater is Used for Agriculture”. <i>World Bank</i>, 22 Mar. 2017, 
                                 <a href="https://blogs.worldbank.org/en/opendata/chart-globally-70-freshwater-used-agriculture" target="_blank">Link.</a>
                             </li>
                             <li id="citation-3">
-                                [3] Crosby, G. “The Nutrient Challenge of Sustainable Fertilizer Management.” <i>U.S. Department of Agriculture</i>, 7 Jun. 2016, 
+                                [3] Crosby, G. “The Nutrient Challenge of Sustainable Fertilizer Management”. <i>U.S. Department of Agriculture</i>, 7 Jun. 2016, 
                                 <a href="https://www.usda.gov/media/blog/2016/06/07/nutrient-challenge-sustainable-fertilizer-management" target="_blank">Link.</a>
                             </li>
                             <li id="citation-4">
-                                [4] J. Maximillian, M.L. Brusseau, E.P. Glenn, A.D. Matthias. “Environmental and Pollution Science (Third Edition), Chapter 25, Pollution and Environmental Perturbations in the Global System.” <i>Science Direct</i>, 1 Mar. 2019, 
+                                [4] Maximillian, J., Brusseau, M.L., Glenn, E.P., Matthias, A.D. “Environmental and Pollution Science (Third Edition), Chapter 25, Pollution and Environmental Perturbations in the Global System”. <i>Science Direct</i>, 1 Mar. 2019, 
                                 <a href="https://www.sciencedirect.com/science/article/pii/B9780128147191000252" target="_blank">Link.</a>
                             </li>
                             <li id="citation-5">
-                                [5] “Global Greenhouse Gas Overview.” <i>United States Environmental Protection Agency</i>, 11 Apr. 2024, 
+                                [5] “Global Greenhouse Gas Overview”. <i>United States Environmental Protection Agency</i>, 11 Apr. 2024, 
                                 <a href="https://www.epa.gov/ghgemissions/global-greenhouse-gas-overview" target="_blank">Link.</a>
                             </li>
                             <li id="citation-6">
-                                [6] “U.S. Precision Agriculture Study Unveiled by AEM, AG Organizations.” <i>Association of Equipment Manufacturers</i>, 1 Feb. 2021, 
+                                [6] “U.S. Precision Agriculture Study Unveiled by AEM, AG Organizations”. <i>Association of Equipment Manufacturers</i>, 1 Feb. 2021, 
                                 <a href="https://newsroom.aem.org/precision-agriculture-improves-environmental-stewardship-while-increasing-yields" target="_blank">Link.</a>
+                            </li>
+                            <li id="citation-7">
+                                [7] Sichugova, L., Fazilova D. “Soil Moisture Estimation Using Landsat˗8 Satellite Data: A Case Study the Karshi Steppe, Uzbekistan”. <i>International Journal of Geoinformatics 18 (1):63-69</i>, 7 Feb. 2022, 
+                                <a href="https://doi.org/10.52939/ijg.v18i1.2109" target="_blank">Link.</a>
+                            </li>
+                            <li id="citation-8">
+                                [8] Zhou, X., Zhang, J., Chen, D., Huang, Y., Kong, W., Yuan, L., Ye, H., Huang, W. “Assessment of Leaf Chlorophyll Content Models for Winter Wheat Using Landsat-8 Multispectral Remote Sensing Data”. <i>Remote Sensing 12, no. 16: 2574</i>, 11 Aug. 2020, 
+                                <a href="https://doi.org/10.3390/rs12162574" target="_blank">Link.</a>
                             </li>
                             <li id="break">
                                 <br />
@@ -818,7 +791,7 @@
                         <div class="footer-link">
                             <h6 class="footer-title">Try it out!</h6>
                             <ul>
-                                <li><a href="https://fl1msqvrxvsb2cs.studio.us-east-1.sagemaker.aws/jupyterlab/default/proxy/8501/">Web App (Beta)</a></li>
+                                <li><a href="javascript:void(0)">Web App (Beta)</a></li>
                             </ul>
                         </div>
                         <!-- footer link -->

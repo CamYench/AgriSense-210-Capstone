@@ -796,111 +796,204 @@ ul li {
 }
 
 
-/*===========================
-Accordion styles
-===========================*/
-.accordian-title h5 {
-  font-weight: 600;
-  color: var(--sectiontitle);
-  padding-top: 0px;
+:root {
+  --rotate-speed: 50;
+  --count: 5; /* # items in carousel */
+  --easeInOutSine: cubic-bezier(0.37, 0, 0.63, 1);
+  --easing: cubic-bezier(0.000, 0.37, 1.000, 0.63);
 }
 
-.accordian-title h2 {
+body {
+  margin: 0;
+}
+
+.carousel-section .carousel-title h5 {
+  font-weight: 600;
+  color: var(--sectiontitle);
+}
+.carousel-section .carousel-title h2 {
   font-weight: 700;
   color: var(--sectiontitle);
   margin-top: 10px;
-  padding-bottom: 80px;
 }
 
-.accordion-style-three .accordion .card {
-  border-radius: 0;
-  border: 0;
-  overflow: visible;
-  max-width: 1300px;
-  justify-content: center;
-}
-
-.accordion-style-three .accordion .card .card-header {
-  padding: 0;
-  background: var(--background);
-}
-
-.accordion-style-three .accordion .card .card-header a {
-  display: block;
-  font-size: larger;
-  font-weight: 700;
-  line-height: 24px;
+.carousel-section .void {
+  width: 100%;
+  max-width: 1024px;
+  margin: auto;
   position: relative;
-  color: var(--menu);
-  -webkit-transition: all 0.3s ease-out 0s;
-  -moz-transition: all 0.3s ease-out 0s;
-  -ms-transition: all 0.3s ease-out 0s;
-  -o-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
-  border: 2px solid var(--light-1);
-  border-radius: 0;
-  padding: 13px 16px;
-  z-index: 5;
-  border-left: 0;
-  border-right: 0;
-  background: var(--background);
-  margin-top: -2px;
-  text-align: center;
+  aspect-ratio: 1 / 1;
 }
 
-.accordion-style-three .accordion .card .card-header a::before {
+.carousel-section ul:hover * {
+  animation-play-state: paused;
+}
+
+.carousel-section ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  z-index: 1;
+}
+
+.carousel-section li {
   position: absolute;
-  content: "\ea5e";
-  font-family: lineicons !important;
-  right: 16px;
-  top: 14px;
-  font-size: larger;
-  -webkit-transition: all 0.3s ease-out 0s;
-  -moz-transition: all 0.3s ease-out 0s;
-  -ms-transition: all 0.3s ease-out 0s;
-  -o-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  transform: rotate(180deg);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  animation: rotateCW calc(var(--rotate-speed) * 1s) var(--easing) infinite;
 }
 
-.accordion-style-three .accordion .card .card-header a.collapsed {
-  color: var(--black);
-  border: 2px solid var(--light-1);
-  background: transparent;
-  border-left: 0;
-  border-right: 0;
-  font-size: larger;
-  text-align: center;
+.carousel-section .card {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px 24px;
+  gap: 8px;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #535062;
+  animation: rotateCCW calc(var(--rotate-speed) * 1s) var(--easing) infinite;
 }
 
-.accordion-style-three .accordion .card .card-header a.collapsed::before {
-  -webkit-transform: rotate(0);
-  -moz-transform: rotate(0);
-  -ms-transform: rotate(0);
-  -o-transform: rotate(0);
-  transform: rotate(0);
+.carousel-section a {
+  text-decoration: none;
+  color: unset;
 }
 
-.accordion-style-three .accordion .card .card-body {
-  padding: 30px;
-  background-color: var(--background);
+.carousel-section .model-name {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 150%;
+  color: var(--carousel-main-color);
+  display: block;
 }
 
-.accordion-style-three .accordion .card .card-body .text {
-  color: var(--box);
-  font-size: 30px;
-  text-align: center;
-  font-weight: 450;
+.carousel-section svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
-.material-icons, .fas {
-  vertical-align: middle;
-  margin-right: 10px;
+.carousel-section li:nth-child(2), li:nth-child(2) .card {
+  animation-delay: calc((var(--rotate-speed)/var(--count)) * -1s);
 }
+
+.carousel-section li:nth-child(3), li:nth-child(3) .card {
+  animation-delay: calc((var(--rotate-speed)/var(--count)) * -2s);
+}
+
+.carousel-section li:nth-child(4), li:nth-child(4) .card {
+  animation-delay: calc((var(--rotate-speed)/var(--count)) * -3s);
+}
+
+.carousel-section li:nth-child(5), li:nth-child(5) .card {
+  animation-delay: calc((var(--rotate-speed)/var(--count)) * -4s);
+}
+
+@keyframes rotateCW {
+  from {
+      transform: translate3d(0px, -50%, -1px) rotate(-45deg);
+  }
+  to {
+      transform: translate3d(0px, -50%, 0px) rotate(-315deg);
+  }
+}
+
+@keyframes rotateCCW {
+  from {
+      transform: rotate(45deg);
+  }
+  to {
+      transform: rotate(315deg);
+  }
+}
+
+.carousel-section .center-circle {
+  position: absolute;
+  width: 230px;
+  aspect-ratio: 1 / 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #FFFFFF;
+  box-shadow: 0px 18px 36px -18px rgba(108, 163, 17, 0.3), 0px 30px 60px -12px rgba(108, 163, 17, 0.25);
+  border-radius: 50%;
+}
+
+
+.carousel-section .second-circle {
+  position: absolute;
+  width: 40%;
+  aspect-ratio: 1 / 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--background);
+  opacity: 0.5;
+  box-shadow: 0px 18px 36px -18px rgba(108, 163, 17, 0.3), 0px 30px 60px -12px rgba(108, 163, 17, 0.25);
+  border-radius: 50%;
+}
+
+.carousel-section .last-circle {
+  position: absolute;
+  width: 66%;
+  aspect-ratio: 1 / 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--background);
+  opacity: 0.25;
+  box-shadow: 0px 18px 36px -18px rgba(108, 163, 17, 0.3), 0px 30px 60px -12px rgba(108, 163, 17, 0.25);
+  border-radius: 50%;
+}
+
+.carousel-section .crop {
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 1));
+}
+
+.carousel-section .mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  animation: pulseGlow 5s linear infinite alternate;
+  background-position: 100% 50%;
+  background-repeat: no-repeat;
+  background-image: radial-gradient(100% 50% at 100% 50%, rgba(108, 163, 17, 0.25) 0%, rgba(108, 163, 17, 0.247) 11.79%, rgba(108, 163, 17, 0.242) 21.38%, rgba(108, 163, 17, 0.232) 29.12%, rgba(108, 163, 17, 0.220) 35.38%, rgba(108, 163, 17, 0.205) 40.53%, rgba(108, 163, 17, 0.187) 44.87%, rgba(108, 163, 17, 0.168) 48.62%, rgba(108, 163, 17, 0.148) 51.92%, rgba(108, 163, 17, 0.126) 54.87%, rgba(108, 163, 17, 0.105) 57.55%, rgba(108, 163, 17, 0.083) 60.02%, rgba(108, 163, 17, 0.062) 62.34%, rgba(108, 163, 17, 0.042) 64.57%, rgba(108, 163, 17, 0.023) 66.74%, rgba(108, 163, 17, 0.005) 68.93%, rgba(108, 163, 17, 0) 71.19%);
+}
+
+.carousel-section .mask:after {
+	content: "";
+	position: absolute;
+	width: 1px;
+	height: 100%;
+	right: 0;
+	display: block;
+	background-image: linear-gradient(180deg, rgba(60, 26, 229, 0) 0%, #8FC827 50%, rgba(60, 26, 229, 0) 100%);
+}
+
+@keyframes pulseGlow {
+  from {
+      transform: translate3d(-100%, 0, 0);
+  }
+  to {
+      transform: translate3d(0%, 0, 0);
+  }
+}
+
   /*===========================
   card-01 css
 ===========================*/
