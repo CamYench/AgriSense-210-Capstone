@@ -17,3 +17,4 @@ launch.json
 masking_pipeline/for_local_machine/metadata/LANDSAT_OT_C2_L2.csv.gz
 latest_evi_images/*
 latest_display_images/*
+addtl_data_pipelines/local_data
