@@ -700,3 +700,10 @@ else:
 
         plot_yield_prediction()
 
+
+
+home_url = 'https://fl1msqvrxvsb2cs.studio.us-east-1.sagemaker.aws/jupyterlab/default/proxy/8501/'
+st.markdown(f'''
+<a href={home_url}><button style="background-color:GreenYellow;">AgriSense Home</button></a>
+''',
+unsafe_allow_html=True)
