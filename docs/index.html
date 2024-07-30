@@ -537,29 +537,24 @@
                      aria-labelledby="tab-four-one-tab">
                     <div class="tab-text">
                         <p class="text">
-                            The data acquisition process starts with downloading Landsat data from the USGS ESPA and CropScape data from the NASS geospatial data gateway. 
+                            Our data acquisition begins with automated downloads of satellite data from USGS ESPA and crop data from the NASS geospatial data gateway. 
                             Custom ETL scripts facilitate these downloads via APIs, ensuring seamless and automated retrieval. These ETL jobs are scheduled and run 
-                            automatically in Amazon SageMaker, streamlining the entire process.
+                            in Amazon SageMaker, streamlining the process.
                             <br /><br />
-                            Once acquired, the data undergoes reprojection and resampling to maintain consistent spatial resolution and coordinate systems. Custom Python 
-                            functions handle these transformations, ensuring all datasets align to the same coordinate reference system and spatial resolution.<br/>
-                            Next, masking is applied to isolate specific areas of interest. This process filters the target raster data based on predefined thresholds, 
-                            refining the data to focus on relevant regions and enhancing the precision of subsequent analyses.
+                            Once acquired, the data undergoes reprojection and resampling to maintain consistent spatial resolution and coordinate systems, handled by 
+                            custom Python functions. This ensures all datasets align to the same coordinate reference system and spatial resolution. We then apply 
+                            masking to isolate specific areas of interest, refining the data for more precise analyses.
                             <br /><br />
-                            In addition to satellite data, the California Strawberry Commission provides valuable ground truth data. This data includes detailed information 
-                            on crop acreage, yields, and production estimates for strawberries in California. The raw data, initially in Excel format, is cleaned and converted 
-                            to a structured CSV file. This CSV file includes columns for date, volume (pounds), cumulative volume (pounds), pounds per acre, and transformed 
-                            date features such as month_sin, month_cos, day_of_year_sin, and day_of_year_cos to capture seasonal trends. This yield data is resampled to a weekly 
-                            resolution to align with the satellite data's temporal resolution.
+                            We also integrate valuable ground truth data from the California Strawberry Commission, which includes detailed information on crop acreage, 
+                            yields, and production estimates. This raw data, initially in Excel format, is cleaned and converted to a structured CSV file with relevant 
+                            columns like date, volume, cumulative volume, pounds per acre, and transformed date features (e.g., month_sin, month_cos, day_of_year_sin, 
+                            day_of_year_cos) to capture seasonal trends. The yield data is resampled to a weekly resolution to match the satellite data's temporal 
+                            resolution.
                             <br /><br />
-                            Finally, the processed and masked satellite data, along with the cleaned and resampled yield data from the California Strawberry Commission, is 
-                            uploaded to Amazon S3. This ensures secure storage and easy access for further analysis and modeling. Leveraging Amazon S3 provides scalable 
-                            storage and smooth integration with other AWS services, facilitating efficient data management.
-                            <br /><br />
-                            This streamlined workflow—from automated data acquisition to reprojection, resampling, masking, and storage in Amazon S3, combined with the 
-                            integration of detailed yield data from the California Strawberry Commission—ensures that Landsat and CropScape data are consistently processed 
-                            and ready for accurate analysis. The inclusion of ground truth data enhances the reliability and applicability of the analysis, providing a 
-                            comprehensive understanding of crop conditions and yields.
+                            Finally, the processed satellite data and the cleaned, resampled yield data are uploaded to Amazon S3. This secure storage solution allows 
+                            easy access for further analysis and modeling, providing scalable storage and smooth integration with other AWS services. Our workflow—from 
+                            automated data acquisition to reprojection, resampling, masking, and storage—ensures that Landsat and CropScape data are consistently 
+                            processed and ready for accurate analysis, with the ground truth data enhancing reliability and applicability.
                         </p>
                         <img src="agrisense_data_pipeline.jpg" alt="Data Pipeline" class="tab-image">
                     </div>
@@ -567,8 +562,8 @@
                 <div class="tab-pane fade" id="tab-four-two" role="tabpanel" aria-labelledby="tab-four-two-tab">
                     <div class="tab-text model-tab">
                             <ol>
-                                <li><span style="font-weight: normal;">Our model helps farmers assess field health by predicting crop yields using historical yield data and 
-                                    satellite imagery, focusing on strawberry farms in Monterey County. Below are the details on how it is structured:<br /><br /></span>
+                                <li>Our model helps farmers assess field health by predicting crop yields using historical yield data and 
+                                    satellite imagery, focusing on strawberry farms in Monterey County. Below are the details on how it is structured:<br /><br />
                                 </li>
                                 <li><b>Yield Data (Monterey County):</b>
                                     <ul>
@@ -605,29 +600,30 @@
                     <div class="tab-text">
                         <p class="text">
                             <b>Compute</b><br />
-                            Amazon SageMaker is a fully managed service designed to help developers and data scientists build, train, and deploy machine learning models 
-                            quickly and efficiently. With SageMaker, you can streamline the entire machine learning workflow, from data preparation to model training, 
-                            tuning, and deployment, all within a single integrated environment. SageMaker provides robust security features, including network isolation, 
-                            encryption in transit and at rest, and fine-grained access controls, ensuring that your data and models remain secure throughout the ML lifecycle.
+                            Amazon SageMaker is our choice for building, training, and deploying machine learning models. It offers a fully managed service that 
+                            streamlines the entire machine learning workflow, from data preparation to model training, tuning, and deployment. SageMaker's robust 
+                            security features, including network isolation, encryption in transit and at rest, and fine-grained access controls, ensure that our 
+                            data and models remain secure throughout the ML lifecycle.
                             <br /><br />
                             <b>Storage / Database</b><br />
-                            Amazon S3 is a highly scalable object storage service that provides secure, durable, and highly available storage for a wide range of data types. 
-                            It offers cost-effective storage options, robust data protection, and seamless integration with other AWS services, making it an ideal choice for 
-                            storing large volumes of diverse data. Amazon S3's security features include encryption, access management policies, and compliance certifications, 
-                            ensuring that your data is protected and meets industry standards for security and compliance.
+                            Amazon S3 provides highly scalable object storage, offering secure, durable, and highly available storage for a variety of data types. 
+                            Its cost-effective storage options, robust data protection, and seamless integration with other AWS services make it ideal for storing 
+                            large volumes of diverse data. Amazon S3's security features, including encryption, access management policies, and compliance 
+                            certifications, ensure that our data is protected and meets industry standards for security and compliance.
                             <br /><br />
                             <b>Front End</b><br />
-                            Streamlit is an open-source Python library that simplifies the creation of interactive, web-based dashboards. By using Streamlit with SageMaker, we 
-                            can host Streamlit servers and establish connections to our machine learning models, enabling real-time predictions and interactive data analysis. 
-                            This integration facilitates the development of dynamic, user-friendly applications for data exploration and model interpretation. The infrastructure 
-                            benefits from AWS's comprehensive security framework, which includes features such as secure API endpoints, DDoS protection, and automated monitoring 
-                            to safeguard the front-end applications and the underlying data.
+                            We use Streamlit, an open-source Python library, to create interactive web-based dashboards. By integrating Streamlit with SageMaker, 
+                            we host Streamlit servers and connect to our machine learning models, enabling real-time predictions and interactive data analysis. 
+                            This integration allows us to develop dynamic, user-friendly applications for data exploration and model interpretation. The 
+                            infrastructure benefits from AWS's comprehensive security framework, which includes secure API endpoints, DDoS protection, and automated 
+                            monitoring, safeguarding our front-end applications and the underlying data.
                         </p>
                         <img src="agrisense_inference.jpg" alt="Infrastructure" class="tab-image">
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tab-four-four" role="tabpanel" aria-labelledby="tab-four-four-tab">
                     <div class="tab-text">
+                        <p class="text">
                         <ol>
                             <li id="citation-1">
                                 [1] “Water Scarcity”. <i>World Wildlife Fund</i>, 11 Nov. 2014, 
@@ -734,7 +730,7 @@
             <div class="col-lg-2 col-md-2 col-sm-2">
                 <div class="single-team text-center team-style-one">
                     <div class="team-image">
-                    <img src="https://ca.slack-edge.com/T0WA5NWKG-U02BVUQDRKP-011ea24337e8-512" alt="Team" />
+                    <img src="josh.png" alt="Team" />
                     </div>
                     <div class="team-content">
                     <h4 class="name">Josh Fram</h4>
@@ -747,7 +743,7 @@
             <div class="col-lg-2 col-md-2 col-sm-2">
                 <div class="single-team text-center team-style-one">
                     <div class="team-image">
-                    <img src="https://ca.slack-edge.com/T0WA5NWKG-U02SLU639N0-44dff3a375c0-512" alt="Team" />
+                    <img src="M1.png" alt="Team" />
                     </div>
                     <div class="team-content">
                     <h4 class="name">Maria Manna</h4>
@@ -784,7 +780,7 @@
             <div class="col-lg-2 col-md-2 col-sm-2">
                 <div class="single-team text-center team-style-one">
                     <div class="team-image">
-                    <img src="advisors1.png" alt="Team" />
+                    <img src="berkeleyseal.png" alt="Team" />
                     </div>
                     <div class="team-content">
                     <span class="sub-title"><b>Advisors:</b> Korin Reid</span>
