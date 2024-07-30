@@ -34,7 +34,7 @@ evi_data_dir = './latest_evi_images'
 
 # Load the latest trained model
 target_shape= (512,512)
-model_path = 'train_model/updated_7_28_model.pth'
+model_path = 'trained-full-dataset.pt'
 cnn_feature_extractor = CNNFeatureExtractor()
 model = HybridModel(cnn_feature_extractor)
 model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
