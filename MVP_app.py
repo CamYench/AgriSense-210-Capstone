@@ -18,20 +18,28 @@ import os
 import torch
 
 # Import the model and functions from model_utils
-from model_utils import CNNFeatureExtractor, HybridModel, preprocess_input, predict_yield
+from MVP_model_utils import CNNFeatureExtractor, HybridModel
+from MVP_inference_utils import load_evi_data_and_prepare_features, predict_weekly_yield
+
 
 #import image handler functions from landsat_handler
 from landsat_handler import retrieve_latest_images, convert_selected_area, mask_tif
 
-# Load the trained model
-# model_path = 'train_model/best_hybrid_model.pth'
+# Load weekly yield data
+yield_data_weekly = pd.read_csv('yield_data_weekly.csv', index_col='Date')
+yield_data_weekly.index = pd.to_datetime(yield_data_weekly.index)
 
-# cnn_feature_extractor = CNNFeatureExtractor()
-# model = HybridModel(cnn_feature_extractor)
-# model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
-# model.eval() 
+#latest evi image location
+evi_data_dir = './latest_evi_images'
 
-#get latest landsat
+# Load the latest trained model
+target_shape= (512,512)
+model_path = 'train_model/updated_7_28_model.pth'
+cnn_feature_extractor = CNNFeatureExtractor()
+model = HybridModel(cnn_feature_extractor)
+model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+model.eval() 
+
 
 
 
@@ -81,6 +89,8 @@ if 'smi_date' not in st.session_state:
     st.session_state['smi_date'] = None
 if 'mtvi_date' not in st.session_state:
     st.session_state['mtvi_date'] = None
+if 'model_prediction' not in st.session_state:
+    st.session_state['model_prediction'] = None
 
 # CSS and JavaScript
 
@@ -195,7 +205,6 @@ def stream_data(input_text):
 
 
 #get latest landsat file names
-# latest_file_names = retrieve_latest_images()
 latest_file_names = os.listdir('./latest_display_images/')
 
 # Constants for Landsat 8 TIRS band 10
@@ -427,7 +436,28 @@ if view == "Crop Health":
                 # st.write("Area of Interest (AOI) saved in session state.")
                 
                 
-            
+
+
+
+
+
+            start_date = pd.to_datetime(st.session_state['evi_date']) # input date of latest EVI image
+
+            polygon_area_acres = st.session_state['area']/4046.8564224 # conversion to acres from square meters
+            # Load and preprocess the EVI data
+            time_index = [pd.to_datetime(time) for time in yield_data_weekly.index]
+
+            evi_data_dict, time_features_list, mean, std = load_evi_data_and_prepare_features(evi_data_dir, time_index, target_shape)
+
+            # Generate weekly predictions
+            device=None
+            dates, predicted_yields = predict_weekly_yield(evi_data_dict, yield_data_weekly, start_date, polygon_area_acres, mean, std, target_shape, model, device)
+
+            # Convert predictions to a numpy array
+            predicted_yields = np.array(predicted_yields).flatten()
+            st.session_state['model_prediction']=predicted_yields[0]
+
+
 
 
     if st.session_state["aoi"] == None:
@@ -442,7 +472,8 @@ if view == "Crop Health":
             #print calculated area converted to acres
             area_str = "Calculated Area: " + str(round(st.session_state["area"]/4046.8564224,2)) + " acres"
             yield_str = "Predicted Yield: " + str(int(round((st.session_state["area"]/4046.8564224) * 252.93856192,0))) + " pounds of strawberries / week"
-            
+            yield_str = "Predicted Yield: " + str(int(st.session_state["model_prediction"])) + " pounds of strawberries / week"
+
             st.write_stream(stream_data(area_str))
             st.write_stream(stream_data(yield_str))
 
