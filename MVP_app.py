@@ -30,7 +30,7 @@ yield_data_weekly = pd.read_csv('yield_data_weekly.csv', index_col='Date')
 yield_data_weekly.index = pd.to_datetime(yield_data_weekly.index)
 
 #latest evi image location
-evi_data_dir = './latest_evi_images'
+evi_data_dir = './latest_masked_evi'
 
 # Load the latest trained model
 target_shape= (512,512)
@@ -470,9 +470,10 @@ if view == "Crop Health":
             # st.markdown('<div class="output-container">', unsafe_allow_html=True)
             st.divider()
             #print calculated area converted to acres
-            area_str = "Calculated Area: " + str(round(st.session_state["area"]/4046.8564224,2)) + " acres"
-            yield_str = "Predicted Yield: " + str(int(round((st.session_state["area"]/4046.8564224) * 252.93856192,0))) + " pounds of strawberries / week"
-            yield_str = "Predicted Yield: " + str(int(st.session_state["model_prediction"])) + " pounds of strawberries / week"
+            area = round(st.session_state["area"]/4046.8564224,1)
+            area_str = "Calculated Area: " + str(area) + " acres"
+            # yield_str = "Predicted Yield: " + str(int(round((st.session_state["area"]/4046.8564224) * 252.93856192,0))) + " pounds of strawberries / week"
+            yield_str = "Predicted Yield: " + str(int(round(st.session_state["model_prediction"] * area/79500,0))) + " pounds of strawberries / week" #added fraction of 2023 cropscape strawberry acres
 
             st.write_stream(stream_data(area_str))
             st.write_stream(stream_data(yield_str))

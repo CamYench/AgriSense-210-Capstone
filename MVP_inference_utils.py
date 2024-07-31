@@ -70,7 +70,7 @@ def prepare_dataset(evi_data_dir, yield_data_weekly, target_shape, augment=False
     evi_data_dict = {}
     evi_data_files = os.listdir(evi_data_dir)
     for idx, file in enumerate(evi_data_files):
-        if file.endswith('.tif'):
+        if file.endswith('.tiff'):
             print(f"Processing file {idx+1}/{len(evi_data_files)}", end='\r')
             date_str = os.path.basename(file).split('_')[3]
             date = pd.to_datetime(date_str, format='%Y%m%d')
@@ -162,7 +162,7 @@ def load_evi_data_and_prepare_features(evi_data_dir, time_index, target_shape):
     
     evi_data_dict = {}
     for file in os.listdir(evi_data_dir):
-        if file.endswith('.tif'):
+        if file.endswith('.tiff'):
             date_str = os.path.basename(file).split('_')[3]
             date = pd.to_datetime(date_str, format='%Y%m%d')
             evi_data = load_evi_data(os.path.join(evi_data_dir, file))
