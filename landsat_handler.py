@@ -104,6 +104,32 @@ def retrieve_last_4_evi():
 
     return (latest_4_evi)
 
+
+def retrieve_last_4_masked():
+    # Initialize S3 client and search client
+    s3_client = boto3.client('s3')
+
+    paginator = s3_client.get_paginator('list_objects_v2')
+    page_iterator = paginator.paginate(Bucket="agrisense3", Prefix="landsat_masked/")
+    
+    #list of EVI files present
+    evi_files = []
+
+    #iterate through bucket
+    for page in page_iterator:
+        for obj in page.get('Contents', []):
+            key=obj['Key']
+            if 'EVI' in key:
+                try:
+                    date_str = key[32:40]
+                    evi_files.append((date_str, key))
+                except ValueError:
+                    continue
+    
+    evi_files.sort(reverse=True, key=lambda x: x[0])
+    latest_4_masked = [key for date, key in evi_files[:4]]
+
+    return (latest_4_masked)
                 
 
 
