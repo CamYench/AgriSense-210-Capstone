@@ -797,17 +797,28 @@ else:
             predicted_yield = actual_yield + np.random.randint(-20, 20, size=len(time_periods))
             # compare_yield = actual_yield + np.random.randint(-30, 30, size=len(time_periods))
 
-            fig, ax = plt.subplots(figsize=(10, 5))
-            ax.plot(time_periods, actual_yield, label='Actual Yield', color='green', linewidth=2)
-            ax.plot(time_periods, predicted_yield, label='Predicted Yield', color='lightblue', linestyle='--', linewidth=2)
-            # ax.plot(time_periods, compare_yield, label='Compare Yield', color='green', linestyle='-.', linewidth=2)
 
-            ax.set_xlabel("Time")
-            ax.set_ylabel("Yield")
-            ax.set_title("Yield Prediction Comparison")
-            ax.legend()
+            df = pd.DataFrame({
+                'Date': time_periods,
+                'Actual Yield': actual_yield,
+                'Predicted Yield': predicted_yield
+            })
+            fig = px.line(df, x='Date', y=['Actual Yield', 'Predicted Yield'],
+              labels={'value': 'Yield', 'variable': 'Legend'},
+              title='Yield Prediction Comparison')
 
-            st.pyplot(fig)
+            fig.update_layout(
+                xaxis_title='Time',
+                yaxis_title='Yield',
+                legend_title='',
+                width=1000,
+                height=600
+            )
+
+
+            st.plotly_chart(fig)
+
+
 
         st.sidebar.title("Options")
 
