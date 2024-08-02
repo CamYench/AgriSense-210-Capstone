@@ -391,14 +391,15 @@ if view == "Crop Health":
         # Reset message_shown flag
         st.session_state.message_shown = False
     
-    if st.sidebar.button("🔄 Refresh"):
-        message.write("Refreshing data...")
-        time.sleep(3)
-        message.empty()
+    # if st.sidebar.button("🔄 Start Over"):
+    #     message.write("Generating a blank slate...")
+    #     time.sleep(3)
+    #     message.empty()
 
-        st.session_state.selected_option = "Select an Option Below"
-        st.session_state.message_shown = False
-        st.experimental_rerun()  # Rerun the app to reset the state
+        
+    #     st.session_state.selected_option = "Select an Option Below"
+    #     st.session_state.message_shown = False
+    #     st.experimental_rerun()  # Rerun the app to reset the state
 
 
 
@@ -412,7 +413,7 @@ if view == "Crop Health":
         with col2:
             if output and 'last_active_drawing' in output:
                 if output['last_active_drawing'] == None:
-                    st.write("Please select a target field area.")
+                    st.subheader("Please select a target field area.")
                 elif output['last_active_drawing'] == st.session_state['previous_aoi']:
                     #print calculated area converted to acres
                     area = round(st.session_state["area"]/4046.8564224,1)
@@ -566,7 +567,7 @@ if view == "Crop Health":
             # # st.write("Predicted Yield: " + str(int(round((st.session_state["area"]/4046.8564224) * 252.93856192,0))) + " pounds of strawberries / week")
 
             if st.session_state.selected_option == "Select an Option Below":
-                st.write("Please use '🔍 Field Views' option on the left to select metric for display!")
+                st.write("Please use '🔍 Field Views' option on the left to select a display metric!")
 
             elif st.session_state.selected_option == "🌱 EVI":
                     
@@ -621,6 +622,22 @@ if view == "Crop Health":
 
 
             elif st.session_state.selected_option == "☀️ Surface Temperature":
+                    
+
+
+                    with st.expander("Why Surface Temperature?"):
+                        st.write('''
+                            Surface Temperature can be an important indicator of crop stress.
+                                 ''')
+                        st.write('''
+                            We get surface temperature using Landsat Collection 2 thermal infrared bands.
+                                 
+                                 ''')
+                        st.write('''
+                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature
+                                 ''')
+                        
+
                     #convert to fahrenheit
                     st_landsat_f = dn_to_fahrenheit(st.session_state['st_landsat'][0], L_MIN, L_MAX, QCAL_MIN, QCAL_MAX, K1, K2)
 
@@ -655,20 +672,23 @@ if view == "Crop Health":
                     st.plotly_chart(fig2)
                     fig2.update_traces(marker_color='orange', opacity=0.7)
 
-                    with st.expander("Why Surface Temperature?"):
-                        st.write('''
-                            Surface Temperature can be an important indicator of crop stress.
-                                 ''')
-                        st.write('''
-                            We get surface temperature using Landsat Collection 2 thermal infrared bands.
-                                 
-                                 ''')
-                        st.write('''
-                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature
-                                 ''')
+                    
 
 
             elif st.session_state.selected_option == "🌿 Chlorophyll Content":
+                    
+                    with st.expander("What does Chlorophyll Content (MTVI2) mean?"):
+                        st.write('''
+                            Chlorophyll Content readings can enable customized nutrient applications and optimal crop nutrition.
+                                 ''')
+                        st.write('''
+                            The way Chlorophyll content....
+                                 
+                                 ''')
+                        st.write('''
+                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2
+                                 ''')
+
                     # Mask the MTVI2 values to include only those greater than 0
                     mask = st.session_state['mtvi_landsat'][0] > 0
                     masked_mtvi = np.where(mask, st.session_state['mtvi_landsat'][0], np.nan)
@@ -699,12 +719,17 @@ if view == "Crop Health":
                     fig2.update_traces(marker_color='green', opacity=0.7)
                     st.plotly_chart(fig2)
 
-                    with st.expander("What does Chlorophyll Content (MTVI2) mean?"):
+                    
+
+
+            elif st.session_state.selected_option == "🌧️ Soil Moisture":
+                    
+                    with st.expander("What is Soil Moisture Index (SMI)?"):
                         st.write('''
-                            Chlorophyll Content readings can enable customized nutrient applications and optimal crop nutrition.
+                            SMI gives an indication of crop watering needs and lets you get ahead of unexpected dry period impacts.
                                  ''')
                         st.write('''
-                            The way Chlorophyll content....
+                            Calculating SMI....
                                  
                                  ''')
                         st.write('''
@@ -712,7 +737,6 @@ if view == "Crop Health":
                                  ''')
 
 
-            elif st.session_state.selected_option == "🌧️ Soil Moisture":
                     # Mask the soil moisture index (SMI) values to include only those greater than 0
                     mask = st.session_state['smi_landsat'][0] > 0
                     masked_smi = np.where(mask, st.session_state['smi_landsat'][0], np.nan)
@@ -743,20 +767,8 @@ if view == "Crop Health":
                     fig2.update_traces(marker_color='dodgerblue', opacity=0.7)
                     st.plotly_chart(fig2)
 
-                    with st.expander("What is Soil Moisture Index (SMI)?"):
-                        st.write('''
-                            SMI gives an indication of crop watering needs and lets you get ahead of unexpected dry period impacts.
-                                 ''')
-                        st.write('''
-                            Calculating SMI....
-                                 
-                                 ''')
-                        st.write('''
-                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2
-                                 ''')
+                    
 
-            elif st.session_state.selected_option == "NDVI":
-                    st.write(f"{st.session_state.selected_option} visualization coming soon!")
             
 
             st.markdown('</div>', unsafe_allow_html=True)
@@ -825,8 +837,13 @@ else:
 
 
 
+st.divider()
+
 home_url = 'http://www.agrisense.info'
 st.markdown(f'''
-<a href={home_url}><button style="background-color: white;color: black; border: 2px solid; border-radius: 12px;">AgriSense Home</button></a>
+<a href={home_url}><button style="background-color: white;color: Grey; border: 1px solid; border-radius: 12px;">AgriSense Home</button></a>
 ''',
 unsafe_allow_html=True)
+
+st.markdown('<div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
