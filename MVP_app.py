@@ -91,6 +91,8 @@ if 'mtvi_date' not in st.session_state:
     st.session_state['mtvi_date'] = None
 if 'model_prediction' not in st.session_state:
     st.session_state['model_prediction'] = None
+if 'masked_date' not in st.session_state:
+    st.session_state['masked_date'] = None
 
 # CSS and JavaScript
 
@@ -208,6 +210,7 @@ def stream_data(input_text):
 
 #get latest landsat file names
 latest_file_names = os.listdir('./latest_display_images/')
+latest_masked_file_names = os.listdir('./latest_masked_evi/')
 
 # Constants for Landsat 8 TIRS band 10
 L_MIN = 0.1  # Replace with metadata value
@@ -242,6 +245,7 @@ def find_files_with_sequence(file_list, sequence):
         if sequence in file_name:
             matching_files.append(file_name)
 
+    matching_files.sort(reverse=True)
     return matching_files[0]
 
 def calculate_area(geojson):
@@ -414,6 +418,9 @@ if view == "Crop Health":
             if output and 'last_active_drawing' in output:
                 if output['last_active_drawing'] == None:
                     st.subheader("Please select a target field area.")
+                elif calculate_area(output['last_active_drawing']) >= 610000:
+                    st.subheader("Please select an area smaller than 150 acres.")
+                    st.session_state['aoi'] = None
                 elif output['last_active_drawing'] == st.session_state['previous_aoi']:
                     #print calculated area converted to acres
                     area = round(st.session_state["area"]/4046.8564224,1)
@@ -429,6 +436,7 @@ if view == "Crop Health":
                     latest_st_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'ST')
                     latest_smi_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'SMI')
                     latest_mtvi_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'MTVI')
+                    latest_masked_fp = './latest_masked_evi/'+find_files_with_sequence(latest_masked_file_names,'masked')
 
 
                     st.session_state['evi_landsat'] = mask_tif(output['last_active_drawing'],latest_evi_fp)
@@ -439,6 +447,8 @@ if view == "Crop Health":
                     st.session_state['smi_date'] = latest_smi_fp[41:49]
                     st.session_state['mtvi_landsat'] = mask_tif(output['last_active_drawing'],latest_mtvi_fp)
                     st.session_state['mtvi_date'] = latest_mtvi_fp[41:49]
+
+                    st.session_state['masked_date'] = latest_masked_fp[37:45]
                     
                     st.session_state['previous_aoi'] = st.session_state["aoi"]
                     st.session_state["aoi"] = output['last_active_drawing']
@@ -451,7 +461,7 @@ if view == "Crop Health":
 
 
 
-                    start_date = pd.to_datetime(st.session_state['evi_date']) # input date of latest EVI image
+                    start_date = pd.to_datetime(st.session_state['masked_date']) # input date of latest EVI image
 
                     polygon_area_acres = st.session_state['area']/4046.8564224 # conversion to acres from square meters
                     # Load and preprocess the EVI data
@@ -470,6 +480,7 @@ if view == "Crop Health":
                     if st.session_state["aoi"] == None:
                 
                         pass
+                    
 
                     else:
 
@@ -483,6 +494,13 @@ if view == "Crop Health":
                         st.subheader("Predicted Yield:")
                         st.write_stream(stream_data(yield_str))
 
+                        # #TESTING ONLY!!!
+                        # st.write(st.session_state["model_prediction"])
+                        # st.write(predicted_yields)
+                        # st.write(st.session_state['masked_date'])
+                        # st.write (latest_masked_file_names)
+                        # #TESTING ONLY!!!
+
                         # st.write("Calculated Area: " + str(round(st.session_state["area"]/4046.8564224,3)) + " acres")
                         # st.write("Predicted Yield: " + str(int(round((st.session_state["area"]/4046.8564224) * 252.93856192,0))) + " pounds of strawberries / week")
 
@@ -492,62 +510,12 @@ if view == "Crop Health":
 
 
 
-
-    # # Save the last drawn GeoJSON to session state
-    # if output and 'last_active_drawing' in output:
-    #     if output['last_active_drawing'] == None:
-    #         st.write("Please select a target field area.")
-    #     elif output['last_active_drawing'] == st.session_state['previous_aoi']:
-    #         pass
-    #     else:
-    #         latest_evi_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'EVI')
-    #         latest_st_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'ST')
-    #         latest_smi_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'SMI')
-    #         latest_mtvi_fp = './latest_display_images/'+find_files_with_sequence(latest_file_names,'MTVI')
-
-
-    #         st.session_state['evi_landsat'] = mask_tif(output['last_active_drawing'],latest_evi_fp)
-    #         st.session_state['evi_date'] = latest_evi_fp[41:49]
-    #         st.session_state['st_landsat'] = mask_tif(output['last_active_drawing'],latest_st_fp)
-    #         st.session_state['st_date'] = latest_st_fp[41:49]
-    #         st.session_state['smi_landsat'] = mask_tif(output['last_active_drawing'],latest_smi_fp)
-    #         st.session_state['smi_date'] = latest_smi_fp[41:49]
-    #         st.session_state['mtvi_landsat'] = mask_tif(output['last_active_drawing'],latest_mtvi_fp)
-    #         st.session_state['mtvi_date'] = latest_mtvi_fp[41:49]
-            
-    #         st.session_state['previous_aoi'] = st.session_state["aoi"]
-    #         st.session_state["aoi"] = output['last_active_drawing']
-    #         st.session_state["area"] = calculate_area(output['last_active_drawing'])
-    #             # st.write("Area of Interest (AOI) saved in session state.")
-                
-                
-
-
-
-
-
-    #         start_date = pd.to_datetime(st.session_state['evi_date']) # input date of latest EVI image
-
-    #         polygon_area_acres = st.session_state['area']/4046.8564224 # conversion to acres from square meters
-    #         # Load and preprocess the EVI data
-    #         time_index = [pd.to_datetime(time) for time in yield_data_weekly.index]
-
-    #         evi_data_dict, time_features_list, mean, std = load_evi_data_and_prepare_features(evi_data_dir, time_index, target_shape)
-
-    #         # Generate weekly predictions
-    #         device=None
-    #         dates, predicted_yields = predict_weekly_yield(evi_data_dict, yield_data_weekly, start_date, polygon_area_acres, mean, std, target_shape, model, device)
-
-    #         # Convert predictions to a numpy array
-    #         predicted_yields = np.array(predicted_yields).flatten()
-    #         st.session_state['model_prediction']=predicted_yields[0]
-
-
-
-
     if st.session_state["aoi"] == None:
                 
         pass
+
+    elif calculate_area(output['last_active_drawing']) >= 610000:
+        pass 
 
     else:
 
@@ -782,9 +750,10 @@ else:
 
     message = st.empty()
 
-    if st.session_state["aoi"] is None:
+    if st.session_state["area"] is None or st.session_state['aoi'] is None:
         with message.container():
-            st.write("Please return to the Crop Health view and select a field.")
+            st.write("Please return to the Crop Health view and select a valid field.")
+
 
     else: 
         message.empty()
