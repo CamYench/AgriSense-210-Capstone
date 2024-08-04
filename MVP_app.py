@@ -1,4 +1,8 @@
 import streamlit as st
+# Initial setup
+st.set_page_config(layout="wide", page_title="AgriSense App (Beta)",page_icon="🌱")
+
+
 import folium
 from streamlit_folium import folium_static, st_folium
 from folium.plugins import Draw, MiniMap
@@ -43,8 +47,7 @@ model.eval()
 
 
 
-# Initial setup
-st.set_page_config(layout="wide")
+
 
 # Initialize session state
 if "view" not in st.session_state:
