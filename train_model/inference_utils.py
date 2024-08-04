@@ -51,7 +51,8 @@ class CustomDataset(Dataset):
         evi_sequence = torch.tensor(evi_sequence, dtype=torch.float32).unsqueeze(1)
         yield_val = self.yield_data.iloc[idx + self.sequence_length - 1]['Volume (Pounds)']
         time_features = self.yield_data.iloc[idx + self.sequence_length - 1][['month_sin', 'month_cos', 'day_of_year_sin', 'day_of_year_cos', 'Volume (Pounds)', 'Cumulative Volumne (Pounds)']].values
-        return evi_sequence, torch.tensor(yield_val, dtype=torch.float32), torch.tensor(time_features, dtype=torch.float32)
+        date = self.yield_data.iloc[idx + self.sequence_length -1].name.timestamp()
+        return evi_sequence, torch.tensor(yield_val, dtype=torch.float32), torch.tensor(time_features, dtype=torch.float32), date
     
 def sync_evi_yield_data(evi_data_dict, yield_data_weekly):
     evi_reference = []
@@ -65,7 +66,7 @@ def sync_evi_yield_data(evi_data_dict, yield_data_weekly):
 
     return evi_data_dict_combined, evi_reference
     
-def prepare_dataset(evi_data_dir, yield_data_weekly, target_shape, augment=False):
+def prepare_dataset(evi_data_dir, yield_data_weekly, target_shape, augment=False, full=False):
     # Load EVI data
     evi_data_dict = {}
     evi_data_files = os.listdir(evi_data_dir)
@@ -89,14 +90,21 @@ def prepare_dataset(evi_data_dir, yield_data_weekly, target_shape, augment=False
     # Prepare dataset with synchronized EVI and yield data
     evi_data_dict_combined, evi_reference_combined = sync_evi_yield_data(evi_data_dict, yield_data_weekly)
 
-    dataset = CustomDataset(evi_data_dict_combined, evi_reference_combined, yield_data_weekly)
-    train_indices, test_indices = train_test_split(np.arange(len(dataset)), test_size=0.2, random_state=42)
+    if full:
+        dataset = CustomDataset(evi_data_dict_combined, evi_reference_combined, yield_data_weekly)
+        train_indices = np.arange(len(dataset))
+        train_subset = torch.utils.data.Subset(dataset, train_indices)
+        train_loader = DataLoader(train_subset, batch_size=4, shuffle=True)
+        test_loader = None
+    else:
+        dataset = CustomDataset(evi_data_dict_combined, evi_reference_combined, yield_data_weekly)
+        train_indices, test_indices = train_test_split(np.arange(len(dataset)), test_size=0.2, random_state=42)
 
-    train_subset = torch.utils.data.Subset(dataset, train_indices)
-    test_subset = torch.utils.data.Subset(dataset, test_indices)
+        train_subset = torch.utils.data.Subset(dataset, train_indices)
+        test_subset = torch.utils.data.Subset(dataset, test_indices)
 
-    train_loader = DataLoader(train_subset, batch_size=4, shuffle=True)
-    test_loader = DataLoader(test_subset, batch_size=4, shuffle=False)
+        train_loader = DataLoader(train_subset, batch_size=4, shuffle=True)
+        test_loader = DataLoader(test_subset, batch_size=4, shuffle=False)
 
     return train_loader, test_loader, mean, std
 
