@@ -57,8 +57,6 @@ body {
   background-color: #F5F5F5;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden;
-  overflow-x: clip !important;
 }
 hr {
   margin: 1rem 0;
