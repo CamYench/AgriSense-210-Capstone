@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import timedelta
 
 import numpy as np
@@ -50,7 +51,7 @@ class CustomDataset(Dataset):
         evi_sequence = [self.evi_data_dict[self.evi_reference[idx + i]] for i in range(self.sequence_length)]
         evi_sequence = torch.tensor(evi_sequence, dtype=torch.float32).unsqueeze(1)
         yield_val = self.yield_data.iloc[idx + self.sequence_length - 1]['Volume (Pounds)']
-        time_features = self.yield_data.iloc[idx + self.sequence_length - 1][['month_sin', 'month_cos', 'day_of_year_sin', 'day_of_year_cos', 'Volume (Pounds)', 'Cumulative Volumne (Pounds)']].values
+        time_features = self.yield_data.iloc[idx + self.sequence_length - 1][['month_sin', 'month_cos', 'day_of_year_sin', 'day_of_year_cos']].values
         date = self.yield_data.iloc[idx + self.sequence_length -1].name.timestamp()
         return evi_sequence, torch.tensor(yield_val, dtype=torch.float32), torch.tensor(time_features, dtype=torch.float32), date
     
@@ -72,13 +73,16 @@ def prepare_dataset(evi_data_dir, yield_data_weekly, target_shape, augment=False
     evi_data_files = os.listdir(evi_data_dir)
     for idx, file in enumerate(evi_data_files):
         if file.endswith('.tiff'):
-            print(f"Processing file {idx+1}/{len(evi_data_files)}", end='\r')
+            tstart = time.perf_counter()
             date_str = os.path.basename(file).split('_')[3]
             date = pd.to_datetime(date_str, format='%Y%m%d')
             evi_data = load_evi_data(os.path.join(evi_data_dir, file))
             if augment:
                 evi_data = augment_image(evi_data)
             evi_data_dict[date] = evi_data
+            tend = time.perf_counter()
+            duration = tend - tstart
+            print(f"Processed file {idx+1}/{len(evi_data_files)} in {duration:2f}s")
 
     # Extract mean and std from the preprocessed data
     mean, std = compute_mean_std(evi_data_dict, target_shape)
@@ -119,10 +123,11 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
     for epoch in range(epochs):
         running_loss = 0.0
         model.train()
-        for inputs, labels, time_features in tqdm(train_loader):
+        for inputs, labels, time_features, timestamp in tqdm(train_loader):
             inputs, labels, time_features = inputs.to(device), labels.to(device), time_features.to(device)
             optimizer.zero_grad()
             outputs = model(inputs, time_features)
+            labels = labels / (512 * 512)
             labels = labels.unsqueeze(1).unsqueeze(2).expand(-1, target_shape[0], target_shape[1])
             loss = criterion(outputs, labels)
             loss.backward()
@@ -136,7 +141,7 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
-                    for inputs, labels, time_features in val_loader:
+                    for inputs, labels, time_features, timestamps, in val_loader:
                         inputs, labels, time_features = inputs.to(device), labels.to(device), time_features.to(device)
                         outputs = model(inputs, time_features)
                         labels = labels.unsqueeze(1).unsqueeze(2).expand(-1, target_shape[0], target_shape[1])
@@ -232,7 +237,7 @@ def predict_weekly_yield(evi_data_dict, yield_data_weekly, start_date, polygon_a
         closest_yield_date = find_closest_date_in_df(date_to_predict, yield_data_weekly)
         
         evi_data = evi_data_dict[closest_evi_date]
-        time_features = yield_data_weekly.loc[closest_yield_date, ['month_sin', 'month_cos', 'day_of_year_sin', 'day_of_year_cos', 'Volume (Pounds)', 'Cumulative Volumne (Pounds)']].values
+        time_features = yield_data_weekly.loc[closest_yield_date, ['month_sin', 'month_cos', 'day_of_year_sin', 'day_of_year_cos']].values
         
         predicted_yield_per_acre = predict(evi_data, time_features, mean, std, target_shape, model, device)
         

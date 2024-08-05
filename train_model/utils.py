@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import joblib
 import numpy as np
 import pandas as pd
 import rasterio
@@ -70,6 +71,7 @@ def process_yield_data(yield_data_path:Path):
     # scaler should also be deployed with model
 
     scaler = MinMaxScaler()
-    yield_data_weekly[['Volume (Pounds)', 'Cumulative Volumne (Pounds)']] = scaler.fit_transform(yield_data_weekly[['Volume (Pounds)', 'Cumulative Volumne (Pounds)']])
+    yield_data_weekly['Volume (Pounds)'] = scaler.fit_transform(yield_data_weekly[['Volume (Pounds)']])
+    joblib.dump(scaler, "yield_scaler.save")
 
     return yield_data_weekly
