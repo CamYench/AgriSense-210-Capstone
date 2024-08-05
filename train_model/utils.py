@@ -6,14 +6,11 @@ import pandas as pd
 import rasterio
 from sklearn.preprocessing import MinMaxScaler
 
-
 # Function to load EVI data
 def load_evi_data(file_path):
     with rasterio.open(file_path) as src:
         data = src.read(1)
         return data
-
-
 
 def process_yield_data(yield_data_path:Path):
 

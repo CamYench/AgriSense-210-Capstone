@@ -210,6 +210,16 @@ def find_closest_date_in_df(date, df):
     closest_date = min(df.index, key=lambda d: abs(d - date))
     return closest_date
 
+def find_common_date_range(evi_data_dict, yield_data_weekly):
+    evi_dates = sorted(evi_data_dict.keys())
+    yield_dates = sorted(yield_data_weekly.index)
+
+    # Find the maximum of the minimum dates and the minimum of the maximum dates
+    start_date = max(min(evi_dates), min(yield_dates))
+    end_date = min(max(evi_dates), max(yield_dates))
+
+    return start_date, end_date
+
 def mask_evi_data(evi_data, polygon_coords):
     mask = np.zeros_like(evi_data)
     rr, cc = polygon(polygon_coords[:, 0], polygon_coords[:, 1], mask.shape)
