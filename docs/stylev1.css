@@ -553,7 +553,9 @@ ul li {
   background-color: var(--background);
   padding-top: 110px;
   padding-bottom: 150px;
+  align-items: center;
 }
+
 
 .features-one .section-title {
   padding-bottom: 10px;
@@ -580,11 +582,14 @@ ul li {
   margin-top: 24px;
 }
 
+
 .features-style-one {
   position: relative;
   background-color: var(--background);
   border-radius: 4px;
   perspective: 1000px;
+  display: flex;
+  flex-direction: column;
 }
 
 .flip-card {
@@ -592,6 +597,7 @@ ul li {
   width: 416px;
   height: 416px;
   perspective: 1000px;
+  padding-bottom: 10px;
 }
 
 .flip-card-inner {
@@ -603,6 +609,18 @@ ul li {
   transform-style: preserve-3d;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
+@media (max-width: 1000px) {
+  .flip-card {
+    width: 100%; /* Ensure full width on smaller screens */
+    max-width: none; /* Remove max-width constraint */
+  }
+
+  .flip-card-inner {
+    box-shadow: none; /* Adjust shadow or remove if needed */
+  }
+}
+
+
 
 .flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
@@ -1059,13 +1077,47 @@ body {
 }
 
 /*===== TABS FOUR =====*/
+/* Styles for the citations section */
+#tab-four-four .tab-text {
+  padding: 15px 30px;
+  margin: 0 auto;
+  line-height: 25px;
+  max-width: 100%; /* Use full width */
+  text-align: left; /* Ensure text is left-aligned */
+}
+
+/* Adjust indentation for citations */
+#tab-four-four .tab-text ol,
+#tab-four-four .tab-text ul {
+  margin-left: 20px; /* Indentation */
+}
+
+/* Ensure list items are consistently spaced */
+#tab-four-four .tab-text li {
+  margin-bottom: 10px; /* Spacing between items */
+}
+
+#tab-four-four .tab-text a {
+  color: var(--citationlink);
+  text-decoration: none;
+}
+
+/* Handle responsiveness */
 @media (max-width: 767px) {
+  #tab-four-four .tab-text {
+    padding: 15px;
+    text-align: left; /* Ensure text remains left-aligned on smaller screens */
+  }
+}
+
+
+@media (max-width: 800px) {
   .tabs-four .nav {
     display: block;
   }
 }
 
-@media (min-width: 576px) and (max-width: 767px) {
+@media (max-width: 400px) {
   .tabs-four .nav {
     display: flex;
   }
@@ -1118,6 +1170,7 @@ body {
   background: var(--selecttabunderline);
 }
 
+/* For larger screens (default layout) */
 .tabs-four .tab-content .tab-text {
   padding: 15px;
   display: flex;
@@ -1127,9 +1180,29 @@ body {
 }
 
 .tabs-four .tab-content .tab-text .text {
+  margin-right: 20px;
   color: var(--dark-3);
   flex: 1;
   margin-right: 60px;
+}
+
+/* For smaller screens */
+@media (max-width: 1100px) {
+  .tabs-four .tab-content .tab-text {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .tabs-four .tab-content .tab-text .text {
+    margin-right: 0;
+    margin-bottom: 20px;
+    color: var(--dark-3);
+  }
+
+  .tabs-four .tab-content .tab-text .tab-image {
+    max-width: 90%;
+    margin-bottom: 20px;
+  }
 }
 
 .tabs-title h5 {
@@ -1178,12 +1251,7 @@ body {
   padding-bottom: 42px;
 }
 
-#tab-four-four .tab-text {
-  padding: 15px 200px 15px 50px;
-  max-width: 1530px;
-  margin: 0 auto;
-  line-height: 25px;
-}
+
 
 #tab-four-four .tab-text a {
   color: var(--citationlink);
@@ -1193,6 +1261,13 @@ body {
 /*===========================
   teams css 
 ===========================*/
+@media only screen and (max-width: 767px) {
+  .team-style-one .team-image {
+    height: auto; /* Allow the height to adjust automatically based on the image aspect ratio */
+  }
+}
+
+
 .team-style-one {
   position: relative;
   margin-top: 30px;
@@ -1215,15 +1290,19 @@ body {
 
 .team-style-one .team-image {
   width: 100%;
-  height: 200px; 
+  height: 0;
+  padding-bottom: 90%; /* Adjust the percentage to set the aspect ratio (75% gives a 4:3 ratio) */
+  position: relative;
   overflow: hidden;
 }
 
+
 .team-style-one .team-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensure the image covers the container without distortion */
 }
+
 
 .team-style-one .team-content {
   padding: 20px 15px;
@@ -1236,27 +1315,44 @@ body {
   align-items: center; 
 }
 
+/* Base font sizes */
 .team-style-one .team-content .name {
   font-size: 20px;
-  font-weight: 600;
-  line-height: 30px;
-  color: var(--teamboxname);
-  transition: all 0.3s ease-out 0s;
-}
-
-@media only screen and (max-width: 991px) {
-  .team-style-one .team-content .name {
-      font-size: 18px; /* Adjust font size for smaller screens */
-  }
+  color: var(--teamboxtext);
 }
 
 .team-style-one .team-content .sub-title {
   font-size: 15px;
-  line-height: 24px;
   color: var(--teamboxtext);
-  margin-top: 2px;
-  display: block;
 }
+
+/* For medium screens (e.g., tablets) */
+@media only screen and (max-width: 991px) {
+  .team-style-one .team-content .name {
+    font-size: 18px;
+    color: var(--teamboxtext);
+  }
+
+  .team-style-one .team-content .sub-title {
+    font-size: 14px;
+    color: var(--teamboxtext);
+  }
+}
+
+/* For small screens (e.g., mobile phones) */
+@media only screen and (max-width: 767px) {
+  .team-style-one .team-content .name {
+    font-size: 16px;
+    color: var(--teamboxtext);
+  }
+
+  .team-style-one .team-content .sub-title {
+    font-size: 12px;
+    color: var(--teamboxtext);
+  }
+}
+
+
 
 .team-area {
   background-color: var(--background);
@@ -1277,7 +1373,26 @@ body {
   transform: translate(-50%, -50%);
   max-width: 20%;
   opacity: 0.2;
+  z-index: 1;
 }
+
+.footer-one .footer-logo img {
+  max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
+}
+
+@media (max-width: 991px) {
+  .footer-one .footer-logo img {
+    max-width: 100%; /* Increase size for medium screens */
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-one .footer-logo img {
+    max-width: 100%; /* Increase size for smaller screens */
+  }
+}
+
 
 .footer-one .footer-widget {
   padding: 250px 0 130px;
@@ -1386,8 +1501,9 @@ body {
 
 .footer-one .copyright .text {
   color: var(--dark-3);
-  margin-top: 10px;
+  margin-top: 30px;
   text-align: center;
+  z-index: 0;
 }
 
 .footer-widget .row > div {
