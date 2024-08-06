@@ -1032,14 +1032,13 @@ ul li {
 
   #card-list {
     display: flex;
-    position: relative;
-    width: 500%;
+    position: absolute;
+    width: 100%;
     height: 100%;
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    transition: transform 0.5s ease;
   }
 
   /* General styles for each card */
@@ -1056,7 +1055,6 @@ ul li {
   animation-play-state: running;
   z-index: 10;
   transition: transform 0.3s ease;
-  flex: 1 0 auto; /* Ensure cards are displayed in a single row */
 }
 
 /* Pause animation on hover */
@@ -1065,7 +1063,7 @@ ul li {
 }
 
 
-.carousel-section:hover .card {
+.carousel-section .card:hover {
   animation-play-state: paused;
 }
 
