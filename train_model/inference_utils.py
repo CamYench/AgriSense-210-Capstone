@@ -113,7 +113,7 @@ def prepare_dataset(evi_data_dir, yield_data_weekly, target_shape, augment=False
         train_loader = DataLoader(train_subset, batch_size=4, shuffle=True)
         val_loader = DataLoader(val_subset, batch_size=4, shuffle=False)
 
-    return train_loader, val_loader, mean, std
+    return train_loader, val_loader, mean, std, dataset
 
 def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, criterion, epochs, device):
     print(f"# of samples - Training   - {len(train_loader.dataset)}")
