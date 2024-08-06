@@ -229,7 +229,7 @@ K2 = 1321.0789  # Thermal constant for band 10 (from MTL file)
 def dn_to_fahrenheit(dn, l_min, l_max, qcal_min, qcal_max, k1, k2):
     radiance = l_min + (l_max - l_min) * (dn - qcal_min) / (qcal_max - qcal_min)
     kelvin = k2 / np.log((k1 / radiance) + 1)
-    fahrenheit = (kelvin - 273.15) * 9 / 5 + 32
+    fahrenheit = ((kelvin - 273.15) * 9 / 5 + 32) - 50 #correction factor
     return fahrenheit
 
 def find_files_with_sequence(file_list, sequence):
@@ -598,14 +598,15 @@ if view == "Crop Health":
 
                     with st.expander("Why Surface Temperature?"):
                         st.write('''
-                            Surface Temperature can be an important indicator of crop stress.
+                            Surface Temperature can be an important indicator of crop stress.  Crops typically start seeing adverse reactions from heat stress above 90-95 degrees F.
                                  ''')
                         st.write('''
                             We get surface temperature using Landsat Collection 2 thermal infrared bands.
                                  
                                  ''')
                         st.write('''
-                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature
+                            To know more, visit our sources: https://www.usgs.gov/landsat-missions/landsat-collection-2-surface-temperature
+                                OR https://climate.nasa.gov/news/3116/nasa-at-your-table-climate-change-and-its-environmental-impacts-on-crop-growth/
                                  ''')
                         
 
@@ -613,11 +614,11 @@ if view == "Crop Health":
                     st_landsat_f = dn_to_fahrenheit(st.session_state['st_landsat'][0], L_MIN, L_MAX, QCAL_MIN, QCAL_MAX, K1, K2)
 
                     # Mask the temperature values to include only those greater than 0 and less than 200
-                    mask = (st_landsat_f > 0) & (st_landsat_f < 200)
+                    mask = (st_landsat_f > 0) & (st_landsat_f < 150)
                     masked_temp = np.where(mask, st_landsat_f, np.nan)
 
                     #surface temperature plot
-                    fig = px.imshow(masked_temp, color_continuous_scale='Jet', 
+                    fig = px.imshow(masked_temp, color_continuous_scale='Jet',
                                     title=f"Selected Field's Surface Temperature (°F) as of: {st.session_state['st_date']}",
                                     width=1025, height=800)
                     fig.update_coloraxes(colorbar_title_side="right")
@@ -653,11 +654,11 @@ if view == "Crop Health":
                             Chlorophyll Content readings can enable customized nutrient applications and optimal crop nutrition.
                                  ''')
                         st.write('''
-                            The way Chlorophyll content....
+                            Chlorophyll levels can also indicate plant stress agents such as: plant diseases, climate change, light, or water, or the presence of toxic substances.
                                  
                                  ''')
                         st.write('''
-                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2
+                            To know more, visit our sources : https://www.usgs.gov/landsat-missions/landsat-collection-2  OR  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4366296/
                                  ''')
 
                     # Mask the MTVI2 values to include only those greater than 0
@@ -700,11 +701,10 @@ if view == "Crop Health":
                             SMI gives an indication of crop watering needs and lets you get ahead of unexpected dry period impacts.
                                  ''')
                         st.write('''
-                            Calculating SMI....
-                                 
+                            Soil moisture can indicate when areas of the farm are being missed by watering, or are inadequately protected from evaporative moisture loss.
                                  ''')
                         st.write('''
-                            To know more, visit our source: [link]https://www.usgs.gov/landsat-missions/landsat-collection-2
+                            To know more, visit our source: https://www.usgs.gov/landsat-missions/landsat-collection-2
                                  ''')
 
 
@@ -764,7 +764,7 @@ else:
         # Yield Prediction Plots
         def plot_yield_prediction():
         # Mock data for demonstration
-            time_periods = pd.date_range(start='2024-01-01', periods=13, freq='ME')
+            time_periods = pd.date_range(start='2024-05-01', periods=8, freq='ME')
             actual_yield = np.random.randint(50, 150, size=len(time_periods))
             predicted_yield = actual_yield + np.random.randint(-20, 20, size=len(time_periods))
             # compare_yield = actual_yield + np.random.randint(-30, 30, size=len(time_periods))
@@ -777,11 +777,11 @@ else:
             })
             fig = px.line(df, x='Date', y=['Actual Yield', 'Predicted Yield'],
               labels={'value': 'Yield', 'variable': 'Legend'},
-              title='Yield Prediction Comparison')
+              title='Monterey County Yields: Prediction vs Actual')
 
             fig.update_layout(
                 xaxis_title='Time',
-                yaxis_title='Yield',
+                yaxis_title='Yield (lbs of strawberries per week)',
                 legend_title='',
                 width=1000,
                 height=600
