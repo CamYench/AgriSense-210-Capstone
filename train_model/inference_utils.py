@@ -123,6 +123,9 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
     trigger_times = 0
     target_shape = (512, 512)
     
+    train_losses = []
+    val_losses = []
+    
     for epoch in range(epochs):
         running_loss = 0.0
         model.train()
@@ -138,19 +141,21 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
             running_loss += loss.item()
         
         epoch_loss = running_loss / len(train_loader)
+        train_losses.append(epoch_loss)
         print(f'Epoch {epoch + 1}, Loss: {epoch_loss}')
         
         # Evaluate on validation set
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
-                    for inputs, labels, time_features, timestamps, in val_loader:
-                        inputs, labels, time_features = inputs.to(device), labels.to(device), time_features.to(device)
-                        outputs = model(inputs, time_features)
-                        labels = labels.unsqueeze(1).unsqueeze(2).expand(-1, target_shape[0], target_shape[1])
-                        loss = criterion(outputs, labels)
-                        val_loss += loss.item()
+            for inputs, labels, time_features, timestamp in val_loader:
+                inputs, labels, time_features = inputs.to(device), labels.to(device), time_features.to(device)
+                outputs = model(inputs, time_features)
+                labels = labels.unsqueeze(1).unsqueeze(2).expand(-1, target_shape[0], target_shape[1])
+                loss = criterion(outputs, labels)
+                val_loss += loss.item()
         val_loss /= len(val_loader)
+        val_losses.append(val_loss)
         print(f'Validation Loss: {val_loss}')
         
         scheduler.step(val_loss)
@@ -164,7 +169,7 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
                 print("Early stopping!")
                 break
 
-    return best_loss
+    return best_loss, train_losses, val_losses
 
 # Fucntion to find the mean & standard deviation
 def compute_mean_std(evi_data_dict, target_shape):
