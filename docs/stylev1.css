@@ -1032,13 +1032,14 @@ ul li {
 
   #card-list {
     display: flex;
-    position: absolute;
-    width: 100%;
+    position: relative;
+    width: 500%;
     height: 100%;
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
+    transition: transform 0.5s ease;
   }
 
   /* General styles for each card */
@@ -1055,14 +1056,16 @@ ul li {
   animation-play-state: running;
   z-index: 10;
   transition: transform 0.3s ease;
+  flex: 1 0 auto; /* Ensure cards are displayed in a single row */
 }
 
 /* Pause animation on hover */
-#card-list li:hover {
+#card-list:hover li {
   animation-play-state: paused;
 }
 
-.carousel-section .card:hover {
+
+.carousel-section:hover .card {
   animation-play-state: paused;
 }
 
@@ -1615,6 +1618,8 @@ ul li {
   align-items: center;
   justify-content: center;
   color: var(--footerlink);
+  line-height: 24px;
+  font-size: 16px;
 }
 
 .footer-one .footer-contact ul li:first-child {
