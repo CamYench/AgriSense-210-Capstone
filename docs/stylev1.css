@@ -166,6 +166,7 @@ ul li {
   opacity: 1; 
   z-index: -1; 
   pointer-events: none; 
+  flex: 1 1 300px;
 }
 
 .mb-100 {
@@ -198,7 +199,7 @@ ul li {
 .navbar-one .navbar .navbar-toggler .toggler-icon {
   width: 30px;
   height: 2px;
-  background-color: var(--white);
+  background-color: var(--box);
   margin: 5px 0;
   display: block;
   position: relative;
@@ -211,7 +212,7 @@ ul li {
 }
 
 .navbar-one .navbar .navbar-toggler.active .toggler-icon:nth-of-type(2) {
-  opacity: 0;
+  opacity: 50;
 }
 
 .navbar-one .navbar .navbar-toggler.active .toggler-icon:nth-of-type(3) {
@@ -225,10 +226,9 @@ ul li {
     top: 140%;
     left: 0;
     width: 100%;
-    background-color: var(--primary);
-    z-index: 8;
-    padding: 10px 0;
-    border-radius: 0 0 5px 5px;
+    background-color: var(--background);
+    z-index: 50;
+    border-radius: 0 0 3px 3px;
   }
 }
 
@@ -242,7 +242,7 @@ ul li {
   line-height: 50px;
   font-weight: 600;
   padding: 28px 15px;
-  color: var(--menutext);
+  color: var(--sectiontitle);
   text-transform: capitalize;
   position: relative;
   display: flex;
@@ -537,7 +537,7 @@ ul li {
 .features-one {
   background-color: var(--background);
   padding-top: 110px;
-  padding-bottom: 150px;
+  padding-bottom: 175px;
   align-items: center;
 }
 
@@ -968,87 +968,99 @@ ul li {
 }
 
 @media (max-width: 900px) {
-  /* Add styles for screens less than 900px here */
-  .carousel-section .carousel-title h5 {
-    font-size: 1rem; /* Adjust as needed */
-  }
-
-  .carousel-section .carousel-title h2 {
-    font-size: 1.5rem; /* Adjust as needed */
-  }
-
-  .carousel-section ul {
-    flex-direction: column; /* Example change */
-    align-items: stretch;
-  }
-
-  .carousel-section .card {
-    width: 100%; /* Adjust width for small screens */
-  }
   .carousel-title h5 {
     font-size: 1.2rem; /* Adjust for smaller screens */
+    position: relative;
   }
 
   .carousel-title h2 {
     font-size: 1.8rem; /* Adjust for smaller screens */
+    position: relative;
   }
 
   .carousel-section .carousel-title h5 {
     font-weight: 600;
     color: var(--sectiontitle);
+    position: relative;
   }
 
   .carousel-section .carousel-title h2 {
     font-size: 2.5rem; /* Adjust size as needed */
     font-weight: bolder;
     color: var(--sectiontitle);
+    position: relative;
   }
-}
+  
+  .center-circle {
+    display: none; /* Hide the logo on small screens */
+  }
 
-/* Small Screen Carousel CSS */
-@media (max-width: 900px) {
   .carousel-section {
-    padding: 20px;
-  }
-
-  .small-screen-carousel .carousel-title h5 {
-    font-size: 1rem; /* Adjust as needed */
-  }
-
-  .small-screen-carousel .carousel-title h2 {
-    font-size: 1.5rem; /* Adjust as needed */
-  }
-
-  .pic-ctn {
     position: relative;
     width: 100vw;
-    height: auto; /* Adjust to fit content height */
-    margin-top: 15vh;
+    height: 100vh; /* Adjust as needed */
+    background-image: url('agrisense_earth.png'); /* Add background image */
+    background-size: contain; /* Cover the entire section */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent tiling */
+  }
+  
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
   }
 
-  .pic {
+  .carousel-title {
+    position: absolute;
+    top: -80px; /* Adjust as needed */
+    text-align: center;
+    width: 100%;
+  }
+
+  #card-list {
+    display: flex;
     position: absolute;
     width: 100%;
-    top: 0;
-    left: 0;
+    height: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  #card-list li {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
-    animation: display 10s infinite;
+    transition: opacity 1s ease-in-out;
+    animation: fade 40s infinite; /* Adjust timing as needed */
+    animation-play-state: running;
+    z-index: 10;
+    transition: transform 0.3s ease;
   }
 
-  .pic:nth-child(2) {
-    animation-delay: 2s;
-  }
-  .pic:nth-child(3) {
-    animation-delay: 4s;
-  }
-  .pic:nth-child(4) {
-    animation-delay: 6s;
-  }
-  .pic:nth-child(5) {
-    animation-delay: 8s;
+  #card-list li:hover {
+    animation-play-state: paused; /* Pause animation on hover */
   }
 
-  .card-content {
+  .carousel-section .card:hover {
+    animation-play-state: paused; /* Slightly enlarge the card on hover */
+  }
+
+  #card-list li:nth-child(1) { animation-delay: 0s; }
+  #card-list li:nth-child(2) { animation-delay: 8s; }
+  #card-list li:nth-child(3) { animation-delay: 16s; }
+  #card-list li:nth-child(4) { animation-delay: 24s; }
+  #card-list li:nth-child(5) { animation-delay: 32s; }
+
+  .carousel-section .card {
     padding: 16px 24px;
     background: #FFFFFF;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.1);
@@ -1059,40 +1071,30 @@ ul li {
     font-size: 14px;
     line-height: 20px;
     color: #535062;
+    width: 90%; /* Percentage width for responsiveness */
+    max-width: 300px; /* Max width to maintain a consistent size */
+    height: auto; /* Adjust height based on content */
+    margin: 0 10px; /* Small margin between cards */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .carousel-section .model-name {
     font-weight: 500;
     font-size: 18px;
     line-height: 150%;
-    color: var(--carousel-main-color);
+    color: var(--carousel-main-color); /* Ensure this variable is defined */
     display: block;
   }
 
-
-  @keyframes display {
-    0% {
-      transform: translateX(200px);
-      opacity: 0;
-    }
-    10% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    20% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    30% {
-      transform: translateX(-200px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(-200px);
-      opacity: 0;
-    }
+  @keyframes fade {
+    0%, 100% { opacity: 0; }
+    10%, 20% { opacity: 1; }
+    30%, 50% { opacity: 0; }
   }
 }
+
 
 
 /*===========================
@@ -1101,7 +1103,6 @@ ul li {
 .single-card {
   box-shadow: var(--shadow-1);
   border-radius: 8px;
-  overflow: hidden;
   margin-top: 30px;
   transition: all 0.3s ease-out;
   background-color: var(--card);
@@ -1129,9 +1130,6 @@ ul li {
   transition: all 0.3s ease-out;
 }
 
-.single-card .card-content .card-title a:hover {
-  color: var(--primary);
-}
 
 .single-card .card-content .text {
   color: var(--cardtext);
