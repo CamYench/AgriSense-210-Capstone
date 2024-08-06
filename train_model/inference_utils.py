@@ -148,7 +148,7 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
-            for inputs, labels, time_features, timestamp in val_loader:
+            for inputs, labels, time_features, timestamps, in val_loader:
                 inputs, labels, time_features = inputs.to(device), labels.to(device), time_features.to(device)
                 outputs = model(inputs, time_features)
                 labels = labels.unsqueeze(1).unsqueeze(2).expand(-1, target_shape[0], target_shape[1])
@@ -171,7 +171,7 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
 
     return best_loss, train_losses, val_losses
 
-# Fucntion to find the mean & standard deviation
+# Function to find the mean & standard deviation
 def compute_mean_std(evi_data_dict, target_shape):
     all_images = np.array([resize(image, target_shape, anti_aliasing=True) for image in evi_data_dict.values()])
     mean = np.mean(all_images)
