@@ -82,7 +82,7 @@ def prepare_dataset(evi_data_dir, yield_data_weekly, target_shape, augment=False
             evi_data_dict[date] = evi_data
             tend = time.perf_counter()
             duration = tend - tstart
-            print(f"Processed file {idx+1}/{len(evi_data_files)} in {duration:2f}s")
+            print(f"Processed file {idx+1}/{len(evi_data_files)} in {duration:.2f}s")
 
     # Extract mean and std from the preprocessed data
     mean, std = compute_mean_std(evi_data_dict, target_shape)
@@ -91,26 +91,29 @@ def prepare_dataset(evi_data_dir, yield_data_weekly, target_shape, augment=False
     for date in evi_data_dict:
         evi_data_dict[date] = preprocess_image(evi_data_dict[date], target_shape, mean, std)
 
+    # Determine common date range between EVI and yield data
+    start_date, end_date = find_common_date_range(evi_data_dict, yield_data_weekly)
+
+    # Filter yield_data_weekly to only include dates within the common range
+    yield_data_weekly_filtered = yield_data_weekly[(yield_data_weekly.index >= start_date) & (yield_data_weekly.index <= end_date)]
+
     # Prepare dataset with synchronized EVI and yield data
-    evi_data_dict_combined, evi_reference_combined = sync_evi_yield_data(evi_data_dict, yield_data_weekly)
+    evi_data_dict_combined, evi_reference_combined = sync_evi_yield_data(evi_data_dict, yield_data_weekly_filtered)
+
+    dataset = CustomDataset(evi_data_dict_combined, evi_reference_combined, yield_data_weekly_filtered)
 
     if full:
-        dataset = CustomDataset(evi_data_dict_combined, evi_reference_combined, yield_data_weekly)
-        train_indices = np.arange(len(dataset))
-        train_subset = torch.utils.data.Subset(dataset, train_indices)
-        train_loader = DataLoader(train_subset, batch_size=4, shuffle=True)
-        test_loader = None
+        train_loader = DataLoader(dataset, batch_size=4, shuffle=True)
+        val_loader = None
     else:
-        dataset = CustomDataset(evi_data_dict_combined, evi_reference_combined, yield_data_weekly)
-        train_indices, test_indices = train_test_split(np.arange(len(dataset)), test_size=0.2, random_state=42)
-
+        train_indices, val_indices = train_test_split(np.arange(len(dataset)), test_size=0.2, random_state=42)
         train_subset = torch.utils.data.Subset(dataset, train_indices)
-        test_subset = torch.utils.data.Subset(dataset, test_indices)
+        val_subset = torch.utils.data.Subset(dataset, val_indices)
 
         train_loader = DataLoader(train_subset, batch_size=4, shuffle=True)
-        test_loader = DataLoader(test_subset, batch_size=4, shuffle=False)
+        val_loader = DataLoader(val_subset, batch_size=4, shuffle=False)
 
-    return train_loader, test_loader, mean, std
+    return train_loader, val_loader, mean, std
 
 def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, criterion, epochs, device):
     print(f"# of samples - Training   - {len(train_loader.dataset)}")
