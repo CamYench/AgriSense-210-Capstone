@@ -764,20 +764,31 @@ else:
         # Yield Prediction Plots
         def plot_yield_prediction():
         # Mock data for demonstration
-            time_periods = pd.date_range(start='2024-05-01', periods=8, freq='ME')
-            actual_yield = np.random.randint(50, 150, size=len(time_periods))
-            predicted_yield = actual_yield + np.random.randint(-20, 20, size=len(time_periods))
-            # compare_yield = actual_yield + np.random.randint(-30, 30, size=len(time_periods))
+            # time_periods = pd.date_range(start='2024-05-01', periods=8, freq='ME')
+            # actual_yield = np.random.randint(50, 150, size=len(time_periods))
+            # predicted_yield = actual_yield + np.random.randint(-20, 20, size=len(time_periods))
+            # # compare_yield = actual_yield + np.random.randint(-30, 30, size=len(time_periods))
 
+            #import actual data
+            df = pd.read_csv('example_historical.csv')
+            # df = pd.DataFrame({
+            #     'Date': time_periods,
+            #     'Actual Yield': actual_yield,
+            #     'Predicted Yield': predicted_yield
+            # })
 
-            df = pd.DataFrame({
-                'Date': time_periods,
-                'Actual Yield': actual_yield,
-                'Predicted Yield': predicted_yield
-            })
-            fig = px.line(df, x='Date', y=['Actual Yield', 'Predicted Yield'],
+            
+            area = round(st.session_state["area"]/4046.8564224,1)
+
+            #distribute yield by share of farm size
+            df['actual_yield'] = df['actual_yield']*area/79500
+            df['predicted_yield'] = df['predicted_yield']*area/79500
+
+            df.rename(columns={'actual_yield': 'Actual Yield', 'predicted_yield': 'Predicted Yield'}, inplace=True)
+
+            fig = px.line(df, x='date', y=['Actual Yield', 'Predicted Yield'],
               labels={'value': 'Yield', 'variable': 'Legend'},
-              title='Monterey County Yields: Prediction vs Actual')
+              title='Strawberry Yields: Prediction vs Actual')
 
             fig.update_layout(
                 xaxis_title='Time',
@@ -789,6 +800,7 @@ else:
 
 
             st.plotly_chart(fig)
+
 
 
 
