@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from skimage.draw import polygon
 from skimage.transform import resize, rotate
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from torch.utils.data import DataLoader, Dataset, Subset
 from tqdm import tqdm
 from utils import load_evi_data
@@ -119,7 +120,7 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
     print(f"# of samples - Training   - {len(train_loader.dataset)}")
     print(f"# of samples - Validation - {len(val_loader.dataset)}")
     best_loss = float('inf')
-    patience = 5  # Increased patience to avoid premature stopping
+    patience = 5
     trigger_times = 0
     target_shape = (512, 512)
     
@@ -133,7 +134,7 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
             inputs, labels, time_features = inputs.to(device), labels.to(device), time_features.to(device)
             optimizer.zero_grad()
             outputs = model(inputs, time_features)
-            labels = labels / (512 * 512)
+            labels = labels / (target_shape[0] * target_shape[1])
             labels = labels.unsqueeze(1).unsqueeze(2).expand(-1, target_shape[0], target_shape[1])
             loss = criterion(outputs, labels)
             loss.backward()
@@ -148,12 +149,18 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
+            all_outputs = []
+            all_labels = []
             for inputs, labels, time_features, timestamps, in val_loader:
                 inputs, labels, time_features = inputs.to(device), labels.to(device), time_features.to(device)
                 outputs = model(inputs, time_features)
                 labels = labels.unsqueeze(1).unsqueeze(2).expand(-1, target_shape[0], target_shape[1])
                 loss = criterion(outputs, labels)
                 val_loss += loss.item()
+                
+                all_outputs.extend(outputs.cpu().numpy().flatten())
+                all_labels.extend(labels.cpu().numpy().flatten())
+
         val_loss /= len(val_loader)
         val_losses.append(val_loss)
         print(f'Validation Loss: {val_loss}')
@@ -168,8 +175,19 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
             if trigger_times >= patience:
                 print("Early stopping!")
                 break
+    
+    # Compute final metrics for validation set
+    all_outputs = np.array(all_outputs)
+    all_labels = np.array(all_labels)
+    
+    val_mse = mean_squared_error(all_labels, all_outputs)
+    val_rmse = np.sqrt(val_mse)
+    val_mae = mean_absolute_error(all_labels, all_outputs)
+    val_r2 = r2_score(all_labels, all_outputs)
 
-    return best_loss, train_losses, val_losses
+    print(f"Final Validation Set Metrics - MSE: {val_mse}, RMSE: {val_rmse}, MAE: {val_mae}, R-squared: {val_r2}")
+
+    return best_loss, train_losses, val_losses, val_mse, val_rmse, val_mae, val_r2
 
 # Function to find the mean & standard deviation
 def compute_mean_std(evi_data_dict, target_shape):
