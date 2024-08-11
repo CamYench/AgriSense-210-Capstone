@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from skimage.draw import polygon
 from skimage.transform import resize, rotate
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, median_absolute_error
 from torch.utils.data import DataLoader, Dataset, Subset
 from tqdm import tqdm
 from utils import load_evi_data
@@ -151,7 +151,7 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
         with torch.no_grad():
             all_outputs = []
             all_labels = []
-            for inputs, labels, time_features, timestamps, in val_loader:
+            for inputs, labels, time_features, timestamps in val_loader:
                 inputs, labels, time_features = inputs.to(device), labels.to(device), time_features.to(device)
                 outputs = model(inputs, time_features)
                 labels = labels.unsqueeze(1).unsqueeze(2).expand(-1, target_shape[0], target_shape[1])
@@ -183,11 +183,12 @@ def train_and_evaluate(model, train_loader, val_loader, optimizer, scheduler, cr
     val_mse = mean_squared_error(all_labels, all_outputs)
     val_rmse = np.sqrt(val_mse)
     val_mae = mean_absolute_error(all_labels, all_outputs)
+    val_medae = median_absolute_error(all_labels, all_outputs)
     val_r2 = r2_score(all_labels, all_outputs)
 
-    print(f"Final Validation Set Metrics - MSE: {val_mse}, RMSE: {val_rmse}, MAE: {val_mae}, R-squared: {val_r2}")
+    print(f"Final Validation Set Metrics - MSE: {val_mse}, RMSE: {val_rmse}, MAE: {val_mae}, MedAE: {val_medae}, R-squared: {val_r2}")
 
-    return best_loss, train_losses, val_losses, val_mse, val_rmse, val_mae, val_r2
+    return best_loss, train_losses, val_losses, val_mse, val_rmse, val_mae, val_medae, val_r2
 
 # Function to find the mean & standard deviation
 def compute_mean_std(evi_data_dict, target_shape):
