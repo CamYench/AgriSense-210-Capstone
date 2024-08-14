@@ -39,7 +39,7 @@ def augment_image(image):
 
 # Function for unifying EVI and yield data
 class CustomDataset(Dataset):
-    def __init__(self, evi_data_dict, evi_reference, yield_data, sequence_length=4):
+    def __init__(self, evi_data_dict, evi_reference, yield_data, sequence_length=10):
         self.evi_data_dict = evi_data_dict
         self.evi_reference = evi_reference
         self.yield_data = yield_data
