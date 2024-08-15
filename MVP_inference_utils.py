@@ -166,6 +166,8 @@ def load_evi_data_and_prepare_features(evi_data_dir, time_index, target_shape):
             date_str = os.path.basename(file).split('_')[3]
             date = pd.to_datetime(date_str, format='%Y%m%d')
             evi_data = load_evi_data(os.path.join(evi_data_dir, file))
+            #put debugging about evi_data shape here
+            print("data shape in dict:",evi_data.shape)
             evi_data_dict[date] = evi_data
 
     mean, std = compute_mean_std(evi_data_dict, target_shape)
@@ -188,6 +190,39 @@ def load_evi_data_and_prepare_features(evi_data_dir, time_index, target_shape):
             time_features_list.append([0, 0, 0, 0])
 
     return evi_data_preprocessed_dict, time_features_list, mean, std
+
+
+# Load EVI data and prepare time features
+def load_masked_evi_and_prepare_features(masked_evi, evi_date, time_index, target_shape):
+    
+    evi_data_dict = {}
+    date_str = evi_date
+    # date_str = os.path.basename(file).split('_')[3]
+    date = pd.to_datetime(date_str, format='%Y%m%d')
+    evi_data = masked_evi
+    evi_data_dict[date] = evi_data
+
+    mean, std = compute_mean_std(evi_data_dict, target_shape)
+
+    # Prepare features
+    evi_data_preprocessed_dict = {}
+    time_features_list = []
+    for date in time_index:
+        if date in evi_data_dict:
+            evi_data = evi_data_dict[date]
+            month_sin = np.sin(2 * np.pi * date.month / 12)
+            month_cos = np.cos(2 * np.pi * date.month / 12)
+            day_of_year_sin = np.sin(2 * np.pi * date.day_of_year / 365)
+            day_of_year_cos = np.cos(2 * np.pi * date.day_of_year / 365)
+            time_features = [month_sin, month_cos, day_of_year_sin, day_of_year_cos]
+            evi_data_preprocessed = preprocess_image(evi_data, target_shape, mean, std)
+            evi_data_preprocessed_dict[date] = evi_data_preprocessed
+            time_features_list.append(time_features)
+        else:
+            time_features_list.append([0, 0, 0, 0])
+
+    return evi_data_preprocessed_dict, time_features_list, mean, std
+
 
 def find_closest_date(date, date_dict):
     closest_date = min(date_dict.keys(), key=lambda d: abs(d - date))
@@ -217,7 +252,7 @@ def predict_weekly_yield(evi_data_dict, yield_data_weekly, start_date, polygon_a
     predicted_yields = []
     dates = []
     
-    for week_offset in range(13):  # 13 weeks for 3 months
+    for week_offset in range(2):  # 13 weeks for 3 months - modified to 2 weeks to speed up prediction
         date_to_predict = start_date + timedelta(weeks=week_offset)
         
         closest_evi_date = find_closest_date(date_to_predict, evi_data_dict)
@@ -228,7 +263,8 @@ def predict_weekly_yield(evi_data_dict, yield_data_weekly, start_date, polygon_a
         
         predicted_yield_per_acre = predict(evi_data, time_features, mean, std, target_shape, model, device)
         
-        predicted_yield_total = np.sum(predicted_yield_per_acre) * polygon_area
+        predicted_yield_total = np.sum(predicted_yield_per_acre)
+        # predicted_yield_total = np.sum(predicted_yield_per_acre) * polygon_area
         predicted_yields.append(predicted_yield_total)
         dates.append(date_to_predict)
     

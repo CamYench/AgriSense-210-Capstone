@@ -146,7 +146,7 @@ def convert_selected_area(coordinates):
 
 
 #mask based on current selection geojson
-def mask_tif(area_to_mask,image_fn):
+def mask_tif(area_to_mask,image_fn, crop=True):
     """
     inputs
     area_to_mask: GeoJSON coordinates shape (could be rectangle or freeform)
@@ -167,7 +167,7 @@ def mask_tif(area_to_mask,image_fn):
     img = rasterio.open(image_fn)
     with img as src: 
         # Apply the mask
-        out_image, out_transform = mask(src, geometries, crop=True)
+        out_image, out_transform = mask(src, geometries, crop=crop)
         out_meta = src.meta
 
     # Update metadata to reflect the new dimensions
