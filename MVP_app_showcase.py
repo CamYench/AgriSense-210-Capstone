@@ -895,8 +895,8 @@ else:
             area = round(st.session_state["area"]/4046.8564224,1)
 
             #distribute yield by share of farm size
-            df['actual_yield'] = df['actual_yield']*area/79500
-            df['predicted_yield'] = df['predicted_yield']*area/79500
+            df['actual_yield'] = df['actual_yield']*area/9229
+            df['predicted_yield'] = df['predicted_yield']*area/9229
 
             df.rename(columns={'actual_yield': 'Actual Yield', 'predicted_yield': 'Predicted Yield'}, inplace=True)
 
